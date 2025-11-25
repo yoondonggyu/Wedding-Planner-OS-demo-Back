@@ -91,3 +91,4 @@ async def get_week_summary(user_id: int = Query(...)):
     return calendar_controller.get_week_summary(user_id)
 
 
+

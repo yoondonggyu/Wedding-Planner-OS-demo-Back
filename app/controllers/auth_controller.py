@@ -17,8 +17,8 @@ def login_controller(req: LoginReq, db: Session):
     if user.password != req.password:
         raise bad_request("invalid_credentials")
     
-    # JWT 토큰 생성
-    access_token = create_access_token(data={"sub": user.id})
+    # JWT 토큰 생성 (sub는 문자열이어야 함)
+    access_token = create_access_token(data={"sub": str(user.id)})
     
     return {
         "access_token": access_token,

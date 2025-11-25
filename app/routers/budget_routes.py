@@ -125,3 +125,4 @@ async def process_receipt_image(
     return await budget_controller.process_receipt_image(user_id, image_data)
 
 
+

@@ -5,16 +5,20 @@ from app.models.db import User, Post, Comment, PostLike, Tag
 class UserAdmin(ModelView, model=User):
     column_list = [User.id, User.email, User.nickname, User.created_at]
     column_searchable_list = [User.email, User.nickname]
+    form_columns = ["email", "password", "nickname", "profile_image_url"]
 
 class PostAdmin(ModelView, model=Post):
     column_list = [Post.id, Post.title, Post.user_id, Post.board_type, Post.view_count, Post.created_at]
     column_searchable_list = [Post.title, Post.content]
+    form_columns = ["user", "title", "content", "image_url", "board_type"]
 
 class CommentAdmin(ModelView, model=Comment):
     column_list = [Comment.id, Comment.content, Comment.user_id, Comment.post_id, Comment.created_at]
+    form_columns = ["post_id", "user_id", "content"]
 
 class PostLikeAdmin(ModelView, model=PostLike):
     column_list = [PostLike.id, PostLike.post_id, PostLike.user_id, PostLike.created_at]
+    form_columns = ["post_id", "user_id"]
 
 class TagAdmin(ModelView, model=Tag):
     column_list = [Tag.id, Tag.name]

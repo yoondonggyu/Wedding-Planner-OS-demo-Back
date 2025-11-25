@@ -4,3 +4,4 @@ from app.models.db.comment import Comment
 
 __all__ = ["User", "Post", "PostLike", "Tag", "Comment", "post_tags"]
 
+

@@ -186,3 +186,4 @@ async def process_receipt_image(user_id: int, image_data: bytes) -> Dict:
     }
 
 
+

@@ -23,27 +23,52 @@ async def create_post_controller(req: PostCreateReq, user_id: int, db: Session):
     
     validate_title(req.title)
     
-    # AI 서비스 호출
-    tags_list = await auto_tag_text(req.content)
-    summary_res = await summarize_text(req.content)
-    summary = summary_res.get("summary") if summary_res else None
-    
-    sentiment_res = await analyze_sentiment(req.content)
+    # AI 서비스 호출 (실패해도 게시글 작성은 성공)
+    tags_list = []
+    summary = None
     sentiment_score = None
     sentiment_label = None
-    if sentiment_res:
-        sentiment_score = sentiment_res.get("confidence")
-        sentiment_label = sentiment_res.get("label")
+    
+    try:
+        tags_list = await auto_tag_text(req.content)
+        if not tags_list:
+            tags_list = []
+        print(f"✅ 자동 태그 생성 성공: {tags_list}")
+    except Exception as e:
+        print(f"⚠️ 자동 태그 생성 실패 (게시글 작성은 계속 진행): {e}")
+        tags_list = []
+    
+    try:
+        summary_res = await summarize_text(req.content)
+        summary = summary_res.get("summary") if summary_res else None
+        if summary:
+            print(f"✅ 요약 생성 성공: {summary[:50]}...")
+    except Exception as e:
+        print(f"⚠️ 요약 생성 실패 (게시글 작성은 계속 진행): {e}")
+        summary = None
+    
+    try:
+        sentiment_res = await analyze_sentiment(req.content)
+        if sentiment_res:
+            sentiment_score = sentiment_res.get("confidence")
+            sentiment_label = sentiment_res.get("label")
+            print(f"✅ 감성 분석 성공: {sentiment_label} (신뢰도: {sentiment_score})")
+    except Exception as e:
+        print(f"⚠️ 감성 분석 실패 (게시글 작성은 계속 진행): {e}")
+        sentiment_score = None
+        sentiment_label = None
 
     # Handle Tags
     db_tags = []
-    for tag_name in tags_list:
-        tag = db.query(Tag).filter(Tag.name == tag_name).first()
-        if not tag:
-            tag = Tag(name=tag_name)
-            db.add(tag)
-            db.flush()  # Get ID
-        db_tags.append(tag)
+    if tags_list:  # tags_list가 None이 아니고 비어있지 않을 때만 처리
+        for tag_name in tags_list:
+            if tag_name and tag_name.strip():  # 빈 문자열 체크
+                tag = db.query(Tag).filter(Tag.name == tag_name).first()
+                if not tag:
+                    tag = Tag(name=tag_name)
+                    db.add(tag)
+                    db.flush()  # Get ID
+                db_tags.append(tag)
 
     post = Post(
         user_id=user_id,

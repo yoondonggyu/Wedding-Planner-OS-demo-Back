@@ -39,6 +39,7 @@ async def get_current_user_id(
     authorization: Optional[str] = Header(None)
 ) -> int:
     """JWT 토큰에서 user_id 추출 (필수 인증)"""
+    print(f"[Auth] Authorization header: {authorization}")
     if not authorization:
         raise unauthorized()
     

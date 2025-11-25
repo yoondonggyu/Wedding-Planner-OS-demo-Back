@@ -16,3 +16,4 @@ class Comment(Base):
     # Relationships
     user = relationship("User", backref="comments")
 
+
