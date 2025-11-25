@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routers import auth_routes, user_routes, post_routes, comment_routes, chat_routes, calendar_routes, budget_routes, voice_routes
 from app.core.exceptions import APIError
 from app.core.formatter import create_json_response
+from app.core.admin import setup_admin
 
 app = FastAPI(title="Wedding OS API")
 
@@ -37,6 +38,9 @@ app.include_router(chat_routes.router, prefix="/api")
 app.include_router(calendar_routes.router, prefix="/api")
 app.include_router(budget_routes.router, prefix="/api")
 app.include_router(voice_routes.router, prefix="/api")
+
+# Admin Page Setup
+setup_admin(app)
 
 # 전역 예외 처리
 @app.exception_handler(APIError)

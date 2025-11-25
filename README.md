@@ -107,10 +107,48 @@ Route (응답 포맷팅)
 클라이언트 응답 (JSON)
 ```
 
+## 데이터베이스 설정
+
+### MySQL 데이터베이스 생성
+```sql
+CREATE DATABASE WEDDING_PLANNER_OS_DB;
+```
+
+### 테이블 생성
+```bash
+python create_tables.py
+```
+
+### 데이터베이스 관리자 페이지
+- **URL**: `http://localhost:8001/secret_admin`
+- SQLAdmin을 사용한 웹 기반 관리 인터페이스
+- 사용자, 게시글, 댓글, 태그 등을 관리할 수 있습니다
+
+## 인증 시스템
+
+### JWT 토큰 기반 인증
+- 로그인 시 JWT 토큰이 발급됩니다
+- 토큰 유효기간: 7일
+- 모든 인증이 필요한 API 요청에 `Authorization: Bearer <token>` 헤더를 포함해야 합니다
+
+### 로그인 응답 예시
+```json
+{
+  "message": "login_success",
+  "data": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "token_type": "bearer",
+    "user_id": 1,
+    "nickname": "사용자",
+    "profile_image_url": "..."
+  }
+}
+```
+
 ## API 문서
 
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
+- Swagger UI: `http://localhost:8001/docs`
+- ReDoc: `http://localhost:8001/redoc`
 
 ## 주요 기능
 
