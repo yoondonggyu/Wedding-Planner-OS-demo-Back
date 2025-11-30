@@ -1,39 +1,97 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
 env/
 venv/
 ENV/
-.venv
+.venv/
+env_python310/
+conda_env/
 
-# FastAPI
+# FastAPI / Database
 *.db
 *.sqlite
+*.sqlite3
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*.sublime-project
+*.sublime-workspace
 
-# OS
+# OS - macOS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+
+# Environment Variables (보안 - 반드시 제외!)
+.env
+.env.local
+.env.*.local
+*.env
+.env.development
+.env.production
+
+# Logs
+*.log
+logs/
+*.log.*
 
 # Uploads
 uploads/*
 !uploads/.gitkeep
 
-# Environment
-.env
-.env.local
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
 
-# Logs
-*.log
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
 
+# Jupyter Notebook
+.ipynb_checkpoints
 
+# pyenv
+.python-version
 
-
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
