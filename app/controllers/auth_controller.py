@@ -35,9 +35,8 @@ def signup_controller(req: SignupReq, db: Session):
     validate_password_pair(req.password, req.password_check)
     validate_nickname(req.nickname)
     
-    # 프로필 이미지 URL 필수 검증
-    if not req.profile_image_url:
-        raise bad_request("profile_image_url_required")
+    # 프로필 이미지 URL이 없으면 기본 이미지 사용
+    profile_image_url = req.profile_image_url or "https://via.placeholder.com/150"
 
     if db.query(User).filter(User.email == req.email).first():
         raise conflict("duplicate_email")
@@ -48,7 +47,7 @@ def signup_controller(req: SignupReq, db: Session):
         email=req.email,
         password=req.password,
         nickname=req.nickname,
-        profile_image_url=str(req.profile_image_url)
+        profile_image_url=str(profile_image_url)
     )
     
     db.add(user)

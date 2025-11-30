@@ -7,6 +7,7 @@ from app.core.exceptions import bad_request, not_found, forbidden, unprocessable
 from app.models.db import Post, PostLike, Tag, User, Comment
 from app.schemas import PostCreateReq, PostUpdateReq
 from app.services.model_client import predict_image, summarize_text, auto_tag_text, analyze_sentiment
+from app.services import post_vector_service
 
 UPLOAD_DIR = os.path.abspath("./uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -86,6 +87,13 @@ async def create_post_controller(req: PostCreateReq, user_id: int, db: Session):
     db.add(post)
     db.commit()
     db.refresh(post)
+    
+    # 게시글 벡터화 (비동기, 실패해도 게시글 작성은 성공)
+    try:
+        post_vector_service.vectorize_post(post)
+        print(f"✅ 게시글 벡터화 완료: post_id={post.id}")
+    except Exception as e:
+        print(f"⚠️ 게시글 벡터화 실패 (게시글 작성은 계속 진행): {e}")
     
     return {"post_id": post.id}
 

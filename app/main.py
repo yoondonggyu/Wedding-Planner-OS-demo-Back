@@ -2,17 +2,26 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth_routes, user_routes, post_routes, comment_routes, chat_routes, calendar_routes, budget_routes, voice_routes
+from fastapi.staticfiles import StaticFiles
+import os
+from app.routers import auth_routes, user_routes, post_routes, comment_routes, chat_routes, calendar_routes, budget_routes, voice_routes, vendor_routes, vector_routes, sql_terminal_routes, admin_dashboard_routes, admin_docs_routes
 from app.core.exceptions import APIError
 from app.core.formatter import create_json_response
 from app.core.admin import setup_admin
 
 app = FastAPI(title="Wedding OS API")
 
-# CORS 설정 - 프론트엔드(8000번 포트)에서 API 호출을 위해 필요
+# CORS 설정 - 프론트엔드에서 API 호출을 위해 필요
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000", "http://127.0.0.1:8000"],  # 프론트엔드 포트 허용
+    allow_origins=[
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
+    ],  # 프론트엔드 포트 허용 (Vite 기본 포트 포함)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -38,9 +47,21 @@ app.include_router(chat_routes.router, prefix="/api")
 app.include_router(calendar_routes.router, prefix="/api")
 app.include_router(budget_routes.router, prefix="/api")
 app.include_router(voice_routes.router, prefix="/api")
+app.include_router(vendor_routes.router, prefix="/api")
+app.include_router(vector_routes.router, prefix="/api")
+
+# Admin Dashboard & SQL Terminal (Admin 전용)
+app.include_router(admin_dashboard_routes.router, prefix="/secret_admin")
+app.include_router(sql_terminal_routes.router, prefix="/secret_admin")
+app.include_router(admin_docs_routes.router, prefix="/secret_admin")
 
 # Admin Page Setup
 setup_admin(app)
+
+# 정적 파일 서빙 (업로드된 프로필 이미지)
+UPLOAD_DIR = os.path.abspath("./uploads")
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 # 전역 예외 처리
 @app.exception_handler(APIError)

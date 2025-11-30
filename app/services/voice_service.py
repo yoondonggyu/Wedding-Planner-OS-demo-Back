@@ -12,6 +12,7 @@ from app.models.memory import (
 from app.services.stt_service import transcribe_audio
 from app.services.model_client import chat_with_model
 from app.services import calendar_service, budget_service
+from app.services import user_memory_service, langgraph_service
 
 
 async def analyze_intent_and_organize(
@@ -62,7 +63,18 @@ JSON만 응답해주세요."""
             if json_match:
                 intent_data = json.loads(json_match.group())
                 
-                # 2. 자동 정리 파이프라인 실행
+                # 2. 사용자 대화 메모리 저장
+                try:
+                    user_memory_service.save_user_conversation_memory(
+                        user_id=user_id,
+                        conversation_text=text,
+                        intent=intent_data.get("intent"),
+                        extracted_info=intent_data.get("entities", {})
+                    )
+                except Exception as e:
+                    print(f"⚠️ 사용자 대화 메모리 저장 실패: {e}")
+                
+                # 3. 자동 정리 파이프라인 실행 (LangGraph 구조 준비됨)
                 organized_items = await execute_organize_pipeline(intent_data, user_id, text)
                 
                 return {
@@ -234,6 +246,8 @@ async def generate_voice_response(
     except Exception as e:
         print(f"⚠️ 음성 답변 생성 실패: {e}")
         return "죄송합니다. 답변을 생성할 수 없습니다."
+
+
 
 
 

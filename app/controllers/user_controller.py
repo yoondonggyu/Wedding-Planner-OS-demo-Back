@@ -27,12 +27,14 @@ def upload_profile_image_controller(file_content_type: str, file_data: bytes, fi
     with open(file_path, "wb") as f:
         f.write(file_data)
     
-    url = f"https://cdn.example.com/{name}"
+    # 실제 서빙되는 URL 반환 (로컬 개발 환경)
+    # 프로덕션에서는 실제 CDN URL로 변경 필요
+    url = f"http://localhost:8101/uploads/{name}"
     return {"profile_image_url": url}
 
 
 def update_profile_controller(req: NicknamePatchReq, user_id: int, db: Session):
-    """프로필(닉네임) 수정 컨트롤러"""
+    """프로필(닉네임, 프로필 이미지) 수정 컨트롤러"""
     validate_nickname(req.nickname, raise_validation_failed=True)
     
     user = db.query(User).filter(User.id == user_id).first()
@@ -45,10 +47,17 @@ def update_profile_controller(req: NicknamePatchReq, user_id: int, db: Session):
         raise conflict("duplicate_nickname")
     
     user.nickname = req.nickname
+    # 프로필 이미지 URL이 제공된 경우 업데이트
+    if req.profile_image_url is not None:
+        user.profile_image_url = req.profile_image_url
+    
     db.commit()
     db.refresh(user)
     
-    return {"nickname": user.nickname}
+    return {
+        "nickname": user.nickname,
+        "profile_image_url": user.profile_image_url
+    }
 
 
 def delete_user_controller(user_id: int, db: Session):

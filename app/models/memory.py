@@ -51,6 +51,7 @@ class CalendarEvent:
     is_completed: bool = False
     wedding_d_day: str | None = None  # 예식일 (D-Day 계산용)
     d_day_offset: int | None = None  # 예식일로부터 며칠 전인지
+    is_auto_generated: bool = False  # 자동 생성된 일정 여부
     metadata: dict = field(default_factory=dict)  # 추가 메타데이터
 
 @dataclass

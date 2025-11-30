@@ -1,94 +1,72 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Depends
+from sqlalchemy.orm import Session
 from app.schemas import (
     CalendarEventCreateReq, CalendarEventUpdateReq,
     TodoCreateReq, TodoUpdateReq, WeddingDateSetReq, TimelineGenerateReq
 )
 from app.controllers import calendar_controller
+from app.core.database import get_db
+from app.core.security import get_current_user_id
 
 router = APIRouter(tags=["calendar"])
 
 # 예식일 설정
 @router.post("/calendar/wedding-date")
-async def set_wedding_date(request: WeddingDateSetReq, user_id: int = Query(...)):
-    """예식일 설정"""
-    return calendar_controller.set_wedding_date(user_id, request.wedding_date)
+async def set_wedding_date(request: WeddingDateSetReq, user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    """예식일 설정 (JWT 토큰에서 user_id 추출)"""
+    return calendar_controller.set_wedding_date(user_id, request.wedding_date, db)
+
+@router.get("/calendar/wedding-date")
+async def get_wedding_date(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    """예식일 조회 (JWT 토큰에서 user_id 추출)"""
+    return calendar_controller.get_wedding_date(user_id, db)
 
 # 타임라인 생성
 @router.post("/calendar/timeline/generate")
-async def generate_timeline(request: TimelineGenerateReq, user_id: int = Query(...)):
-    """D-Day 기반 타임라인 자동 생성"""
-    return await calendar_controller.generate_timeline(user_id, request)
+async def generate_timeline(request: TimelineGenerateReq, user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    """D-Day 기반 타임라인 자동 생성 (JWT 토큰에서 user_id 추출)"""
+    return await calendar_controller.generate_timeline(user_id, request, db)
 
-# 일정 관리
-@router.post("/calendar/events")
-async def create_event(request: CalendarEventCreateReq, user_id: int = Query(...)):
-    """일정 생성"""
-    return calendar_controller.create_event(user_id, request)
-
-@router.get("/calendar/events")
-async def get_events(
-    user_id: int = Query(...),
-    start_date: str | None = Query(None),
-    end_date: str | None = Query(None)
-):
-    """일정 조회"""
-    return calendar_controller.get_events(user_id, start_date, end_date)
-
-@router.get("/calendar/events/upcoming")
-async def get_upcoming_events(
-    user_id: int = Query(...),
-    days: int = Query(7, ge=1, le=30)
-):
-    """다가오는 일정 조회"""
-    return calendar_controller.get_upcoming_events(user_id, days)
-
-@router.put("/calendar/events/{event_id}")
-async def update_event(
-    event_id: int,
-    request: CalendarEventUpdateReq,
-    user_id: int = Query(...)
-):
-    """일정 수정"""
-    return calendar_controller.update_event(event_id, user_id, request)
-
-@router.delete("/calendar/events/{event_id}")
-async def delete_event(event_id: int, user_id: int = Query(...)):
-    """일정 삭제"""
-    return calendar_controller.delete_event(event_id, user_id)
-
-# 할일 관리
+# 일정/할일 통합 관리 (todos API 사용)
 @router.post("/calendar/todos")
-async def create_todo(request: TodoCreateReq, user_id: int = Query(...)):
-    """할일 생성"""
-    return calendar_controller.create_todo(user_id, request)
+async def create_todo(request: TodoCreateReq, user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    """일정/할일 생성 (통합 API, JWT 토큰에서 user_id 추출)"""
+    return calendar_controller.create_todo(user_id, request, db)
 
 @router.get("/calendar/todos")
 async def get_todos(
-    user_id: int = Query(...),
-    completed: bool | None = Query(None)
+    user_id: int = Depends(get_current_user_id),
+    completed: bool | None = Query(None),
+    start_date: str | None = Query(None),
+    end_date: str | None = Query(None),
+    category: str | None = Query(None),  # 'todo'로 필터링하면 할일만, None이면 모든 일정
+    db: Session = Depends(get_db)
 ):
-    """할일 조회"""
-    return calendar_controller.get_todos(user_id, completed)
+    """일정/할일 조회 (통합 API, JWT 토큰에서 user_id 추출)"""
+    return calendar_controller.get_todos(user_id, completed, start_date, end_date, category, db)
 
 @router.put("/calendar/todos/{todo_id}")
 async def update_todo(
     todo_id: int,
     request: TodoUpdateReq,
-    user_id: int = Query(...)
+    user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
 ):
-    """할일 수정"""
-    return calendar_controller.update_todo(todo_id, user_id, request)
+    """일정/할일 수정 (통합 API, JWT 토큰에서 user_id 추출)"""
+    return calendar_controller.update_todo(todo_id, user_id, request, db)
 
 @router.delete("/calendar/todos/{todo_id}")
-async def delete_todo(todo_id: int, user_id: int = Query(...)):
-    """할일 삭제"""
-    return calendar_controller.delete_todo(todo_id, user_id)
+async def delete_todo(todo_id: int, user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    """일정/할일 삭제 (통합 API, JWT 토큰에서 user_id 추출)"""
+    return calendar_controller.delete_todo(todo_id, user_id, db)
 
 # 챗봇 연동
 @router.get("/calendar/week-summary")
-async def get_week_summary(user_id: int = Query(...)):
-    """이번 주 요약 (챗봇 연동용)"""
-    return calendar_controller.get_week_summary(user_id)
+async def get_week_summary(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    """이번 주 요약 (챗봇 연동용, JWT 토큰에서 user_id 추출)"""
+    return calendar_controller.get_week_summary(user_id, db)
+
+
 
 
 

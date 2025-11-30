@@ -17,3 +17,5 @@ class User(Base):
         return f"{self.nickname} ({self.email})"
 
 
+
+

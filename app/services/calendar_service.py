@@ -107,17 +107,14 @@ async def create_timeline_from_wedding_date(
     user_id: int,
     wedding_date: str,
     user_preferences: Dict | None = None
-) -> List[CalendarEvent]:
-    """예식일 기반 타임라인 자동 생성"""
-    # 예식일 저장
-    USER_WEDDING_DATES[user_id] = wedding_date
-    
+) -> List[Dict]:
+    """예식일 기반 타임라인 자동 생성 - 딕셔너리 리스트 반환 (DB 저장은 controller에서 처리)"""
     # 개인화된 타임라인 생성
     timeline_items = await generate_personalized_timeline(
         wedding_date, user_id, user_preferences
     )
     
-    # 일정 생성
+    # 일정 딕셔너리 생성
     events = []
     wedding_dt = datetime.strptime(wedding_date, "%Y-%m-%d")
     
@@ -125,25 +122,26 @@ async def create_timeline_from_wedding_date(
         d_day_offset = item.get("d_day_offset", 0)
         event_date = wedding_dt - timedelta(days=d_day_offset)
         
-        event_id = COUNTERS["event"]
-        COUNTERS["event"] += 1
+        event_dict = {
+            "user_id": user_id,
+            "title": item.get("title", "일정"),
+            "description": item.get("description"),
+            "start_date": event_date.strftime("%Y-%m-%d"),
+            "end_date": None,
+            "start_time": None,
+            "end_time": None,
+            "location": None,
+            "category": item.get("category", "general"),
+            "priority": item.get("priority", "medium"),
+            "assignee": item.get("assignee", "both"),
+            "wedding_d_day": wedding_date,
+            "d_day_offset": d_day_offset,
+            "reminder_days": item.get("reminder_days", [7, 3, 1] if d_day_offset > 0 else []),
+            "is_auto_generated": True,  # 타임라인 자동 생성된 일정
+            "metadata": None  # event_metadata로 변환됨
+        }
         
-        event = CalendarEvent(
-            id=event_id,
-            user_id=user_id,
-            title=item.get("title", "일정"),
-            description=item.get("description"),
-            start_date=event_date.strftime("%Y-%m-%d"),
-            category=item.get("category", "general"),
-            priority=item.get("priority", "medium"),
-            assignee=item.get("assignee", "both"),
-            wedding_d_day=wedding_date,
-            d_day_offset=d_day_offset,
-            reminder_days=item.get("reminder_days", [7, 3, 1] if d_day_offset > 0 else [])
-        )
-        
-        CALENDAR_EVENTS[event_id] = event
-        events.append(event)
+        events.append(event_dict)
     
     return events
 
