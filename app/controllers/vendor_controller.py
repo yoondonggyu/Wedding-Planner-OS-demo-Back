@@ -10,6 +10,7 @@ from app.schemas import (
     VendorRecommendReq, FavoriteVendorCreateReq
 )
 from app.core.exceptions import not_found, unauthorized, bad_request
+from app.core.error_codes import ErrorCode
 
 
 def create_wedding_profile(user_id: int, request: WeddingProfileCreateReq, db: Session) -> Dict:
@@ -22,7 +23,7 @@ def create_wedding_profile(user_id: int, request: WeddingProfileCreateReq, db: S
         try:
             guest_category = GuestCountCategory(request.guest_count_category)
         except ValueError:
-            raise bad_request("invalid_guest_count_category")
+            raise bad_request("invalid_guest_count_category", ErrorCode.INVALID_GUEST_COUNT_CATEGORY)
         
         profile = WeddingProfile(
             user_id=user_id,
@@ -93,7 +94,7 @@ def get_wedding_profile(profile_id: int, user_id: int, db: Session) -> Dict:
     ).first()
     
     if not profile:
-        raise not_found("wedding_profile_not_found")
+        raise not_found("wedding_profile_not_found", ErrorCode.WEDDING_PROFILE_NOT_FOUND)
     
     return {
         "message": "wedding_profile_retrieved",
@@ -121,7 +122,7 @@ def update_wedding_profile(profile_id: int, user_id: int, request: WeddingProfil
     ).first()
     
     if not profile:
-        raise not_found("wedding_profile_not_found")
+        raise not_found("wedding_profile_not_found", ErrorCode.WEDDING_PROFILE_NOT_FOUND)
     
     if request.wedding_date:
         profile.wedding_date = datetime.strptime(request.wedding_date, "%Y-%m-%d")
@@ -129,7 +130,7 @@ def update_wedding_profile(profile_id: int, user_id: int, request: WeddingProfil
         try:
             profile.guest_count_category = GuestCountCategory(request.guest_count_category)
         except ValueError:
-            raise bad_request("invalid_guest_count_category")
+            raise bad_request("invalid_guest_count_category", ErrorCode.INVALID_GUEST_COUNT_CATEGORY)
     if request.total_budget is not None:
         profile.total_budget = request.total_budget
     if request.location_city:
@@ -163,7 +164,7 @@ def delete_wedding_profile(profile_id: int, user_id: int, db: Session) -> Dict:
     ).first()
     
     if not profile:
-        raise not_found("wedding_profile_not_found")
+        raise not_found("wedding_profile_not_found", ErrorCode.WEDDING_PROFILE_NOT_FOUND)
     
     db.delete(profile)
     db.commit()
@@ -257,7 +258,7 @@ def recommend_vendors(user_id: int, request: VendorRecommendReq, db: Session) ->
     ).first()
     
     if not profile:
-        raise not_found("wedding_profile_not_found")
+        raise not_found("wedding_profile_not_found", ErrorCode.WEDDING_PROFILE_NOT_FOUND)
     
     # 업체 쿼리
     query = db.query(Vendor)
@@ -268,7 +269,7 @@ def recommend_vendors(user_id: int, request: VendorRecommendReq, db: Session) ->
             vendor_type = VendorType(request.vendor_type)
             query = query.filter(Vendor.vendor_type == vendor_type)
         except ValueError:
-            raise bad_request("invalid_vendor_type")
+            raise bad_request("invalid_vendor_type", ErrorCode.INVALID_VENDOR_TYPE)
     
     # 가격 필터
     if request.min_price:
@@ -346,7 +347,7 @@ def get_vendor(vendor_id: int, db: Session) -> Dict:
     vendor = db.query(Vendor).filter(Vendor.id == vendor_id).first()
     
     if not vendor:
-        raise not_found("vendor_not_found")
+        raise not_found("vendor_not_found", ErrorCode.VENDOR_NOT_FOUND)
     
     return {
         "message": "vendor_retrieved",
@@ -386,12 +387,12 @@ def create_favorite(user_id: int, request: FavoriteVendorCreateReq, db: Session)
     ).first()
     
     if not profile:
-        raise not_found("wedding_profile_not_found")
+        raise not_found("wedding_profile_not_found", ErrorCode.WEDDING_PROFILE_NOT_FOUND)
     
     # 업체 존재 확인
     vendor = db.query(Vendor).filter(Vendor.id == request.vendor_id).first()
     if not vendor:
-        raise not_found("vendor_not_found")
+        raise not_found("vendor_not_found", ErrorCode.VENDOR_NOT_FOUND)
     
     # 중복 체크
     existing = db.query(FavoriteVendor).filter(
@@ -401,7 +402,7 @@ def create_favorite(user_id: int, request: FavoriteVendorCreateReq, db: Session)
     ).first()
     
     if existing:
-        raise bad_request("favorite_already_exists")
+        raise conflict("favorite_already_exists", ErrorCode.FAVORITE_ALREADY_EXISTS)
     
     favorite = FavoriteVendor(
         user_id=user_id,
@@ -463,7 +464,7 @@ def delete_favorite(favorite_id: int, user_id: int, db: Session) -> Dict:
     ).first()
     
     if not favorite:
-        raise not_found("favorite_not_found")
+        raise not_found("favorite_not_found", ErrorCode.FAVORITE_NOT_FOUND)
     
     db.delete(favorite)
     db.commit()

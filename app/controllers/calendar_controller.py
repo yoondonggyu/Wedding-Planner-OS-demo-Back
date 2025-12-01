@@ -11,6 +11,7 @@ from app.schemas import (
     TodoCreateReq, TodoUpdateReq, WeddingDateSetReq, TimelineGenerateReq
 )
 from app.core.exceptions import not_found, forbidden, bad_request
+from app.core.error_codes import ErrorCode
 from app.services import calendar_service
 
 
@@ -217,10 +218,10 @@ def update_event(event_id: int, user_id: int, request: CalendarEventUpdateReq, d
     
     event = db.query(CalendarEvent).filter(CalendarEvent.id == event_id).first()
     if not event:
-        raise not_found("event_not_found")
+        raise not_found("event_not_found", ErrorCode.EVENT_NOT_FOUND)
     
     if event.user_id != user_id:
-        raise forbidden()
+        raise forbidden("forbidden", ErrorCode.FORBIDDEN)
     
     if request.title is not None:
         event.title = request.title
@@ -264,10 +265,10 @@ def delete_event(event_id: int, user_id: int, db: Session) -> Dict:
     """일정 삭제"""
     event = db.query(CalendarEvent).filter(CalendarEvent.id == event_id).first()
     if not event:
-        raise not_found("event_not_found")
+        raise not_found("event_not_found", ErrorCode.EVENT_NOT_FOUND)
     
     if event.user_id != user_id:
-        raise forbidden()
+        raise forbidden("forbidden", ErrorCode.FORBIDDEN)
     
     db.delete(event)
     db.commit()
@@ -449,10 +450,10 @@ def update_todo(todo_id: int, user_id: int, request: TodoUpdateReq, db: Session)
     
     event = db.query(CalendarEvent).filter(CalendarEvent.id == todo_id).first()
     if not event:
-        raise not_found("todo_not_found")
+        raise not_found("todo_not_found", ErrorCode.EVENT_NOT_FOUND)
     
     if event.user_id != user_id:
-        raise forbidden()
+        raise forbidden("forbidden", ErrorCode.FORBIDDEN)
     
     if request.title is not None:
         event.title = request.title
@@ -503,10 +504,10 @@ def delete_todo(todo_id: int, user_id: int, db: Session) -> Dict:
     """일정/할일 삭제 (calendar_events 테이블 사용, 통합 API)"""
     event = db.query(CalendarEvent).filter(CalendarEvent.id == todo_id).first()
     if not event:
-        raise not_found("todo_not_found")
+        raise not_found("todo_not_found", ErrorCode.TODO_NOT_FOUND)
     
     if event.user_id != user_id:
-        raise forbidden()
+        raise forbidden("forbidden", ErrorCode.FORBIDDEN)
     
     db.delete(event)
     db.commit()

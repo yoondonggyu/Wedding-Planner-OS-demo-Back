@@ -132,6 +132,10 @@ async def sql_terminal(request: Request, query: str = Form(None)):
     execution_time = None
     query_value = ""
     
+    # 로고 URL 생성 (정적 파일로 서빙)
+    base_url = str(request.base_url).rstrip('/')
+    logo_url = f"{base_url}/static/favicon.png"
+    
     # POST 요청 처리
     if request.method == "POST" and query:
         query_value = query.strip()
@@ -148,6 +152,7 @@ async def sql_terminal(request: Request, query: str = Form(None)):
     <html>
     <head>
         <title>SQL 터미널 - Wedding OS Admin</title>
+        <link rel="icon" type="image/png" href="{logo_url}">
         <style>
             body {{
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -345,6 +350,8 @@ async def sql_terminal(request: Request, query: str = Form(None)):
             
             <div class="query-examples">
                 <h3>📝 예제 쿼리 (클릭하여 사용)</h3>
+                
+                <h4 style="margin-top: 16px; margin-bottom: 8px; color: #555;">🔍 기본 조회</h4>
                 <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM users LIMIT 10;'">
                     <code>SELECT * FROM users LIMIT 10;</code>
                 </div>
@@ -356,9 +363,6 @@ async def sql_terminal(request: Request, query: str = Form(None)):
                 </div>
                 <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM calendar_events LIMIT 20;'">
                     <code>SELECT * FROM calendar_events LIMIT 20;</code>
-                </div>
-                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM calendar_events WHERE category = \\'todo\\' LIMIT 20;'">
-                    <code>SELECT * FROM calendar_events WHERE category = 'todo' LIMIT 20;</code>
                 </div>
                 <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM wedding_dates;'">
                     <code>SELECT * FROM wedding_dates;</code>
@@ -381,20 +385,137 @@ async def sql_terminal(request: Request, query: str = Form(None)):
                 <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM user_total_budgets;'">
                     <code>SELECT * FROM user_total_budgets;</code>
                 </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM post_likes LIMIT 20;'">
+                    <code>SELECT * FROM post_likes LIMIT 20;</code>
+                </div>
+                
+                <h4 style="margin-top: 20px; margin-bottom: 8px; color: #555;">🔗 JOIN 쿼리</h4>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT p.id, p.title, u.nickname, p.view_count, p.created_at FROM posts p JOIN users u ON p.user_id = u.id ORDER BY p.created_at DESC LIMIT 10;'">
+                    <code>SELECT p.id, p.title, u.nickname, p.view_count, p.created_at FROM posts p JOIN users u ON p.user_id = u.id ORDER BY p.created_at DESC LIMIT 10;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT c.id, c.content, u.nickname, p.title FROM comments c JOIN users u ON c.user_id = u.id JOIN posts p ON c.post_id = p.id ORDER BY c.created_at DESC LIMIT 20;'">
+                    <code>SELECT c.id, c.content, u.nickname, p.title FROM comments c JOIN users u ON c.user_id = u.id JOIN posts p ON c.post_id = p.id ORDER BY c.created_at DESC LIMIT 20;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT ce.id, ce.title, ce.start_date, u.nickname FROM calendar_events ce JOIN users u ON ce.user_id = u.id WHERE ce.category = \\'event\\' ORDER BY ce.start_date LIMIT 20;'">
+                    <code>SELECT ce.id, ce.title, ce.start_date, u.nickname FROM calendar_events ce JOIN users u ON ce.user_id = u.id WHERE ce.category = 'event' ORDER BY ce.start_date LIMIT 20;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT fv.id, u.nickname, v.name, v.vendor_type FROM favorite_vendors fv JOIN users u ON fv.user_id = u.id JOIN vendors v ON fv.vendor_id = v.id LIMIT 20;'">
+                    <code>SELECT fv.id, u.nickname, v.name, v.vendor_type FROM favorite_vendors fv JOIN users u ON fv.user_id = u.id JOIN vendors v ON fv.vendor_id = v.id LIMIT 20;</code>
+                </div>
+                
+                <h4 style="margin-top: 20px; margin-bottom: 8px; color: #555;">📊 통계 쿼리</h4>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT COUNT(*) as total_users FROM users;'">
+                    <code>SELECT COUNT(*) as total_users FROM users;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT COUNT(*) as total_posts, SUM(view_count) as total_views, AVG(view_count) as avg_views FROM posts;'">
+                    <code>SELECT COUNT(*) as total_posts, SUM(view_count) as total_views, AVG(view_count) as avg_views FROM posts;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT board_type, COUNT(*) as count FROM posts GROUP BY board_type;'">
+                    <code>SELECT board_type, COUNT(*) as count FROM posts GROUP BY board_type;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT u.id, u.nickname, COUNT(p.id) as post_count FROM users u LEFT JOIN posts p ON u.id = p.user_id GROUP BY u.id, u.nickname ORDER BY post_count DESC LIMIT 10;'">
+                    <code>SELECT u.id, u.nickname, COUNT(p.id) as post_count FROM users u LEFT JOIN posts p ON u.id = p.user_id GROUP BY u.id, u.nickname ORDER BY post_count DESC LIMIT 10;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT category, COUNT(*) as count FROM calendar_events GROUP BY category;'">
+                    <code>SELECT category, COUNT(*) as count FROM calendar_events GROUP BY category;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT user_id, SUM(estimated_budget) as total_estimated, SUM(actual_expense) as total_actual FROM budget_items GROUP BY user_id;'">
+                    <code>SELECT user_id, SUM(estimated_budget) as total_estimated, SUM(actual_expense) as total_actual FROM budget_items GROUP BY user_id;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT vendor_type, COUNT(*) as count, AVG(rating_avg) as avg_rating FROM vendors GROUP BY vendor_type;'">
+                    <code>SELECT vendor_type, COUNT(*) as count, AVG(rating_avg) as avg_rating FROM vendors GROUP BY vendor_type;</code>
+                </div>
+                
+                <h4 style="margin-top: 20px; margin-bottom: 8px; color: #555;">🔎 검색 및 필터링</h4>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM posts WHERE title LIKE \\'%결혼%\\' LIMIT 10;'">
+                    <code>SELECT * FROM posts WHERE title LIKE '%결혼%' LIMIT 10;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM calendar_events WHERE category = \\'todo\\' AND is_completed = 0 LIMIT 20;'">
+                    <code>SELECT * FROM calendar_events WHERE category = 'todo' AND is_completed = 0 LIMIT 20;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM posts WHERE view_count > 100 ORDER BY view_count DESC LIMIT 10;'">
+                    <code>SELECT * FROM posts WHERE view_count > 100 ORDER BY view_count DESC LIMIT 10;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM calendar_events WHERE start_date >= CURDATE() ORDER BY start_date LIMIT 20;'">
+                    <code>SELECT * FROM calendar_events WHERE start_date >= CURDATE() ORDER BY start_date LIMIT 20;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM vendors WHERE base_location_city = \\'서울시\\' LIMIT 20;'">
+                    <code>SELECT * FROM vendors WHERE base_location_city = '서울시' LIMIT 20;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM budget_items WHERE category = \\'웨딩홀\\' ORDER BY estimated_budget DESC LIMIT 20;'">
+                    <code>SELECT * FROM budget_items WHERE category = '웨딩홀' ORDER BY estimated_budget DESC LIMIT 20;</code>
+                </div>
+                
+                <h4 style="margin-top: 20px; margin-bottom: 8px; color: #555;">📅 날짜/시간 관련</h4>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM posts WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) ORDER BY created_at DESC LIMIT 20;'">
+                    <code>SELECT * FROM posts WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) ORDER BY created_at DESC LIMIT 20;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM calendar_events WHERE start_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY) ORDER BY start_date;'">
+                    <code>SELECT * FROM calendar_events WHERE start_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY) ORDER BY start_date;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT DATE(created_at) as date, COUNT(*) as count FROM posts GROUP BY DATE(created_at) ORDER BY date DESC LIMIT 30;'">
+                    <code>SELECT DATE(created_at) as date, COUNT(*) as count FROM posts GROUP BY DATE(created_at) ORDER BY date DESC LIMIT 30;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM wedding_profiles WHERE wedding_date >= CURDATE() ORDER BY wedding_date LIMIT 20;'">
+                    <code>SELECT * FROM wedding_profiles WHERE wedding_date >= CURDATE() ORDER BY wedding_date LIMIT 20;</code>
+                </div>
+                
+                <h4 style="margin-top: 20px; margin-bottom: 8px; color: #555;">👤 사용자별 조회</h4>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM posts WHERE user_id = 1 ORDER BY created_at DESC LIMIT 20;'">
+                    <code>SELECT * FROM posts WHERE user_id = 1 ORDER BY created_at DESC LIMIT 20;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM calendar_events WHERE user_id = 1 ORDER BY start_date;'">
+                    <code>SELECT * FROM calendar_events WHERE user_id = 1 ORDER BY start_date;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM budget_items WHERE user_id = 1 ORDER BY created_at DESC;'">
+                    <code>SELECT * FROM budget_items WHERE user_id = 1 ORDER BY created_at DESC;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT * FROM chat_history WHERE user_id = 1 ORDER BY created_at DESC LIMIT 50;'">
+                    <code>SELECT * FROM chat_history WHERE user_id = 1 ORDER BY created_at DESC LIMIT 50;</code>
+                </div>
+                
+                <h4 style="margin-top: 20px; margin-bottom: 8px; color: #555;">🔥 인기/랭킹</h4>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT p.id, p.title, u.nickname, p.view_count, COUNT(pl.id) as like_count FROM posts p JOIN users u ON p.user_id = u.id LEFT JOIN post_likes pl ON p.id = pl.post_id GROUP BY p.id ORDER BY like_count DESC, view_count DESC LIMIT 10;'">
+                    <code>SELECT p.id, p.title, u.nickname, p.view_count, COUNT(pl.id) as like_count FROM posts p JOIN users u ON p.user_id = u.id LEFT JOIN post_likes pl ON p.id = pl.post_id GROUP BY p.id ORDER BY like_count DESC, view_count DESC LIMIT 10;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT p.id, p.title, COUNT(c.id) as comment_count FROM posts p LEFT JOIN comments c ON p.id = c.post_id GROUP BY p.id ORDER BY comment_count DESC LIMIT 10;'">
+                    <code>SELECT p.id, p.title, COUNT(c.id) as comment_count FROM posts p LEFT JOIN comments c ON p.id = c.post_id GROUP BY p.id ORDER BY comment_count DESC LIMIT 10;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SELECT v.id, v.name, v.vendor_type, v.rating_avg, COUNT(fv.id) as favorite_count FROM vendors v LEFT JOIN favorite_vendors fv ON v.id = fv.vendor_id GROUP BY v.id ORDER BY favorite_count DESC, rating_avg DESC LIMIT 10;'">
+                    <code>SELECT v.id, v.name, v.vendor_type, v.rating_avg, COUNT(fv.id) as favorite_count FROM vendors v LEFT JOIN favorite_vendors fv ON v.id = fv.vendor_id GROUP BY v.id ORDER BY favorite_count DESC, rating_avg DESC LIMIT 10;</code>
+                </div>
+                
+                <h4 style="margin-top: 20px; margin-bottom: 8px; color: #555;">✏️ 수정/삭제</h4>
                 <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='UPDATE posts SET view_count = 0 WHERE id = 1;'">
                     <code>UPDATE posts SET view_count = 0 WHERE id = 1;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='UPDATE calendar_events SET is_completed = 1 WHERE id = 1;'">
+                    <code>UPDATE calendar_events SET is_completed = 1 WHERE id = 1;</code>
                 </div>
                 <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='DELETE FROM comments WHERE id = 1;'">
                     <code>DELETE FROM comments WHERE id = 1;</code>
                 </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='DELETE FROM post_likes WHERE post_id = 1 AND user_id = 1;'">
+                    <code>DELETE FROM post_likes WHERE post_id = 1 AND user_id = 1;</code>
+                </div>
+                
+                <h4 style="margin-top: 20px; margin-bottom: 8px; color: #555;">➕ 삽입</h4>
                 <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='INSERT INTO tags (name) VALUES (\\'새 태그\\');'">
                     <code>INSERT INTO tags (name) VALUES ('새 태그');</code>
                 </div>
+                
+                <h4 style="margin-top: 20px; margin-bottom: 8px; color: #555;">🔧 테이블 정보</h4>
                 <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='SHOW TABLES;'">
                     <code>SHOW TABLES;</code>
                 </div>
                 <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='DESCRIBE users;'">
                     <code>DESCRIBE users;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='DESCRIBE posts;'">
+                    <code>DESCRIBE posts;</code>
+                </div>
+                <div class="example-query" onclick="document.querySelector('textarea[name=\\'query\\']').value='DESCRIBE calendar_events;'">
+                    <code>DESCRIBE calendar_events;</code>
                 </div>
             </div>
         </div>

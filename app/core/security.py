@@ -6,9 +6,14 @@ from app.core.exceptions import unauthorized
 from app.core.database import get_db
 from app.models.db import User
 from sqlalchemy.orm import Session
+import os
 
 # JWT 설정
-SECRET_KEY = "wedding-os-secret-key-change-in-production"  # TODO: 환경 변수로 변경
+# 환경 변수에서 가져오거나 기본값 사용 (프로덕션에서는 반드시 환경 변수로 설정!)
+SECRET_KEY = os.getenv(
+    "JWT_SECRET_KEY",
+    "wedding-os-secret-key-change-in-production"  # 개발 환경 기본값
+)
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7일
 

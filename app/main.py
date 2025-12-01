@@ -63,11 +63,16 @@ UPLOAD_DIR = os.path.abspath("./uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
+# 정적 파일 서빙 (favicon 등)
+STATIC_DIR = os.path.abspath("./static")
+os.makedirs(STATIC_DIR, exist_ok=True)
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
 # 전역 예외 처리
 @app.exception_handler(APIError)
 async def handle_api_error(_: Request, exc: APIError):
     """커스텀 API 에러 처리"""
-    return create_json_response(exc.status_code, exc.message, exc.data)
+    return create_json_response(exc.status_code, exc.message, exc.data, exc.error_code)
 
 @app.exception_handler(RequestValidationError)
 async def handle_validation_error(_: Request, exc: RequestValidationError):

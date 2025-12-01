@@ -16,6 +16,9 @@ async def admin_dashboard(request: Request):
     host = request.url.hostname
     port = request.url.port or 8101
     
+    # 로고 URL 생성 (정적 파일로 서빙)
+    logo_url = f"{base_url}/static/favicon.png"
+    
     # API 레퍼런스와 ERD는 상대 경로로 접근 (프론트엔드 디렉토리 기준)
     # 실제 파일 경로는 프론트엔드 서버에서 서빙되어야 함
     # 여기서는 상대 경로로 설정하고, 필요시 절대 경로로 변경 가능
@@ -27,6 +30,7 @@ async def admin_dashboard(request: Request):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Wedding OS - 관리자 대시보드</title>
+        <link rel="icon" type="image/png" href="{logo_url}">
         <style>
             * {{
                 margin: 0;
@@ -175,6 +179,7 @@ async def admin_dashboard(request: Request):
     <body>
         <div class="container">
             <div class="header">
+                <img src="{logo_url}" alt="Wedding OS Logo" style="width: 80px; height: 80px; margin-bottom: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);" />
                 <h1>🎯 Wedding OS 관리자 대시보드</h1>
                 <p><span class="status-indicator"></span>시스템 정상 작동 중</p>
             </div>

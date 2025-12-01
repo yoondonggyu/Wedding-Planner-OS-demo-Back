@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from app.core.exceptions import not_found, forbidden, bad_request, unauthorized
+from app.core.exceptions import not_found, forbidden, bad_request, unauthorized, unprocessable
+from app.core.error_codes import ErrorCode
 from app.models.db import Post, Comment, User
 from app.schemas import CommentCreateReq, CommentUpdateReq
 from app.services.model_client import analyze_sentiment
@@ -9,14 +10,14 @@ async def create_comment_controller(post_id: int, req: CommentCreateReq, user_id
     """댓글 작성 컨트롤러 + 감성 분석"""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
-        raise unauthorized()
+        raise unauthorized("unauthorized_user", ErrorCode.UNAUTHORIZED)
 
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
-        raise not_found("post_not_found")
+        raise not_found("post_not_found", ErrorCode.POST_NOT_FOUND)
     
     if not req.content or not req.content.strip():
-        raise bad_request("invalid_request", {"message": "댓글 내용을 입력해주세요."})
+        raise unprocessable("missing_required_field", ErrorCode.MISSING_REQUIRED_FIELD, {"message": "댓글 내용을 입력해주세요."})
     
     comment = Comment(
         post_id=post_id,
@@ -59,7 +60,7 @@ def get_comments_controller(post_id: int, db: Session):
     """댓글 목록 조회 컨트롤러"""
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
-        raise not_found("post_not_found")
+        raise not_found("post_not_found", ErrorCode.POST_NOT_FOUND)
     
     comments = db.query(Comment).filter(Comment.post_id == post_id).order_by(Comment.created_at.asc()).all()
     
@@ -79,17 +80,17 @@ def update_comment_controller(post_id: int, comment_id: int, req: CommentUpdateR
     """댓글 수정 컨트롤러"""
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
-        raise not_found("post_not_found")
+        raise not_found("post_not_found", ErrorCode.POST_NOT_FOUND)
     
     comment = db.query(Comment).filter(Comment.id == comment_id, Comment.post_id == post_id).first()
     if not comment:
-        raise not_found("comment_not_found")
+        raise not_found("comment_not_found", ErrorCode.COMMENT_NOT_FOUND)
     
     if comment.user_id != user_id:
-        raise forbidden()
+        raise forbidden("forbidden", ErrorCode.FORBIDDEN)
     
     if not req.content or not req.content.strip():
-        raise bad_request("invalid_request", {"message": "댓글 내용을 입력해주세요."})
+        raise unprocessable("missing_required_field", ErrorCode.MISSING_REQUIRED_FIELD, {"message": "댓글 내용을 입력해주세요."})
     
     comment.content = req.content
     db.commit()
@@ -102,14 +103,14 @@ def delete_comment_controller(post_id: int, comment_id: int, user_id: int, db: S
     """댓글 삭제 컨트롤러"""
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
-        raise not_found("post_not_found")
+        raise not_found("post_not_found", ErrorCode.POST_NOT_FOUND)
     
     comment = db.query(Comment).filter(Comment.id == comment_id, Comment.post_id == post_id).first()
     if not comment:
-        raise not_found("comment_not_found")
+        raise not_found("comment_not_found", ErrorCode.COMMENT_NOT_FOUND)
     
     if comment.user_id != user_id:
-        raise forbidden()
+        raise forbidden("forbidden", ErrorCode.FORBIDDEN)
     
     db.delete(comment)
     db.commit()

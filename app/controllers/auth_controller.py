@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.schemas import LoginReq, SignupReq
 from app.core.validators import validate_email, validate_password_pair, validate_nickname
 from app.core.exceptions import bad_request, conflict
+from app.core.error_codes import ErrorCode
 from app.core.security import create_access_token
 from app.models.db import User
 
@@ -12,10 +13,10 @@ def login_controller(req: LoginReq, db: Session):
     
     user = db.query(User).filter(User.email == req.email).first()
     if not user:
-        raise bad_request("invalid_credentials")
+        raise bad_request("invalid_credentials", ErrorCode.INVALID_CREDENTIALS)
     
     if user.password != req.password:
-        raise bad_request("invalid_credentials")
+        raise bad_request("invalid_credentials", ErrorCode.INVALID_CREDENTIALS)
     
     # JWT 토큰 생성 (sub는 문자열이어야 함)
     access_token = create_access_token(data={"sub": str(user.id)})
@@ -39,9 +40,9 @@ def signup_controller(req: SignupReq, db: Session):
     profile_image_url = req.profile_image_url or "https://via.placeholder.com/150"
 
     if db.query(User).filter(User.email == req.email).first():
-        raise conflict("duplicate_email")
+        raise conflict("duplicate_email", ErrorCode.DUPLICATE_EMAIL)
     if db.query(User).filter(User.nickname == req.nickname).first():
-        raise conflict("duplicate_nickname")
+        raise conflict("duplicate_nickname", ErrorCode.DUPLICATE_NICKNAME)
 
     user = User(
         email=req.email,

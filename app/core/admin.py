@@ -1,6 +1,6 @@
 from sqladmin import Admin, ModelView
 from app.core.database import engine
-from app.models.db import User, Post, Comment, PostLike, Tag, CalendarEvent, WeddingDate, WeddingProfile, Vendor, FavoriteVendor
+from app.models.db import User, Post, Comment, PostLike, Tag, CalendarEvent, WeddingDate, WeddingProfile, Vendor, FavoriteVendor, BudgetItem, UserTotalBudget, ChatHistory
 from app.core.sql_terminal import SQLTerminalView
 
 class UserAdmin(ModelView, model=User):
@@ -51,6 +51,20 @@ class FavoriteVendorAdmin(ModelView, model=FavoriteVendor):
     column_list = [FavoriteVendor.id, FavoriteVendor.user_id, FavoriteVendor.wedding_profile_id, FavoriteVendor.vendor_id, FavoriteVendor.created_at]
     form_columns = ["user_id", "wedding_profile_id", "vendor_id"]
 
+class BudgetItemAdmin(ModelView, model=BudgetItem):
+    column_list = [BudgetItem.id, BudgetItem.user_id, BudgetItem.item_name, BudgetItem.category, BudgetItem.estimated_budget, BudgetItem.actual_expense, BudgetItem.created_at]
+    column_searchable_list = [BudgetItem.item_name, BudgetItem.notes]
+    form_columns = ["user", "item_name", "category", "estimated_budget", "actual_expense", "quantity", "unit", "payer", "notes"]
+
+class UserTotalBudgetAdmin(ModelView, model=UserTotalBudget):
+    column_list = [UserTotalBudget.user_id, UserTotalBudget.total_budget, UserTotalBudget.updated_at]
+    form_columns = ["user", "total_budget"]
+
+class ChatHistoryAdmin(ModelView, model=ChatHistory):
+    column_list = [ChatHistory.id, ChatHistory.user_id, ChatHistory.role, ChatHistory.content, ChatHistory.created_at]
+    column_searchable_list = [ChatHistory.content]
+    form_columns = ["user", "role", "content"]
+
 def setup_admin(app):
     admin = Admin(app, engine, base_url="/secret_admin")
     admin.add_view(UserAdmin)
@@ -64,4 +78,7 @@ def setup_admin(app):
     admin.add_view(WeddingProfileAdmin)
     admin.add_view(VendorAdmin)
     admin.add_view(FavoriteVendorAdmin)
+    admin.add_view(BudgetItemAdmin)
+    admin.add_view(UserTotalBudgetAdmin)
+    admin.add_view(ChatHistoryAdmin)
     # admin.add_view(SQLTerminalView)  # SQL 터미널 - BaseView 구현 문제로 임시 비활성화

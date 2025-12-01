@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from app.core.validators import validate_title
 from app.core.exceptions import bad_request, not_found, forbidden, unprocessable, unauthorized, payload_too_large
+from app.core.error_codes import ErrorCode
 from app.models.db import Post, PostLike, Tag, User, Comment
 from app.schemas import PostCreateReq, PostUpdateReq
 from app.services.model_client import predict_image, summarize_text, auto_tag_text, analyze_sentiment
@@ -17,10 +18,10 @@ async def create_post_controller(req: PostCreateReq, user_id: int, db: Session):
     """게시글 작성 컨트롤러"""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
-        raise unauthorized()
+        raise unauthorized("unauthorized_user", ErrorCode.UNAUTHORIZED)
 
     if not req.title or not req.content:
-        raise unprocessable("missing_fields", {"required": ["title", "content"]})
+        raise unprocessable("missing_fields", ErrorCode.MISSING_FIELDS, {"required": ["title", "content"]})
     
     validate_title(req.title)
     
@@ -160,7 +161,7 @@ def get_post_controller(post_id: int, user_id: int = None, db: Session = None):
     """게시글 상세 조회 컨트롤러"""
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
-        raise not_found("post_not_found")
+        raise not_found("post_not_found", ErrorCode.POST_NOT_FOUND)
     
     liked = False
     if user_id:
@@ -209,14 +210,14 @@ def update_post_controller(post_id: int, req: PostUpdateReq, user_id: int, db: S
     if not req or all(
         field is None for field in (req.title, req.content, req.image_url)
     ):
-        raise bad_request("invalid_request")
+        raise bad_request("invalid_request", ErrorCode.INVALID_REQUEST)
 
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
-        raise not_found("post_not_found")
+        raise not_found("post_not_found", ErrorCode.POST_NOT_FOUND)
     
     if post.user_id != user_id:
-        raise forbidden()
+        raise forbidden("forbidden", ErrorCode.FORBIDDEN)
     
     if req.title is not None:
         validate_title(req.title)
@@ -238,10 +239,10 @@ def delete_post_controller(post_id: int, user_id: int, db: Session):
     """게시글 삭제 컨트롤러"""
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
-        raise not_found("post_not_found")
+        raise not_found("post_not_found", ErrorCode.POST_NOT_FOUND)
     
     if post.user_id != user_id:
-        raise forbidden()
+        raise forbidden("forbidden", ErrorCode.FORBIDDEN)
     
     # CASCADE로 인해 관련 댓글과 좋아요는 자동 삭제됨
     db.delete(post)
@@ -254,7 +255,7 @@ def toggle_like_controller(post_id: int, user_id: int, db: Session):
     """좋아요 토글 컨트롤러"""
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
-        raise not_found("post_not_found")
+        raise not_found("post_not_found", ErrorCode.POST_NOT_FOUND)
     
     existing_like = db.query(PostLike).filter(
         PostLike.post_id == post_id,
@@ -285,7 +286,7 @@ def increment_view_controller(post_id: int, db: Session):
     """조회수 증가 컨트롤러"""
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
-        raise not_found("post_not_found")
+        raise not_found("post_not_found", ErrorCode.POST_NOT_FOUND)
     
     post.view_count += 1
     db.commit()
@@ -300,10 +301,10 @@ def increment_view_controller(post_id: int, db: Session):
 async def upload_post_image_controller(file_content_type: str, file_data: bytes, filename: str):
     """게시글 이미지 업로드 컨트롤러 + 이미지 분류"""
     if file_content_type not in ("image/jpeg", "image/png", "image/jpg"):
-        raise bad_request("invalid_file_type", {"allowed": ["jpg", "png", "jpeg"]})
+        raise bad_request("invalid_file_type", ErrorCode.INVALID_FILE_TYPE, {"allowed": ["jpg", "png", "jpeg"]})
     
     if len(file_data) > 5 * 1024 * 1024:
-        raise payload_too_large("file_too_large", {"max_size": "5MB"})
+        raise payload_too_large("file_too_large", ErrorCode.FILE_TOO_LARGE, {"max_size": "5MB"})
     
     name = f"{uuid.uuid4().hex}_{filename}"
     file_path = os.path.join(UPLOAD_DIR, name)

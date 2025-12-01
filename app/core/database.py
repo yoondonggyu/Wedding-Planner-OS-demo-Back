@@ -1,10 +1,14 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
 
 # MySQL 데이터베이스 연결 설정
-# TODO: 환경 변수로 변경 권장
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:971201jcy!@localhost:3306/WEDDING_PLANNER_OS_DB"
+# 환경 변수에서 가져오거나 기본값 사용
+SQLALCHEMY_DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "mysql+pymysql://root:971201jcy!@localhost:3306/WEDDING_PLANNER_OS_DB"
+)
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
