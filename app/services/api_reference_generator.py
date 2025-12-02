@@ -16,6 +16,7 @@ class APIReferenceGenerator:
     def __init__(self):
         self.base_dir = Path(__file__).parent.parent.parent
         self.api_ref_path = self.base_dir.parent / "1.Wedding_OS_front" / "api_reference.html"
+        self.api_ref_details_path = self.base_dir.parent / "1.Wedding_OS_front" / "api_reference_details.html"
         
     def get_next_error_code(self, status_code: int) -> int:
         """에러 코드 자동 넘버링 (4001~4009 이후 40010, 40011, ... 형식)"""
@@ -62,6 +63,10 @@ class APIReferenceGenerator:
             "calendar_controller.py",
             "vendor_controller.py",
             "budget_controller.py",
+            "couple_controller.py",
+            "vendor_message_controller.py",
+            "voice_controller.py",
+            "chat_controller.py",
         ]
         
         for controller_file in controller_files:
@@ -235,6 +240,7 @@ class APIReferenceGenerator:
         
         # 에러 응답 생성
         error_responses = []
+        error_statuses = set()  # 에러 상태 코드 추적
         
         # operationId에서 컨트롤러 함수명 추출
         operation_id = details.get('operationId', '')
@@ -243,15 +249,17 @@ class APIReferenceGenerator:
         # 컨트롤러에서 발견된 에러 추가
         if func_name in controller_errors:
             for error in controller_errors[func_name]:
+                status = error['status']
+                error_statuses.add(status)
                 error_responses.append(self._generate_error_row(
-                    error['status'],
+                    status,
                     error['message'],
                     error['error_code'],
                     self._get_error_description(error['error_name'])
                 ))
         
         # 기본 에러 (모든 API에 공통)
-        if not any(e['status'] == 500 for e in error_responses):
+        if 500 not in error_statuses:
             error_responses.append(self._generate_error_row(500, 'internal_server_error', 5001, '서버 오류'))
         
         error_rows = '\n'.join(error_responses)

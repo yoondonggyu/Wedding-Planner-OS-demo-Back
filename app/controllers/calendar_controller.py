@@ -13,6 +13,7 @@ from app.schemas import (
 from app.core.exceptions import not_found, forbidden, bad_request
 from app.core.error_codes import ErrorCode
 from app.services import calendar_service
+from app.core.couple_helpers import get_user_couple_id, get_couple_filter_with_user
 
 
 def set_wedding_date(user_id: int, wedding_date: str, db: Session) -> Dict:
@@ -107,8 +108,12 @@ async def generate_timeline(
         start_time = dt.strptime(e.get("start_time"), "%H:%M").time() if e.get("start_time") else None
         end_time = dt.strptime(e.get("end_time"), "%H:%M").time() if e.get("end_time") else None
         
+        # 커플 ID 가져오기
+        couple_id = get_user_couple_id(e["user_id"], db)
+        
         event = CalendarEvent(
             user_id=e["user_id"],
+            couple_id=couple_id,  # 커플 공유
             title=e["title"],
             description=e.get("description"),
             start_date=start_date,
@@ -176,8 +181,12 @@ def create_event(user_id: int, request: CalendarEventCreateReq, db: Session) -> 
         else:
             assignee = request.assignee
     
+    # 커플 ID 가져오기
+    couple_id = get_user_couple_id(user_id, db)
+    
     event = CalendarEvent(
         user_id=user_id,
+        couple_id=couple_id,  # 커플 공유
         title=request.title,
         description=request.description,
         start_date=start_date,
@@ -277,10 +286,12 @@ def delete_event(event_id: int, user_id: int, db: Session) -> Dict:
 
 
 def get_events(user_id: int, start_date: str | None = None, end_date: str | None = None, db: Session = None) -> Dict:
-    """일정 조회"""
+    """일정 조회 (커플 데이터 공유)"""
     from datetime import datetime as dt
     
-    query = db.query(CalendarEvent).filter(CalendarEvent.user_id == user_id)
+    # 커플 필터 생성
+    couple_filter = get_couple_filter_with_user(user_id, db, CalendarEvent)
+    query = db.query(CalendarEvent).filter(couple_filter)
     
     if start_date:
         start_date_obj = dt.strptime(start_date, "%Y-%m-%d").date()
@@ -318,12 +329,15 @@ def get_events(user_id: int, start_date: str | None = None, end_date: str | None
 
 
 def get_upcoming_events(user_id: int, days: int = 7, db: Session = None) -> Dict:
-    """다가오는 일정 조회"""
+    """다가오는 일정 조회 (커플 데이터 공유)"""
     today = datetime.now().date()
     end_date = today + timedelta(days=days)
     
+    # 커플 필터 생성
+    couple_filter = get_couple_filter_with_user(user_id, db, CalendarEvent)
+    
     events = db.query(CalendarEvent).filter(
-        CalendarEvent.user_id == user_id,
+        couple_filter,
         CalendarEvent.start_date >= today,
         CalendarEvent.start_date <= end_date
     ).order_by(CalendarEvent.start_date, CalendarEvent.start_time).all()

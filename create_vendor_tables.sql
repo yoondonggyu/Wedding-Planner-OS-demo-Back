@@ -55,3 +55,5 @@ CREATE TABLE IF NOT EXISTS favorite_vendors (
     UNIQUE KEY unique_favorite (user_id, wedding_profile_id, vendor_id)
 );
 
+
+

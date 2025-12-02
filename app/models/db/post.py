@@ -16,6 +16,7 @@ class Post(Base):
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     user_id = Column(BigInteger, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    couple_id = Column(BigInteger, ForeignKey("couples.id", ondelete="SET NULL"), nullable=True)  # 커플 공유
     title = Column(String(255), nullable=False)
     content = Column(Text, nullable=False)
     image_url = Column(Text, nullable=True)

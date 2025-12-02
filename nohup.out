@@ -1,0 +1,1203 @@
+INFO:     Will watch for changes in these directories: ['/Users/yoon-dong-gyu/kakao_bootcamp/1.Wedding_OS_Project/2.Wedding_OS_back']
+INFO:     Uvicorn running on http://0.0.0.0:8101 (Press CTRL+C to quit)
+INFO:     Started reloader process [88502] using WatchFiles
+INFO:     Started server process [88525]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:55424 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55424 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55424 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55424 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55424 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55424 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55437 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55437 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55424 - "OPTIONS /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55440 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55437 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55440 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55442 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55437 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55440 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55442 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55440 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55442 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55440 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55440 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55440 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55473 - "GET /secret_admin/user/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55473 - "GET /secret_admin/dashboard/vendor-management HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c
+INFO:     127.0.0.1:55473 - "GET /secret_admin/api/admin/vendors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55510 - "OPTIONS /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55512 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55523 - "OPTIONS /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55525 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55523 - "OPTIONS /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55525 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55525 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55525 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55545 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55523 - "OPTIONS /api/posts?board_type=vault HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55525 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55561 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55561 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55561 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55561 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/models/db/chat.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88525]
+INFO:     Started server process [88876]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:55589 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55609 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55655 - "OPTIONS /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55657 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55724 - "OPTIONS /api/posts HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+⚠️ Model API 서버를 찾지 못했습니다. 기본 포트 8002 사용
+⚠️ 자동 태깅 API 호출 실패: All connection attempts failed
+✅ 자동 태그 생성 성공: []
+⚠️ 요약 API 호출 실패: All connection attempts failed
+⚠️ 감성 분석 API 호출 실패: All connection attempts failed
+✅ 게시글 벡터화 완료: post_id=5
+INFO:     127.0.0.1:55726 - "POST /api/posts HTTP/1.1" 201 Created
+INFO:     127.0.0.1:55726 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55724 - "OPTIONS /api/posts/5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55740 - "OPTIONS /api/posts/5/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55726 - "GET /api/posts/5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55742 - "GET /api/posts/5/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55740 - "OPTIONS /api/posts/5/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55742 - "PATCH /api/posts/5/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55763 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55769 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55769 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55771 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:55769 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55824 - "OPTIONS /api/posts HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+⚠️ 자동 태깅 API 호출 실패: All connection attempts failed
+✅ 자동 태그 생성 성공: []
+⚠️ 요약 API 호출 실패: All connection attempts failed
+⚠️ 감성 분석 API 호출 실패: All connection attempts failed
+✅ 게시글 벡터화 완료: post_id=6
+INFO:     127.0.0.1:55826 - "POST /api/posts HTTP/1.1" 201 Created
+INFO:     127.0.0.1:55826 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55824 - "OPTIONS /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55824 - "OPTIONS /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55826 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55836 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55824 - "OPTIONS /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55836 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55854 - "OPTIONS /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55856 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55854 - "OPTIONS /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55856 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55854 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55854 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:55856 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:55856 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55922 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55948 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55948 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55950 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55948 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56388 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56402 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56402 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56404 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56402 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56428 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56428 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56430 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56428 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/controllers/post_controller.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88876]
+INFO:     Started server process [90753]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/controllers/post_controller.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [90753]
+INFO:     Started server process [90795]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:56521 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56523 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56523 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56527 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56529 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56523 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56527 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56529 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56529 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56565 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56565 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56567 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56565 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56619 - "OPTIONS /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56621 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:56621 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:56621 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56674 - "OPTIONS /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56676 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56674 - "OPTIONS /api/posts?board_type=venue_review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56676 - "GET /api/posts?board_type=venue_review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56676 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56690 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56712 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56712 - "GET /api/posts?board_type=venue_review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56712 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56712 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56712 - "GET /api/posts?board_type=venue_review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56735 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56916 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56916 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56918 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56916 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56926 - "OPTIONS /api/calendar/todos HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56927 - "OPTIONS /api/calendar/wedding-date HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+예식일 조회: user_id=7, wedding_date=2025-11-25
+INFO:     127.0.0.1:56916 - "GET /api/calendar/wedding-date HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56918 - "GET /api/calendar/todos HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56926 - "OPTIONS /api/budget/items?user_id=7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56927 - "OPTIONS /api/budget/summary?user_id=7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56918 - "GET /api/budget/items?user_id=7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56916 - "GET /api/budget/summary?user_id=7 HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:56916 - "GET /api/calendar/todos HTTP/1.1" 200 OK
+예식일 조회: user_id=7, wedding_date=2025-11-25
+INFO:     127.0.0.1:56918 - "GET /api/calendar/wedding-date HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56943 - "OPTIONS /api/wedding-profiles HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:56945 - "GET /api/wedding-profiles HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56943 - "OPTIONS /api/vendors/recommend?wedding_profile_id=3&sort=score_desc HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56947 - "OPTIONS /api/favorites?wedding_profile_id=3 HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:56949 - "GET /api/favorites?wedding_profile_id=3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56945 - "GET /api/vendors/recommend?wedding_profile_id=3&sort=score_desc HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/applications.py", line 1134, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 125, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 111, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 391, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 290, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yoon-dong-gyu/kakao_bootcamp/1.Wedding_OS_Project/2.Wedding_OS_back/app/routers/vendor_routes.py", line 82, in recommend_vendors
+    return vendor_controller.recommend_vendors(user_id, request, db)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yoon-dong-gyu/kakao_bootcamp/1.Wedding_OS_Project/2.Wedding_OS_back/app/controllers/vendor_controller.py", line 306, in recommend_vendors
+    score = calculate_match_score(vendor, profile)
+  File "/Users/yoon-dong-gyu/kakao_bootcamp/1.Wedding_OS_Project/2.Wedding_OS_back/app/controllers/vendor_controller.py", line 206, in calculate_match_score
+    budget_center = float(vendor.min_price + budget_range / 2)
+                          ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for +: 'decimal.Decimal' and 'float'
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:56949 - "GET /api/favorites?wedding_profile_id=3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56947 - "OPTIONS /api/vendor-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56943 - "OPTIONS /api/vendors HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:56949 - "GET /api/vendor-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56957 - "GET /api/vendors HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57017 - "GET /secret_admin/dashboard/userauthsetting HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c
+INFO:     127.0.0.1:57017 - "GET /secret_admin/api/admin/users HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57078 - "GET /secret_admin/dashboard/vendor-approval?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c
+INFO:     127.0.0.1:57078 - "GET /secret_admin/api/admin/vendors/pending HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57440 - "GET /uploads/d2458c1fe41e4f4db3e5e5eb8feabd82_Gemini_Generated_Image_wjmu8gwjmu8gwjmu.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:57462 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57464 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57464 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57466 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57466 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:57475 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:57475 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57479 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57479 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57481 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57479 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57479 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57481 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57479 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57481 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57487 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57479 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57481 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57479 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57479 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57475 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57479 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57481 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57479 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:57475 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:57479 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57477 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57481 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57479 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57481 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57481 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57479 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57481 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57487 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57479 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57481 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57487 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57481 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/controllers/post_controller.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [90795]
+INFO:     Started server process [93197]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57612 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57614 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57624 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57626 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57614 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57612 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57626 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57631 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57634 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57614 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57634 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57634 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57614 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57634 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57631 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57614 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57634 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57631 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:57634 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57666 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57689 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57689 - "GET /api/posts/5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57884 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57884 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57886 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57884 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57921 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57928 - "OPTIONS /api/posts?board_type=vault HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57921 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57944 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57944 - "GET /api/posts/5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57981 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57981 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57981 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+⚠️ Model API 서버를 찾지 못했습니다. 기본 포트 8002 사용
+⚠️ 자동 태깅 API 호출 실패: All connection attempts failed
+✅ 자동 태그 생성 성공: []
+⚠️ 요약 API 호출 실패: All connection attempts failed
+⚠️ 감성 분석 API 호출 실패: All connection attempts failed
+✅ 게시글 벡터화 완료: post_id=7
+INFO:     127.0.0.1:58084 - "POST /api/posts HTTP/1.1" 201 Created
+INFO:     127.0.0.1:58084 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58098 - "OPTIONS /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58100 - "OPTIONS /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58084 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58102 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58100 - "OPTIONS /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58102 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58128 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58128 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58128 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58134 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58128 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58166 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58166 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58168 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58168 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58175 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58175 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58177 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58175 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58195 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58306 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58306 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58306 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58318 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58306 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58334 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58334 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58336 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58334 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58362 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58364 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58362 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58366 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58364 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58362 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58368 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58364 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:58362 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:58364 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58366 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58364 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58368 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58368 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58366 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58368 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58364 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58368 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58364 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58380 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58368 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58364 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58368 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58366 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58392 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58362 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58366 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58392 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58394 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58366 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58392 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:58402 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:58402 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58407 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58408 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58392 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58394 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58408 - "OPTIONS /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58407 - "OPTIONS /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58394 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58392 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58392 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58394 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58392 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58394 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58414 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58392 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58394 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58392 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58402 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58467 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58467 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58467 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58477 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58467 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58483 - "OPTIONS /api/posts?board_type=venue_review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "GET /api/posts?board_type=venue_review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58483 - "OPTIONS /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58491 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58483 - "OPTIONS /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "GET /api/posts?board_type=venue_review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58491 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58528 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58528 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58530 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58528 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58640 - "OPTIONS /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58642 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58640 - "OPTIONS /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58644 - "OPTIONS /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58642 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58646 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58644 - "OPTIONS /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58646 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:58646 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:58642 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58668 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58668 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58670 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58668 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58668 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58670 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58668 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58670 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58917 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58924 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:58917 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:58917 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58924 - "OPTIONS /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58917 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58924 - "OPTIONS /api/posts/5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58917 - "GET /api/posts/5 HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58936 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58936 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58963 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc0MjI2fQ.O6uKG760DSR1mwvUObgz1-fwNHuzvOX1rOzvSeYLLTE
+INFO:     127.0.0.1:58963 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58993 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59022 - "OPTIONS /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59024 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59024 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59024 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59024 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/controllers/post_controller.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [93197]
+INFO:     Started server process [96383]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59223 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59225 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59233 - "OPTIONS /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59235 - "OPTIONS /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59225 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59223 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59237 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59235 - "OPTIONS /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59225 - "GET /api/posts/5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59237 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59225 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59237 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59225 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59223 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59237 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59223 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59223 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59237 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59223 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59237 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59250 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59223 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59250 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59223 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59265 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59267 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59265 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59267 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59269 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59265 - "GET /api/posts/5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59267 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59265 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59267 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59265 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59267 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59269 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59267 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59267 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59269 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59267 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59269 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59267 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59281 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59267 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59281 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59265 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59265 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59265 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59265 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59265 - "GET /api/posts/5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59354 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59354 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59356 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59354 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59443 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59443 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59445 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59443 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59523 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59525 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59523 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59527 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59525 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59529 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59523 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59525 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59525 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59536 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59529 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59536 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59538 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59538 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59538 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59536 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59538 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59536 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59545 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59538 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59536 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59538 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/controllers/post_controller.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [96383]
+INFO:     Started server process [97303]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:59569 - "GET /uploads/d2458c1fe41e4f4db3e5e5eb8feabd82_Gemini_Generated_Image_wjmu8gwjmu8gwjmu.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59569 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59569 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59572 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59569 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59577 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59577 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59579 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZXhwIjoxNzY1Mjc1NTg2fQ.UzB2jvUB7v2QpcHhEOrkmA9BhW7IKlDfn0ilFq-aDY0
+INFO:     127.0.0.1:59577 - "GET /api/couple/my-key HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59577 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59577 - "GET /api/posts?board_type=venue_review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59584 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59584 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59586 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59584 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59608 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "OPTIONS /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59618 - "OPTIONS /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59620 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59622 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59618 - "OPTIONS /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59622 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59618 - "OPTIONS /api/posts/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "OPTIONS /api/posts/2/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59622 - "GET /api/posts/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59620 - "GET /api/posts/2/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "OPTIONS /api/posts/2/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59620 - "PATCH /api/posts/2/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "OPTIONS /api/posts/1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59618 - "OPTIONS /api/posts/1/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59620 - "GET /api/posts/1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59622 - "GET /api/posts/1/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59618 - "OPTIONS /api/posts/1/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59622 - "PATCH /api/posts/1/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59629 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59630 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59629 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59629 - "GET /api/posts/6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59630 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59629 - "PATCH /api/posts/6/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59629 - "GET /api/posts/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59630 - "GET /api/posts/2/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59629 - "PATCH /api/posts/2/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59629 - "GET /api/posts/1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59630 - "GET /api/posts/1/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59629 - "PATCH /api/posts/1/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59633 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59635 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59633 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/controllers/post_controller.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [97303]
+INFO:     Started server process [97989]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:59643 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59645 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59649 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59643 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59651 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59649 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59645 - "GET /api/posts/7 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/applications.py", line 1134, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 125, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 111, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 391, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/yoon-dong-gyu/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 290, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yoon-dong-gyu/kakao_bootcamp/1.Wedding_OS_Project/2.Wedding_OS_back/app/routers/post_routes.py", line 32, in get_post
+    data = post_controller.get_post_controller(post_id, user_id, db)
+  File "/Users/yoon-dong-gyu/kakao_bootcamp/1.Wedding_OS_Project/2.Wedding_OS_back/app/controllers/post_controller.py", line 218, in get_post_controller
+    raise forbidden("forbidden", ErrorCode.FORBIDDEN, {"error": "로그인이 필요한 기능입니다."})
+          ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: forbidden() takes from 0 to 2 positional arguments but 3 were given
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59656 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59656 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59679 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59681 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59679 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59683 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59681 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59679 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59710 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59712 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59710 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59714 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59712 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59714 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59714 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59710 - "GET /api/couple/info HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/controllers/post_controller.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [97989]
+INFO:     Started server process [98677]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:59742 - "GET /api/posts/6/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59745 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59745 - "GET /api/posts?board_type=venue_review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59747 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59747 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59747 - "GET /api/posts?board_type=planner HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59747 - "GET /api/posts?board_type=venue_review HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59749 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59749 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59752 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59752 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59761 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59761 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59771 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59771 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59773 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59771 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59771 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59771 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59771 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59771 - "GET /api/posts/5 HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59776 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59779 - "OPTIONS /api/wedding-profiles HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59781 - "GET /api/wedding-profiles HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59784 - "GET /api/posts?board_type=couple HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59784 - "GET /api/posts/7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59786 - "GET /api/posts/7/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59784 - "PATCH /api/posts/7/view HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59793 - "OPTIONS /api/vendor-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59794 - "OPTIONS /api/vendors HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59797 - "GET /api/vendor-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59798 - "GET /api/vendors HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59798 - "GET /api/wedding-profiles HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59794 - "OPTIONS /api/budget/items?user_id=13 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59793 - "OPTIONS /api/budget/summary?user_id=13 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59798 - "GET /api/budget/items?user_id=13 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59797 - "GET /api/budget/summary?user_id=13 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59806 - "OPTIONS /api/calendar/todos HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59807 - "OPTIONS /api/calendar/wedding-date HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59810 - "GET /api/calendar/todos HTTP/1.1" 200 OK
+예식일 조회: user_id=13, wedding_date=None
+INFO:     127.0.0.1:59811 - "GET /api/calendar/wedding-date HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59811 - "GET /api/budget/items?user_id=13 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59810 - "GET /api/budget/summary?user_id=13 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59813 - "OPTIONS /api/posts?board_type=vault HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59815 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59819 - "GET /api/vendor-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59820 - "GET /api/vendors HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59820 - "GET /api/wedding-profiles HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59830 - "OPTIONS /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59832 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:59832 - "GET /api/couple/info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59830 - "OPTIONS /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59832 - "GET /api/posts?board_type=private HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59830 - "OPTIONS /api/posts/5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59832 - "GET /api/posts/5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59835 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/routers/post_routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [98677]
+INFO:     Started server process [4924]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/controllers/post_controller.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4924]
+INFO:     Started server process [5004]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:59938 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59944 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/routers/post_routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [5004]
+INFO:     Started server process [5931]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:59968 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/routers/post_routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [5931]
+INFO:     Started server process [6559]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/routers/post_routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [6559]
+INFO:     Started server process [6621]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:59992 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/routers/post_routes.py', 'app/controllers/post_controller.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [6621]
+INFO:     Started server process [6850]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:60014 - "OPTIONS /api/posts?board_type=vault HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60016 - "GET /api/posts?board_type=vault HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:60016 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:60016 - "GET /api/couple/info HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImV4cCI6MTc2NTI3MzU5MX0.BFcE3K-nD6C9rmMRR9uGRgJ4HFhHeyCcjpM94M0pCQ0
+INFO:     127.0.0.1:60027 - "GET /api/calendar/todos HTTP/1.1" 200 OK
+예식일 조회: user_id=13, wedding_date=None
+INFO:     127.0.0.1:60028 - "GET /api/calendar/wedding-date HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60089 - "GET /secret_admin/dashboard/userauthsetting HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c
+INFO:     127.0.0.1:60089 - "GET /secret_admin/api/admin/users HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60089 - "GET /static/favicon.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:60092 - "GET /secret_admin/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60100 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60105 - "GET /secret_admin/api-reference/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60115 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60119 - "GET /secret_admin/api-reference/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60149 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60153 - "GET /secret_admin/api-reference/details HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/services/api_reference_generator.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [6850]
+INFO:     Started server process [9936]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/services/api_reference_generator.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9936]
+INFO:     Started server process [10013]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/services/api_reference_generator.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10013]
+INFO:     Started server process [10378]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/services/api_reference_generator.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10378]
+INFO:     Started server process [13581]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:60475 - "GET /secret_admin/api-reference HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60479 - "GET /secret_admin/api-reference/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60486 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60495 - "GET /secret_admin/api-reference/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60495 - "GET /secret_admin/api-reference HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60518 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60543 - "GET /secret_admin/user/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60558 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60558 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60647 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60704 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60749 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60770 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60781 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60781 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60786 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60817 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60866 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60866 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60871 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60881 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60886 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60891 - "GET /secret_admin/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60891 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60938 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61005 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/routers/admin_docs_routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [13581]
+INFO:     Started server process [32412]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/routers/admin_docs_routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [32412]
+INFO:     Started server process [34325]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+⚠️ langchain-chroma 또는 langchain-ollama가 설치되지 않았습니다. Vector DB 기능을 사용할 수 없습니다.
+⚠️ langchain-text-splitters가 설치되지 않았습니다. 텍스트 분할 기능을 사용할 수 없습니다.
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+INFO:     127.0.0.1:61107 - "GET /secret_admin/api-reference HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61113 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61206 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61206 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61229 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61229 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61234 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61234 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61286 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61398 - "GET /secret_admin/user/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61398 - "GET /secret_admin/post-like/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61398 - "GET /secret_admin/comment/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61435 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61532 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61583 - "GET /secret_admin/dashboard/userauthsetting HTTP/1.1" 200 OK
+[Auth] Authorization header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c
+INFO:     127.0.0.1:61583 - "GET /secret_admin/api/admin/users HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61592 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61610 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61610 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61667 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61667 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61678 - "GET /secret_admin/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61688 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61693 - "GET /secret_admin/api-reference?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzY1MjY0NzY3fQ.fWSKLH98KXxbH7bj8xmtK2lEw4PuZXen1B4-z8QwP5c HTTP/1.1" 200 OK

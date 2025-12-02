@@ -11,6 +11,7 @@ from app.schemas import (
 )
 from app.core.exceptions import not_found, unauthorized, bad_request
 from app.core.error_codes import ErrorCode
+from app.core.couple_helpers import get_user_couple_id, get_couple_filter_with_user
 
 
 def create_wedding_profile(user_id: int, request: WeddingProfileCreateReq, db: Session) -> Dict:
@@ -25,8 +26,12 @@ def create_wedding_profile(user_id: int, request: WeddingProfileCreateReq, db: S
         except ValueError:
             raise bad_request("invalid_guest_count_category", ErrorCode.INVALID_GUEST_COUNT_CATEGORY)
         
+        # 커플 ID 가져오기
+        couple_id = get_user_couple_id(user_id, db)
+        
         profile = WeddingProfile(
             user_id=user_id,
+            couple_id=couple_id,  # 커플 공유
             wedding_date=wedding_date,
             guest_count_category=guest_category,
             total_budget=request.total_budget,
@@ -61,8 +66,10 @@ def create_wedding_profile(user_id: int, request: WeddingProfileCreateReq, db: S
 
 
 def get_wedding_profiles(user_id: int, db: Session) -> Dict:
-    """결혼식 프로필 목록 조회"""
-    profiles = db.query(WeddingProfile).filter(WeddingProfile.user_id == user_id).order_by(WeddingProfile.created_at.desc()).all()
+    """결혼식 프로필 목록 조회 (커플 데이터 공유)"""
+    # 커플 필터 생성
+    couple_filter = get_couple_filter_with_user(user_id, db, WeddingProfile)
+    profiles = db.query(WeddingProfile).filter(couple_filter).order_by(WeddingProfile.created_at.desc()).all()
     
     return {
         "message": "wedding_profiles_retrieved",
@@ -87,10 +94,12 @@ def get_wedding_profiles(user_id: int, db: Session) -> Dict:
 
 
 def get_wedding_profile(profile_id: int, user_id: int, db: Session) -> Dict:
-    """결혼식 프로필 단건 조회"""
+    """결혼식 프로필 단건 조회 (커플 데이터 공유)"""
+    # 커플 필터 생성
+    couple_filter = get_couple_filter_with_user(user_id, db, WeddingProfile)
     profile = db.query(WeddingProfile).filter(
         WeddingProfile.id == profile_id,
-        WeddingProfile.user_id == user_id
+        couple_filter
     ).first()
     
     if not profile:
@@ -338,6 +347,63 @@ def recommend_vendors(user_id: int, request: VendorRecommendReq, db: Session) ->
         "data": {
             "wedding_profile_id": profile.id,
             "vendors": vendor_scores
+        }
+    }
+
+
+def get_my_vendor(user_id: int, db: Session) -> Dict:
+    """벤더 계정의 자신의 벤더 정보 조회"""
+    from app.models.db.user import User
+    
+    vendor = db.query(Vendor).filter(Vendor.user_id == user_id).first()
+    
+    if not vendor:
+        raise not_found("vendor_not_found", ErrorCode.VENDOR_NOT_FOUND)
+    
+    return {
+        "message": "vendor_retrieved",
+        "data": {
+            "id": vendor.id,
+            "vendor_type": vendor.vendor_type.value,
+            "name": vendor.name,
+            "description": vendor.description,
+            "base_location_city": vendor.base_location_city,
+            "base_location_district": vendor.base_location_district,
+            "contact_link": vendor.contact_link,
+            "contact_phone": vendor.contact_phone,
+            "rating_avg": float(vendor.rating_avg),
+            "review_count": vendor.review_count,
+        }
+    }
+
+def get_vendors(vendor_type: str | None, db: Session) -> Dict:
+    """벤더 목록 조회 (카테고리별)"""
+    query = db.query(Vendor)
+    
+    if vendor_type:
+        try:
+            vendor_type_enum = VendorType(vendor_type)
+            query = query.filter(Vendor.vendor_type == vendor_type_enum)
+        except ValueError:
+            # 유효하지 않은 타입이면 전체 조회
+            pass
+    
+    vendors = query.order_by(Vendor.name.asc()).all()
+    
+    return {
+        "message": "vendors_retrieved",
+        "data": {
+            "vendors": [
+                {
+                    "id": vendor.id,
+                    "vendor_type": vendor.vendor_type.value if hasattr(vendor.vendor_type, 'value') else str(vendor.vendor_type),
+                    "name": vendor.name,
+                    "description": vendor.description,
+                    "base_location_city": vendor.base_location_city,
+                    "base_location_district": vendor.base_location_district,
+                }
+                for vendor in vendors
+            ]
         }
     }
 

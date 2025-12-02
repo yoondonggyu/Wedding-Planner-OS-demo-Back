@@ -3,8 +3,32 @@
 """
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
+import socket
+import subprocess
+from typing import Dict
 
 router = APIRouter()
+
+
+def check_port(host: str, port: int, timeout: float = 1.0) -> bool:
+    """포트가 열려있는지 확인"""
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(timeout)
+        result = sock.connect_ex((host, port))
+        sock.close()
+        return result == 0
+    except:
+        return False
+
+
+def check_service_status() -> Dict[str, bool]:
+    """서비스 상태 확인"""
+    return {
+        "backend": check_port("localhost", 8101),
+        "frontend": check_port("localhost", 5173) or check_port("localhost", 5174),
+        "database": check_port("localhost", 3306),
+    }
 
 
 @router.get("/dashboard", response_class=HTMLResponse)
@@ -18,6 +42,17 @@ async def admin_dashboard(request: Request):
     
     # 로고 URL 생성 (정적 파일로 서빙)
     logo_url = f"{base_url}/static/favicon.png"
+    
+    # 서비스 상태 확인
+    service_status = check_service_status()
+    backend_status = "🟢 실행 중" if service_status["backend"] else "🔴 중지"
+    frontend_status = "🟢 실행 중" if service_status["frontend"] else "🔴 중지"
+    db_status = "🟢 실행 중" if service_status["database"] else "🔴 중지"
+    
+    # 전체 상태
+    all_running = all(service_status.values())
+    system_status_text = "시스템 정상 작동 중" if all_running else "일부 서비스 중지"
+    system_status_class = "status-ok" if all_running else "status-warning"
     
     # API 레퍼런스와 ERD는 상대 경로로 접근 (프론트엔드 디렉토리 기준)
     # 실제 파일 경로는 프론트엔드 서버에서 서빙되어야 함
@@ -163,6 +198,29 @@ async def admin_dashboard(request: Request):
                 animation: pulse 2s infinite;
             }}
             
+            .status-ok .status-indicator {{
+                background: #28a745;
+            }}
+            
+            .status-warning .status-indicator {{
+                background: #f59e0b;
+            }}
+            
+            .service-status {{
+                display: flex;
+                gap: 20px;
+                margin-top: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }}
+            
+            .service-status-item {{
+                padding: 8px 16px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 8px;
+                font-size: 14px;
+            }}
+            
             @keyframes pulse {{
                 0% {{
                     opacity: 1;
@@ -181,7 +239,12 @@ async def admin_dashboard(request: Request):
             <div class="header">
                 <img src="{logo_url}" alt="Wedding OS Logo" style="width: 80px; height: 80px; margin-bottom: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);" />
                 <h1>🎯 Wedding OS 관리자 대시보드</h1>
-                <p><span class="status-indicator"></span>시스템 정상 작동 중</p>
+                <p class="{system_status_class}"><span class="status-indicator"></span>{system_status_text}</p>
+                <div class="service-status">
+                    <div class="service-status-item">백엔드: {backend_status}</div>
+                    <div class="service-status-item">프론트엔드: {frontend_status}</div>
+                    <div class="service-status-item">데이터베이스: {db_status}</div>
+                </div>
             </div>
             
             <div class="dashboard-grid">
@@ -234,6 +297,46 @@ async def admin_dashboard(request: Request):
                     </div>
                     <div class="card-url">{base_url}/secret_admin/erd</div>
                 </a>
+                
+                <a href="{base_url}/secret_admin/dashboard/userauthsetting" class="card" target="_blank">
+                    <div class="card-icon">👥</div>
+                    <div class="card-title">사용자 권한 설정</div>
+                    <div class="card-description">
+                        사용자 역할 및 권한 관리<br>
+                        시스템 관리자, 웹 관리자, 업체 관리자 등 역할 설정
+                    </div>
+                    <div class="card-url">{base_url}/secret_admin/dashboard/userauthsetting</div>
+                </a>
+                
+                <a href="{base_url}/secret_admin/dashboard/vendor-management" class="card" target="_blank">
+                    <div class="card-icon">🏢</div>
+                    <div class="card-title">벤더 관리</div>
+                    <div class="card-description">
+                        벤더 업체 목록 관리<br>
+                        카테고리별 벤더 추가, 수정, 삭제
+                    </div>
+                    <div class="card-url">{base_url}/secret_admin/dashboard/vendor-management</div>
+                </a>
+                
+                <a href="{base_url}/secret_admin/dashboard/vendor-approval" class="card" target="_blank">
+                    <div class="card-icon">✅</div>
+                    <div class="card-title">제휴 업체 승인 관리</div>
+                    <div class="card-description">
+                        제휴 업체 가입 신청 승인/거부<br>
+                        승인 대기 중인 제휴 업체 목록 관리
+                    </div>
+                    <div class="card-url">{base_url}/secret_admin/dashboard/vendor-approval</div>
+                </a>
+                
+                <a href="{base_url}/secret_admin/dashboard/admin-approval" class="card" target="_blank">
+                    <div class="card-icon">👨‍💼</div>
+                    <div class="card-title">관리자 승인 관리</div>
+                    <div class="card-description">
+                        관리자 역할 승인 및 거부<br>
+                        승인 대기 중인 관리자 목록 관리
+                    </div>
+                    <div class="card-url">{base_url}/secret_admin/dashboard/admin-approval</div>
+                </a>
             </div>
             
             <div class="info-section">
@@ -249,14 +352,31 @@ async def admin_dashboard(request: Request):
         </div>
         
         <script>
-            // 현재 호스트와 포트 정보 표시용
-            const currentHost = window.location.hostname;
-            const currentPort = window.location.port || '8101';
-            const protocol = window.location.protocol;
+            // 쿼리 파라미터에서 토큰 가져와서 localStorage에 저장
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenFromQuery = urlParams.get('token');
+            if (tokenFromQuery) {{
+                localStorage.setItem('wedding_access_token', tokenFromQuery);
+                localStorage.setItem('access_token', tokenFromQuery);
+                // URL에서 토큰 제거 (보안)
+                const newUrl = window.location.pathname;
+                window.history.replaceState({{}}, '', newUrl);
+            }}
             
-            console.log('현재 호스트:', currentHost);
-            console.log('현재 포트:', currentPort);
-            console.log('현재 프로토콜:', protocol);
+            // 모든 관리자 페이지 링크에 토큰 추가
+            document.addEventListener('DOMContentLoaded', function() {{
+                const token = localStorage.getItem('wedding_access_token') || localStorage.getItem('access_token') || '';
+                if (token) {{
+                    const links = document.querySelectorAll('.dashboard-grid a[href*="/secret_admin/"]');
+                    links.forEach(link => {{
+                        const href = link.getAttribute('href');
+                        if (href && !href.includes('token=')) {{
+                            const separator = href.includes('?') ? '&' : '?';
+                            link.setAttribute('href', `${{href}}${{separator}}token=${{encodeURIComponent(token)}}`);
+                        }}
+                    }});
+                }}
+            }});
         </script>
     </body>
     </html>

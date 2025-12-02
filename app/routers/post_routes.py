@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, Depends, Path, Query, status
+from fastapi import APIRouter, UploadFile, File, Depends, Path, Query, Form, status
 from typing import Optional
 from sqlalchemy.orm import Session
 from app.core.security import get_current_user_id, get_current_user_id_optional
@@ -75,3 +75,21 @@ async def upload_post_image(file: UploadFile = File(...)):
     filename = file.filename or "unknown"
     data = await post_controller.upload_post_image_controller(file.content_type or "", file_data, filename)
     return {"message": "upload_success", "data": data}
+
+
+@router.post("/posts/upload-document")
+async def upload_document_with_ocr(
+    file: UploadFile = File(...),
+    title: str = Form(..., description="문서 제목"),
+    user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """문서 업로드 + OCR 처리 API (문서 보관함용)"""
+    file_data = await file.read()
+    filename = file.filename or "unknown"
+    # title이 없으면 파일명 사용
+    document_title = title or filename.rsplit('.', 1)[0] if '.' in filename else filename
+    data = await post_controller.upload_document_with_ocr_controller(
+        file.content_type or "", file_data, filename, document_title, user_id, db
+    )
+    return {"message": "document_uploaded", "data": data}

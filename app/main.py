@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
-from app.routers import auth_routes, user_routes, post_routes, comment_routes, chat_routes, calendar_routes, budget_routes, voice_routes, vendor_routes, vector_routes, sql_terminal_routes, admin_dashboard_routes, admin_docs_routes
+from app.routers import auth_routes, user_routes, post_routes, comment_routes, chat_routes, calendar_routes, budget_routes, voice_routes, vendor_routes, vendor_message_routes, vector_routes, sql_terminal_routes, admin_dashboard_routes, admin_docs_routes, admin_user_auth_routes, admin_vendor_management_routes, admin_vendor_approval_routes, admin_admin_approval_routes, couple_routes
 from app.core.exceptions import APIError
 from app.core.formatter import create_json_response
 from app.core.admin import setup_admin
@@ -48,12 +48,18 @@ app.include_router(calendar_routes.router, prefix="/api")
 app.include_router(budget_routes.router, prefix="/api")
 app.include_router(voice_routes.router, prefix="/api")
 app.include_router(vendor_routes.router, prefix="/api")
+app.include_router(vendor_message_routes.router, prefix="/api")
+app.include_router(couple_routes.router, prefix="/api")
 app.include_router(vector_routes.router, prefix="/api")
 
 # Admin Dashboard & SQL Terminal (Admin 전용)
 app.include_router(admin_dashboard_routes.router, prefix="/secret_admin")
 app.include_router(sql_terminal_routes.router, prefix="/secret_admin")
 app.include_router(admin_docs_routes.router, prefix="/secret_admin")
+app.include_router(admin_user_auth_routes.router, prefix="/secret_admin")
+app.include_router(admin_vendor_management_routes.router, prefix="/secret_admin")
+app.include_router(admin_vendor_approval_routes.router, prefix="/secret_admin")
+app.include_router(admin_admin_approval_routes.router, prefix="/secret_admin")
 
 # Admin Page Setup
 setup_admin(app)
