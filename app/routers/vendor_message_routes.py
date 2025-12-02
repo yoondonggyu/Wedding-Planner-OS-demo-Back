@@ -23,14 +23,14 @@ def get_user_role(user_id: int, db: Session) -> UserRole:
         return UserRole.USER
     return UserRole(user.role) if user.role else UserRole.USER
 
-# 벤더 메시지 쓰레드
+# 제휴 업체 메시지 쓰레드
 @router.post("/vendor-threads")
 async def create_thread(
     request: VendorThreadCreateReq,
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db)
 ):
-    """벤더 메시지 쓰레드 생성"""
+    """제휴 업체 메시지 쓰레드 생성"""
     return vendor_message_controller.create_thread(user_id, request, db)
 
 @router.get("/vendor-threads")
@@ -38,7 +38,7 @@ async def get_threads(
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db)
 ):
-    """벤더 메시지 쓰레드 목록 조회 (사용자 또는 벤더)"""
+    """제휴 업체 메시지 쓰레드 목록 조회 (사용자 또는 제휴 업체)"""
     user_role = get_user_role(user_id, db)
     is_vendor = user_role == UserRole.PARTNER_VENDOR
     return vendor_message_controller.get_threads(user_id, db, is_vendor=is_vendor)
@@ -49,7 +49,7 @@ async def get_thread(
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db)
 ):
-    """벤더 메시지 쓰레드 상세 조회 (사용자 또는 벤더)"""
+    """제휴 업체 메시지 쓰레드 상세 조회 (사용자 또는 제휴 업체)"""
     user_role = get_user_role(user_id, db)
     is_vendor = user_role == UserRole.PARTNER_VENDOR
     return vendor_message_controller.get_thread(thread_id, user_id, db, is_vendor=is_vendor)
@@ -61,7 +61,7 @@ async def update_thread(
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db)
 ):
-    """벤더 메시지 쓰레드 수정"""
+    """제휴 업체 메시지 쓰레드 수정"""
     return vendor_message_controller.update_thread(thread_id, user_id, request, db)
 
 # 메시지
@@ -71,7 +71,7 @@ async def send_message(
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db)
 ):
-    """메시지 전송 (사용자 또는 벤더)"""
+    """메시지 전송 (사용자 또는 제휴 업체)"""
     user_role = get_user_role(user_id, db)
     is_vendor = user_role == UserRole.PARTNER_VENDOR
     return vendor_message_controller.send_message(user_id, request, db, is_vendor=is_vendor)
@@ -145,13 +145,13 @@ async def get_payment_reminders(
     """결제 리마인더 조회"""
     return vendor_message_controller.get_payment_reminders(user_id, days, db)
 
-# 벤더 비교
+# 제휴 업체 비교
 @router.post("/vendors/compare")
 async def compare_vendors(
     request: VendorCompareReq,
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db)
 ):
-    """벤더 비교"""
+    """제휴 업체 비교"""
     return vendor_message_controller.compare_vendors(user_id, request, db)
 

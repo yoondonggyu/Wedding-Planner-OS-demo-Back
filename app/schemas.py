@@ -269,6 +269,112 @@ class VendorPaymentScheduleUpdateReq(BaseModel):
 class VendorCompareReq(BaseModel):
     vendor_ids: list[int]  # 비교할 벤더 ID 리스트 (최대 5개)
 
+# Invitation (청첩장 디자인 서비스)
+class InvitationDesignCreateReq(BaseModel):
+    template_id: int | None = None
+    design_data: dict  # 디자인 설정 (문구, 이미지, 레이아웃 등)
+    qr_code_data: dict | None = None  # QR 코드 데이터 (디지털 초대장, 축의금, RSVP 링크)
+
+class InvitationDesignUpdateReq(BaseModel):
+    design_data: dict | None = None
+    qr_code_data: dict | None = None
+    status: str | None = None  # DRAFT, COMPLETED
+
+class InvitationTextRecommendReq(BaseModel):
+    groom_name: str
+    bride_name: str
+    wedding_date: str  # YYYY-MM-DD
+    wedding_time: str | None = None  # HH:MM
+    wedding_location: str | None = None
+    style: str | None = None  # CLASSIC, MODERN, VINTAGE 등
+    additional_info: str | None = None  # 추가 정보
+
+class InvitationQRCodeGenerateReq(BaseModel):
+    digital_invitation_url: str | None = None  # 디지털 초대장 URL
+    payment_url: str | None = None  # 축의금 결제 URL
+    rsvp_url: str | None = None  # RSVP URL
+
+class InvitationPDFGenerateReq(BaseModel):
+    design_id: int
+    paper_size: str = "A5"  # A5, A6 등
+    dpi: int = 300  # 인쇄 해상도
+
+class InvitationOrderCreateReq(BaseModel):
+    design_id: int
+    quantity: int
+    paper_type: str | None = None  # 일반, 고급, 에코 등
+    paper_size: str = "A5"
+    shipping_address: str
+    shipping_phone: str
+    shipping_name: str
+
+class InvitationOrderUpdateReq(BaseModel):
+    order_status: str | None = None  # PENDING, CONFIRMED, PRINTING, SHIPPED, DELIVERED
+    vendor_id: int | None = None
+    shipping_address: str | None = None
+    shipping_phone: str | None = None
+    shipping_name: str | None = None
+
+# Digital Invitation (디지털 초대장 + 축의금 결제)
+class DigitalInvitationCreateReq(BaseModel):
+    invitation_design_id: int | None = None  # 연결된 청첩장 디자인 ID
+    theme: str  # CLASSIC, MODERN, ROMANTIC 등
+    groom_name: str
+    bride_name: str
+    wedding_date: str  # YYYY-MM-DD
+    wedding_time: str | None = None  # HH:MM
+    wedding_location: str
+    wedding_location_detail: str | None = None
+    map_url: str | None = None
+    parking_info: str | None = None
+    invitation_data: dict | None = None  # 테마별 추가 설정
+
+class DigitalInvitationUpdateReq(BaseModel):
+    theme: str | None = None
+    groom_name: str | None = None
+    bride_name: str | None = None
+    wedding_date: str | None = None
+    wedding_time: str | None = None
+    wedding_location: str | None = None
+    wedding_location_detail: str | None = None
+    map_url: str | None = None
+    parking_info: str | None = None
+    invitation_data: dict | None = None
+    is_active: bool | None = None
+
+class PaymentCreateReq(BaseModel):
+    invitation_id: int
+    payer_name: str
+    payer_phone: str | None = None
+    payer_message: str | None = None
+    amount: float
+    payment_method: str  # BANK_TRANSFER, KAKAO_PAY, TOSS, CREDIT_CARD
+
+class RSVPCreateReq(BaseModel):
+    invitation_id: int
+    guest_name: str
+    guest_phone: str | None = None
+    guest_email: str | None = None
+    status: str  # ATTENDING, NOT_ATTENDING, MAYBE
+    plus_one: bool = False
+    plus_one_name: str | None = None
+    dietary_restrictions: str | None = None
+    special_requests: str | None = None
+
+class RSVPUpdateReq(BaseModel):
+    status: str | None = None
+    plus_one: bool | None = None
+    plus_one_name: str | None = None
+    dietary_restrictions: str | None = None
+    special_requests: str | None = None
+
+class GuestMessageCreateReq(BaseModel):
+    invitation_id: int
+    guest_name: str
+    guest_phone: str | None = None
+    message: str | None = None
+    image_url: str | None = None
+
 # Base Response
 class BaseResponse(BaseModel):
     message: str

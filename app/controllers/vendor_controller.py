@@ -352,7 +352,7 @@ def recommend_vendors(user_id: int, request: VendorRecommendReq, db: Session) ->
 
 
 def get_my_vendor(user_id: int, db: Session) -> Dict:
-    """벤더 계정의 자신의 벤더 정보 조회"""
+    """제휴 업체 계정의 자신의 제휴 업체 정보 조회"""
     from app.models.db.user import User
     
     vendor = db.query(Vendor).filter(Vendor.user_id == user_id).first()
@@ -377,7 +377,7 @@ def get_my_vendor(user_id: int, db: Session) -> Dict:
     }
 
 def get_vendors(vendor_type: str | None, db: Session) -> Dict:
-    """벤더 목록 조회 (카테고리별)"""
+    """제휴 업체 목록 조회 (카테고리별)"""
     query = db.query(Vendor)
     
     if vendor_type:

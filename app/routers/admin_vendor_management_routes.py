@@ -70,7 +70,7 @@ def require_system_admin(user_id: int = Depends(get_current_user_id), db: Sessio
 
 @router.get("/dashboard/vendor-management", response_class=HTMLResponse)
 async def vendor_management_page(request: Request):
-    """벤더 관리 페이지"""
+    """제휴 업체 관리 페이지"""
     base_url = str(request.base_url).rstrip('/')
     
     html = f"""
@@ -79,7 +79,7 @@ async def vendor_management_page(request: Request):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>벤더 관리 - Wedding OS</title>
+        <title>제휴 업체 관리 - Wedding OS</title>
         <link rel="icon" type="image/png" href="{base_url}/static/favicon.png">
         <style>
             * {{
@@ -348,8 +348,8 @@ async def vendor_management_page(request: Request):
             <a href="{base_url}/secret_admin/dashboard" class="back-link">← 대시보드로 돌아가기</a>
             
             <div class="header">
-                <h1>🏢 벤더 관리</h1>
-                <button class="btn-primary" onclick="openCreateModal()">+ 새 벤더 추가</button>
+                <h1>🏢 제휴 업체 관리</h1>
+                <button class="btn-primary" onclick="openCreateModal()">+ 새 제휴 업체 추가</button>
             </div>
             
             <div class="filters">
@@ -370,7 +370,7 @@ async def vendor_management_page(request: Request):
                 </div>
                 <div class="filter-group">
                     <label>검색</label>
-                    <input type="text" id="filterSearch" placeholder="벤더명 검색">
+                    <input type="text" id="filterSearch" placeholder="제휴 업체명 검색">
                 </div>
             </div>
             
@@ -385,13 +385,13 @@ async def vendor_management_page(request: Request):
         <div id="vendorModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 id="modalTitle">새 벤더 추가</h2>
+                    <h2 id="modalTitle">새 제휴 업체 추가</h2>
                     <button class="close-btn" onclick="closeModal()">&times;</button>
                 </div>
                 <form id="vendorForm">
                     <input type="hidden" id="vendorId">
                     <div class="form-group">
-                        <label>벤더 타입 *</label>
+                        <label>제휴 업체 타입 *</label>
                         <select id="vendorType" required>
                             <option value="">선택하세요</option>
                             <option value="IPHONE_SNAP">아이폰 스냅</option>
@@ -402,7 +402,7 @@ async def vendor_management_page(request: Request):
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>벤더명 *</label>
+                        <label>제휴 업체명 *</label>
                         <input type="text" id="vendorName" required>
                     </div>
                     <div class="form-group">
@@ -478,7 +478,7 @@ async def vendor_management_page(request: Request):
                     }});
                     
                     if (!response.ok) {{
-                        let errorMsg = '벤더 목록을 불러올 수 없습니다.';
+                        let errorMsg = '제휴 업체 목록을 불러올 수 없습니다.';
                         try {{
                             const errorData = await response.json();
                             if (response.status === 401 || response.status === 403) {{
@@ -502,18 +502,18 @@ async def vendor_management_page(request: Request):
                     vendors = data.data?.vendors || data.vendors || [];
                     renderVendors();
                 }} catch (error) {{
-                    console.error('벤더 목록 로드 실패:', error);
+                    console.error('제휴 업체 목록 로드 실패:', error);
                     document.getElementById('vendorTableContainer').innerHTML = 
                         `<div style="color: #ef4444; padding: 20px; white-space: pre-line;">${{error.message}}</div>`;
                 }}
             }}
             
-            // 벤더 목록 렌더링
+            // 제휴 업체 목록 렌더링
             function renderVendors() {{
                 const container = document.getElementById('vendorTableContainer');
                 
                 if (vendors.length === 0) {{
-                    container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">벤더가 없습니다.</div>';
+                    container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">제휴 업체가 없습니다.</div>';
                     return;
                 }}
                 
@@ -523,7 +523,7 @@ async def vendor_management_page(request: Request):
                             <tr>
                                 <th>ID</th>
                                 <th>타입</th>
-                                <th>벤더명</th>
+                                <th>제휴 업체명</th>
                                 <th>지역</th>
                                 <th>가격 범위</th>
                                 <th>평점</th>
@@ -580,7 +580,7 @@ async def vendor_management_page(request: Request):
             // 모달 열기/닫기
             function openCreateModal() {{
                 editingVendorId = null;
-                document.getElementById('modalTitle').textContent = '새 벤더 추가';
+                document.getElementById('modalTitle').textContent = '새 제휴 업체 추가';
                 document.getElementById('vendorForm').reset();
                 document.getElementById('vendorId').value = '';
                 document.getElementById('vendorModal').style.display = 'block';
@@ -591,13 +591,13 @@ async def vendor_management_page(request: Request):
                 editingVendorId = null;
             }}
             
-            // 벤더 수정
+            // 제휴 업체 수정
             async function editVendor(id) {{
                 const vendor = vendors.find(v => v.id === id);
                 if (!vendor) return;
                 
                 editingVendorId = id;
-                document.getElementById('modalTitle').textContent = '벤더 수정';
+                document.getElementById('modalTitle').textContent = '제휴 업체 수정';
                 document.getElementById('vendorId').value = vendor.id;
                 document.getElementById('vendorType').value = vendor.vendor_type;
                 document.getElementById('vendorName').value = vendor.name;
@@ -611,7 +611,7 @@ async def vendor_management_page(request: Request):
                 document.getElementById('vendorModal').style.display = 'block';
             }}
             
-            // 벤더 삭제
+            // 제휴 업체 삭제
             async function deleteVendor(id) {{
                 if (!confirm('정말 삭제하시겠습니까?')) return;
                 
@@ -624,16 +624,16 @@ async def vendor_management_page(request: Request):
                     }});
                     
                     if (response.ok) {{
-                        alert('벤더가 삭제되었습니다.');
+                        alert('제휴 업체가 삭제되었습니다.');
                         loadVendors();
                     }} else {{
                         const data = await response.json();
                         const errorMsg = data?.data?.error || data?.error || data?.message || '삭제에 실패했습니다.';
-                        console.error('벤더 삭제 실패:', data);
+                        console.error('제휴 업체 삭제 실패:', data);
                         alert(`삭제에 실패했습니다: ${{errorMsg}}`);
                     }}
                 }} catch (error) {{
-                    console.error('벤더 삭제 중 오류:', error);
+                    console.error('제휴 업체 삭제 중 오류:', error);
                     alert(`삭제 중 오류가 발생했습니다: ${{error.message || error}}`);
                 }}
             }}
@@ -687,7 +687,7 @@ async def vendor_management_page(request: Request):
                     }}
                     
                     if (response.ok) {{
-                        alert(editingVendorId ? '벤더가 수정되었습니다.' : '벤더가 생성되었습니다.');
+                        alert(editingVendorId ? '제휴 업체가 수정되었습니다.' : '제휴 업체가 생성되었습니다.');
                         closeModal();
                         loadVendors();
                     }} else {{
@@ -705,7 +705,7 @@ async def vendor_management_page(request: Request):
                         }} else if (data?.message) {{
                             errorMsg = data.message;
                         }}
-                        console.error('벤더 저장 실패:', {{
+                        console.error('제휴 업체 저장 실패:', {{
                             status: response.status,
                             statusText: response.statusText,
                             data: data
@@ -713,7 +713,7 @@ async def vendor_management_page(request: Request):
                         alert(errorMsg);
                     }}
                 }} catch (error) {{
-                    console.error('벤더 저장 중 오류:', error);
+                    console.error('제휴 업체 저장 중 오류:', error);
                     alert(`저장 중 오류가 발생했습니다: ${{error.message || error}}`);
                 }}
             }});
@@ -743,7 +743,7 @@ async def get_vendors(
     db: Session = Depends(get_db),
     _: User = Depends(require_system_admin)
 ):
-    """벤더 목록 조회 (시스템 관리자만)"""
+    """제휴 업체 목록 조회 (시스템 관리자만)"""
     query = db.query(Vendor)
     
     if vendor_type:
@@ -792,13 +792,13 @@ async def create_vendor(
     db: Session = Depends(get_db),
     _: User = Depends(require_system_admin)
 ):
-    """벤더 생성 (시스템 관리자만)"""
+    """제휴 업체 생성 (시스템 관리자만)"""
     try:
         vendor_type_enum = VendorType(request.vendor_type)
     except ValueError:
         return JSONResponse(
             status_code=400,
-            content={"message": "error", "data": {"error": f"잘못된 벤더 타입입니다: {request.vendor_type}"}}
+            content={"message": "error", "data": {"error": f"잘못된 제휴 업체 타입입니다: {request.vendor_type}"}}
         )
     
     vendor = Vendor(
@@ -849,7 +849,7 @@ async def create_vendor(
         traceback.print_exc()
         return JSONResponse(
             status_code=400,
-            content={"message": "error", "data": {"error": f"벤더 생성에 실패했습니다: {str(e)}"}}
+            content={"message": "error", "data": {"error": f"제휴 업체 생성에 실패했습니다: {str(e)}"}}
         )
 
 
@@ -860,13 +860,13 @@ async def update_vendor(
     db: Session = Depends(get_db),
     _: User = Depends(require_system_admin)
 ):
-    """벤더 수정 (시스템 관리자만)"""
+    """제휴 업체 수정 (시스템 관리자만)"""
     vendor = db.query(Vendor).filter(Vendor.id == vendor_id).first()
     
     if not vendor:
         return JSONResponse(
             status_code=404,
-            content={"message": "error", "data": {"error": "벤더를 찾을 수 없습니다."}}
+            content={"message": "error", "data": {"error": "제휴 업체를 찾을 수 없습니다."}}
         )
     
     try:
@@ -919,13 +919,13 @@ async def delete_vendor(
     db: Session = Depends(get_db),
     _: User = Depends(require_system_admin)
 ):
-    """벤더 삭제 (시스템 관리자만)"""
+    """제휴 업체 삭제 (시스템 관리자만)"""
     vendor = db.query(Vendor).filter(Vendor.id == vendor_id).first()
     
     if not vendor:
         return JSONResponse(
             status_code=404,
-            content={"message": "error", "data": {"error": "벤더를 찾을 수 없습니다."}}
+            content={"message": "error", "data": {"error": "제휴 업체를 찾을 수 없습니다."}}
         )
     
     try:

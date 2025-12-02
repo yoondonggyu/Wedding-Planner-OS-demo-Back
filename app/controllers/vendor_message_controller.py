@@ -22,11 +22,11 @@ from app.core.couple_helpers import get_user_couple_id, get_couple_user_ids
 
 
 def create_thread(user_id: int, request: VendorThreadCreateReq, db: Session) -> Dict:
-    """벤더 메시지 쓰레드 생성"""
-    # 벤더 존재 확인
+    """제휴 업체 메시지 쓰레드 생성"""
+    # 제휴 업체 존재 확인
     vendor = db.query(Vendor).filter(Vendor.id == request.vendor_id).first()
     if not vendor:
-        return {"message": "error", "data": {"error": "벤더를 찾을 수 없습니다."}}
+        return {"message": "error", "data": {"error": "제휴 업체를 찾을 수 없습니다."}}
     
     # 이미 쓰레드가 있는지 확인
     existing_thread = db.query(VendorThread).filter(
@@ -47,7 +47,7 @@ def create_thread(user_id: int, request: VendorThreadCreateReq, db: Session) -> 
             }
         }
     
-    # 제목이 없으면 벤더 이름으로 자동 생성
+    # 제목이 없으면 제휴 업체 이름으로 자동 생성
     title = request.title or f"{vendor.name}와의 대화"
     
     # 커플 ID 가져오기
@@ -86,11 +86,11 @@ def create_thread(user_id: int, request: VendorThreadCreateReq, db: Session) -> 
 
 
 def get_threads(user_id: int, db: Session, is_vendor: bool = False) -> Dict:
-    """사용자 또는 벤더의 쓰레드 목록 조회"""
+    """사용자 또는 제휴 업체의 쓰레드 목록 조회"""
     from app.models.db.user import User
     
     if is_vendor:
-        # 벤더 계정인 경우: 자신의 vendor_id와 연결된 쓰레드 조회
+        # 제휴 업체 계정인 경우: 자신의 vendor_id와 연결된 쓰레드 조회
         vendor = db.query(Vendor).filter(Vendor.user_id == user_id).first()
         if not vendor:
             return {"message": "threads_retrieved", "data": {"threads": []}}
@@ -125,7 +125,7 @@ def get_threads(user_id: int, db: Session, is_vendor: bool = False) -> Dict:
         vendor = db.query(Vendor).filter(Vendor.id == thread.vendor_id).first()
         # 읽지 않은 메시지 수 계산
         if is_vendor:
-            # 벤더 계정: 사용자가 보낸 메시지 중 읽지 않은 것
+            # 제휴 업체 계정: 사용자가 보낸 메시지 중 읽지 않은 것
             unread_count = db.query(VendorMessage).filter(
                 and_(
                     VendorMessage.thread_id == thread.id,
@@ -134,7 +134,7 @@ def get_threads(user_id: int, db: Session, is_vendor: bool = False) -> Dict:
                 )
             ).count()
         else:
-            # 일반 사용자 계정: 벤더가 보낸 메시지 중 읽지 않은 것
+            # 일반 사용자 계정: 제휴 업체가 보낸 메시지 중 읽지 않은 것
             unread_count = db.query(VendorMessage).filter(
                 and_(
                     VendorMessage.thread_id == thread.id,
@@ -170,7 +170,7 @@ def get_threads(user_id: int, db: Session, is_vendor: bool = False) -> Dict:
 
 
 def get_thread(thread_id: int, user_id: int, db: Session, is_vendor: bool = False) -> Dict:
-    """벤더 쓰레드 상세 조회 (메시지 포함) - 사용자 또는 벤더"""
+    """제휴 업체 쓰레드 상세 조회 (메시지 포함) - 사용자 또는 제휴 업체"""
     from app.models.db.user import User
     
     # 쓰레드 조회
@@ -183,7 +183,7 @@ def get_thread(thread_id: int, user_id: int, db: Session, is_vendor: bool = Fals
     
     # 권한 확인
     if is_vendor:
-        # 벤더 계정인 경우: 자신의 vendor_id와 쓰레드의 vendor_id가 일치해야 함
+        # 제휴 업체 계정인 경우: 자신의 vendor_id와 쓰레드의 vendor_id가 일치해야 함
         vendor = db.query(Vendor).filter(Vendor.user_id == user_id).first()
         if not vendor or vendor.id != thread.vendor_id:
             return {"message": "error", "data": {"error": "이 쓰레드에 접근할 권한이 없습니다."}}
@@ -201,7 +201,7 @@ def get_thread(thread_id: int, user_id: int, db: Session, is_vendor: bool = Fals
     
     # 읽지 않은 메시지를 읽음으로 표시
     if is_vendor:
-        # 벤더 계정: 사용자가 보낸 메시지를 읽음으로 표시
+        # 제휴 업체 계정: 사용자가 보낸 메시지를 읽음으로 표시
         db.query(VendorMessage).filter(
             and_(
                 VendorMessage.thread_id == thread_id,
@@ -210,7 +210,7 @@ def get_thread(thread_id: int, user_id: int, db: Session, is_vendor: bool = Fals
             )
         ).update({"is_read": True})
     else:
-        # 일반 사용자 계정: 벤더가 보낸 메시지를 읽음으로 표시
+        # 일반 사용자 계정: 제휴 업체가 보낸 메시지를 읽음으로 표시
         db.query(VendorMessage).filter(
             and_(
                 VendorMessage.thread_id == thread_id,
@@ -311,7 +311,7 @@ def get_thread(thread_id: int, user_id: int, db: Session, is_vendor: bool = Fals
 
 
 def update_thread(thread_id: int, user_id: int, request: VendorThreadUpdateReq, db: Session) -> Dict:
-    """벤더 쓰레드 수정"""
+    """제휴 업체 쓰레드 수정"""
     thread = db.query(VendorThread).filter(
         and_(
             VendorThread.id == thread_id,
@@ -346,7 +346,7 @@ def update_thread(thread_id: int, user_id: int, request: VendorThreadUpdateReq, 
 
 
 def send_message(user_id: int, request: VendorMessageCreateReq, db: Session, is_vendor: bool = False) -> Dict:
-    """메시지 전송 (사용자 또는 벤더)"""
+    """메시지 전송 (사용자 또는 제휴 업체)"""
     from app.models.db.user import User
     
     # 쓰레드 조회
@@ -359,7 +359,7 @@ def send_message(user_id: int, request: VendorMessageCreateReq, db: Session, is_
     
     # 권한 확인
     if is_vendor:
-        # 벤더 계정인 경우: 자신의 vendor_id와 쓰레드의 vendor_id가 일치해야 함
+        # 제휴 업체 계정인 경우: 자신의 vendor_id와 쓰레드의 vendor_id가 일치해야 함
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
             return {"message": "error", "data": {"error": "사용자를 찾을 수 없습니다."}}
@@ -550,9 +550,9 @@ def create_document(user_id: int, request: VendorDocumentCreateReq, db: Session)
         version=new_version,
         file_url=request.file_url,
         file_name=request.file_name,
-        file_size=request.file_size,
+        file_size=request.file_size if request.file_size else None,
         status=DocumentStatus.DRAFT,
-        document_metadata=request.metadata or {}
+        document_metadata=request.metadata if request.metadata else {}
     )
     
     try:
@@ -670,7 +670,7 @@ def _create_calendar_event_for_payment(user_id: int, contract: VendorContract, p
     """결제 일정을 캘린더에 자동 등록"""
     try:
         vendor = db.query(Vendor).filter(Vendor.id == contract.vendor_id).first()
-        vendor_name = vendor.name if vendor else "벤더"
+        vendor_name = vendor.name if vendor else "제휴 업체"
         
         payment_type_names = {
             PaymentType.DEPOSIT: "계약금",
@@ -786,18 +786,18 @@ def get_payment_reminders(user_id: int, days: int = 7, db: Session = None) -> Di
 
 
 def compare_vendors(user_id: int, request: VendorCompareReq, db: Session) -> Dict:
-    """벤더 비교"""
+    """제휴 업체 비교"""
     if len(request.vendor_ids) > 5:
         return {"message": "error", "data": {"error": "최대 5개까지 비교할 수 있습니다."}}
     
     vendors = db.query(Vendor).filter(Vendor.id.in_(request.vendor_ids)).all()
     
     if len(vendors) != len(request.vendor_ids):
-        return {"message": "error", "data": {"error": "일부 벤더를 찾을 수 없습니다."}}
+        return {"message": "error", "data": {"error": "일부 제휴 업체를 찾을 수 없습니다."}}
     
     result = []
     for vendor in vendors:
-        # 각 벤더의 계약 정보 조회
+        # 각 제휴 업체의 계약 정보 조회
         contracts = db.query(VendorContract).filter(
             and_(
                 VendorContract.vendor_id == vendor.id,

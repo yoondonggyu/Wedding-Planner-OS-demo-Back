@@ -10,6 +10,14 @@ from app.models.db.vendor_message import (
     VendorThread, VendorMessage, VendorContract, VendorDocument, VendorPaymentSchedule,
     MessageSenderType, DocumentType, DocumentStatus, PaymentType, PaymentStatus
 )
+from app.models.db.invitation import (
+    InvitationTemplate, InvitationDesign, InvitationOrder,
+    InvitationTemplateStyle, InvitationDesignStatus
+)
+from app.models.db.digital_invitation import (
+    DigitalInvitation, Payment, RSVP, GuestMessage,
+    InvitationTheme, RSVPStatus, PaymentStatus, PaymentMethod
+)
 
 __all__ = [
     "User", "Gender", "VendorApprovalStatus", "Post", "PostLike", "Tag", "Comment", "post_tags",
@@ -19,7 +27,11 @@ __all__ = [
     "ChatHistory", "ChatRole",
     "Couple", "CoupleStatus",
     "VendorThread", "VendorMessage", "VendorContract", "VendorDocument", "VendorPaymentSchedule",
-    "MessageSenderType", "DocumentType", "DocumentStatus", "PaymentType", "PaymentStatus"
+    "MessageSenderType", "DocumentType", "DocumentStatus", "PaymentType", "PaymentStatus",
+    "InvitationTemplate", "InvitationDesign", "InvitationOrder",
+    "InvitationTemplateStyle", "InvitationDesignStatus",
+    "DigitalInvitation", "Payment", "RSVP", "GuestMessage",
+    "InvitationTheme", "RSVPStatus", "PaymentStatus", "PaymentMethod"
 ]
 
 

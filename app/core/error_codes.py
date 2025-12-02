@@ -21,6 +21,8 @@ class ErrorCode(IntEnum):
     INVALID_GENDER = 4007
     INVALID_COUPLE_KEY = 4008
     COUPLE_ALREADY_CONNECTED = 4009
+    INVALID_STATUS = 40010
+    DESIGN_NOT_COMPLETED = 40011
     
     # 401 Unauthorized (4011, 4012, ..., 4019, 40110, 40111, ...)
     UNAUTHORIZED = 4011
@@ -42,6 +44,8 @@ class ErrorCode(IntEnum):
     VENDOR_NOT_FOUND = 4048
     WEDDING_PROFILE_NOT_FOUND = 4049
     FAVORITE_NOT_FOUND = 40410
+    TEMPLATE_NOT_FOUND = 40411
+    DESIGN_NOT_FOUND = 40412
     
     # 409 Conflict (4090, 4091, ..., 4099, 40910, 40911, ...)
     DUPLICATE_EMAIL = 4090
@@ -91,6 +95,8 @@ ERROR_MESSAGES = {
     ErrorCode.INVALID_GENDER: "invalid_gender",
     ErrorCode.INVALID_COUPLE_KEY: "invalid_couple_key",
     ErrorCode.COUPLE_ALREADY_CONNECTED: "couple_already_connected",
+    ErrorCode.INVALID_STATUS: "invalid_status",
+    ErrorCode.DESIGN_NOT_COMPLETED: "design_not_completed",
     
     # 401 Unauthorized
     ErrorCode.UNAUTHORIZED: "unauthorized_user",
@@ -112,6 +118,8 @@ ERROR_MESSAGES = {
     ErrorCode.VENDOR_NOT_FOUND: "vendor_not_found",
     ErrorCode.WEDDING_PROFILE_NOT_FOUND: "wedding_profile_not_found",
     ErrorCode.FAVORITE_NOT_FOUND: "favorite_not_found",
+    ErrorCode.TEMPLATE_NOT_FOUND: "template_not_found",
+    ErrorCode.DESIGN_NOT_FOUND: "design_not_found",
     
     # 409 Conflict
     ErrorCode.DUPLICATE_EMAIL: "duplicate_email",

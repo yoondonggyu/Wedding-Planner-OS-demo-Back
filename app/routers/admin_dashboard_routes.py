@@ -310,10 +310,10 @@ async def admin_dashboard(request: Request):
                 
                 <a href="{base_url}/secret_admin/dashboard/vendor-management" class="card" target="_blank">
                     <div class="card-icon">🏢</div>
-                    <div class="card-title">벤더 관리</div>
+                    <div class="card-title">제휴 업체 관리</div>
                     <div class="card-description">
-                        벤더 업체 목록 관리<br>
-                        카테고리별 벤더 추가, 수정, 삭제
+                        제휴 업체 목록 관리<br>
+                        카테고리별 제휴 업체 추가, 수정, 삭제
                     </div>
                     <div class="card-url">{base_url}/secret_admin/dashboard/vendor-management</div>
                 </a>
