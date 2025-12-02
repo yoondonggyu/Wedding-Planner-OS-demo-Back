@@ -18,6 +18,9 @@ class ErrorCode(IntEnum):
     INVALID_FILE_TYPE = 4004
     INVALID_GUEST_COUNT_CATEGORY = 4005
     INVALID_VENDOR_TYPE = 4006
+    INVALID_GENDER = 4007
+    INVALID_COUPLE_KEY = 4008
+    COUPLE_ALREADY_CONNECTED = 4009
     
     # 401 Unauthorized (4011, 4012, ..., 4019, 40110, 40111, ...)
     UNAUTHORIZED = 4011
@@ -85,6 +88,9 @@ ERROR_MESSAGES = {
     ErrorCode.INVALID_FILE_TYPE: "invalid_file_type",
     ErrorCode.INVALID_GUEST_COUNT_CATEGORY: "invalid_guest_count_category",
     ErrorCode.INVALID_VENDOR_TYPE: "invalid_vendor_type",
+    ErrorCode.INVALID_GENDER: "invalid_gender",
+    ErrorCode.INVALID_COUPLE_KEY: "invalid_couple_key",
+    ErrorCode.COUPLE_ALREADY_CONNECTED: "couple_already_connected",
     
     # 401 Unauthorized
     ErrorCode.UNAUTHORIZED: "unauthorized_user",

@@ -34,16 +34,17 @@ def _inject_favicon(html_content: str, base_url: str) -> str:
 
 @router.get("/api-reference", response_class=HTMLResponse)
 async def api_reference(request: Request):
-    """API 레퍼런스 문서"""
+    """API 레퍼런스 문서 (상세 설명 페이지로 리다이렉트)"""
+    # api_reference_details.html로 리다이렉트
     base_url = str(request.base_url).rstrip('/')
-    if API_REF_PATH.exists():
-        with open(API_REF_PATH, 'r', encoding='utf-8') as f:
+    if API_REF_DETAILS_PATH.exists():
+        with open(API_REF_DETAILS_PATH, 'r', encoding='utf-8') as f:
             content = f.read()
             content = _inject_favicon(content, base_url)
             return HTMLResponse(content=content)
     else:
         return HTMLResponse(
-            content=f"<h1>파일을 찾을 수 없습니다</h1><p>경로: {API_REF_PATH}</p>",
+            content=f"<h1>파일을 찾을 수 없습니다</h1><p>경로: {API_REF_DETAILS_PATH}</p>",
             status_code=404
         )
 

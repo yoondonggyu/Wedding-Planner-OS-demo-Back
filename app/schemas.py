@@ -1,4 +1,11 @@
 from pydantic import BaseModel, HttpUrl, Field
+import enum
+from typing import Any
+
+# Enums
+class Gender(str, enum.Enum):
+    BRIDE = "BRIDE"
+    GROOM = "GROOM"
 
 # Auth
 class LoginReq(BaseModel):
@@ -14,7 +21,13 @@ class SignupReq(BaseModel):
     password: str
     password_check: str
     nickname: str
-    profile_image_url: HttpUrl
+    profile_image_url: HttpUrl | None = None
+    gender: Gender | None = None  # 신부/신랑
+    is_partner_vendor: bool = False  # 제휴 업체로 가입 신청
+    invite_code: str | None = None  # 초대 링크의 커플 키 (자동 매칭용)
+
+class CoupleConnectReq(BaseModel):
+    partner_couple_key: str
 
 # Users
 class NicknamePatchReq(BaseModel):
@@ -188,3 +201,76 @@ class VendorRecommendReq(BaseModel):
 class FavoriteVendorCreateReq(BaseModel):
     wedding_profile_id: int
     vendor_id: int
+
+# Vendor Message & Payment Reminder
+class VendorThreadCreateReq(BaseModel):
+    vendor_id: int
+    title: str | None = None  # None이면 벤더 이름으로 자동 생성
+    is_shared_with_partner: bool = False  # 파트너와 공유 여부
+
+class VendorThreadUpdateReq(BaseModel):
+    title: str | None = None
+    is_active: bool | None = None
+
+class VendorMessageCreateReq(BaseModel):
+    thread_id: int
+    content: str
+    attachments: list[str] | None = None  # 파일 URL 리스트
+
+class VendorContractCreateReq(BaseModel):
+    thread_id: int
+    contract_date: str | None = None  # YYYY-MM-DD
+    total_amount: float | None = None
+    deposit_amount: float | None = None
+    interim_amount: float | None = None
+    balance_amount: float | None = None
+    service_date: str | None = None  # YYYY-MM-DD
+    notes: str | None = None
+
+class VendorContractUpdateReq(BaseModel):
+    contract_date: str | None = None
+    total_amount: float | None = None
+    deposit_amount: float | None = None
+    interim_amount: float | None = None
+    balance_amount: float | None = None
+    service_date: str | None = None
+    notes: str | None = None
+    is_active: bool | None = None
+
+class VendorDocumentCreateReq(BaseModel):
+    contract_id: int
+    document_type: str  # quote, contract, invoice, receipt
+    file_url: str
+    file_name: str
+    file_size: int | None = None
+    metadata: dict | None = None
+
+class VendorDocumentUpdateReq(BaseModel):
+    status: str | None = None  # draft, pending, signed, rejected
+    signed_at: str | None = None  # YYYY-MM-DD HH:MM:SS
+    signed_by: str | None = None
+    metadata: dict | None = None
+
+class VendorPaymentScheduleCreateReq(BaseModel):
+    contract_id: int
+    payment_type: str  # deposit, interim, balance, additional
+    amount: float
+    due_date: str  # YYYY-MM-DD
+    notes: str | None = None
+
+class VendorPaymentScheduleUpdateReq(BaseModel):
+    amount: float | None = None
+    due_date: str | None = None
+    paid_date: str | None = None  # YYYY-MM-DD
+    payment_method: str | None = None
+    status: str | None = None  # pending, paid, overdue, cancelled
+    notes: str | None = None
+
+class VendorCompareReq(BaseModel):
+    vendor_ids: list[int]  # 비교할 벤더 ID 리스트 (최대 5개)
+
+# Base Response
+class BaseResponse(BaseModel):
+    message: str
+    data: Any | None = None
+    error_code: int | None = None

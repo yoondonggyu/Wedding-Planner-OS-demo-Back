@@ -81,6 +81,22 @@ async def recommend_vendors(
     )
     return vendor_controller.recommend_vendors(user_id, request, db)
 
+@router.get("/vendors")
+async def get_vendors(
+    vendor_type: str | None = Query(None, description="벤더 타입 필터"),
+    db: Session = Depends(get_db)
+):
+    """벤더 목록 조회 (카테고리별)"""
+    return vendor_controller.get_vendors(vendor_type, db)
+
+@router.get("/vendors/my-vendor")
+async def get_my_vendor(
+    user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """벤더 계정의 자신의 벤더 정보 조회"""
+    return vendor_controller.get_my_vendor(user_id, db)
+
 @router.get("/vendors/{vendor_id}")
 async def get_vendor(
     vendor_id: int,
@@ -116,4 +132,6 @@ async def delete_favorite(
 ):
     """찜 삭제"""
     return vendor_controller.delete_favorite(favorite_id, user_id, db)
+
+
 

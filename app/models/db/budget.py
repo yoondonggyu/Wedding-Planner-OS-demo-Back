@@ -25,6 +25,7 @@ class BudgetItem(Base):
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     user_id = Column(BigInteger, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    couple_id = Column(BigInteger, ForeignKey("couples.id", ondelete="SET NULL"), nullable=True)  # 커플 공유
     item_name = Column(String(255), nullable=False)
     category = Column(Enum(BudgetCategory), nullable=False)
     estimated_budget = Column(Numeric(15, 2), nullable=False)

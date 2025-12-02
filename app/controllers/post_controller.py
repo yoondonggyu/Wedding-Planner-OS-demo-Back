@@ -1,7 +1,7 @@
 import os
 import uuid
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from app.core.validators import validate_title
 from app.core.exceptions import bad_request, not_found, forbidden, unprocessable, unauthorized, payload_too_large
 from app.core.error_codes import ErrorCode
@@ -9,6 +9,8 @@ from app.models.db import Post, PostLike, Tag, User, Comment
 from app.schemas import PostCreateReq, PostUpdateReq
 from app.services.model_client import predict_image, summarize_text, auto_tag_text, analyze_sentiment
 from app.services import post_vector_service
+from app.services.ocr_service import extract_text_from_image, extract_text_from_image_paddle
+from app.core.couple_helpers import get_user_couple_id, get_couple_filter_with_user
 
 UPLOAD_DIR = os.path.abspath("./uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -72,8 +74,12 @@ async def create_post_controller(req: PostCreateReq, user_id: int, db: Session):
                     db.flush()  # Get ID
                 db_tags.append(tag)
 
+    # 커플 ID 가져오기
+    couple_id = get_user_couple_id(user_id, db)
+    
     post = Post(
         user_id=user_id,
+        couple_id=couple_id,  # 커플 공유
         title=req.title,
         content=req.content,
         image_url=str(req.image_url) if req.image_url else None,
@@ -100,7 +106,7 @@ async def create_post_controller(req: PostCreateReq, user_id: int, db: Session):
 
 
 def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, board_type: str = "couple", db: Session = None):
-    """게시글 목록 조회 컨트롤러"""
+    """게시글 목록 조회 컨트롤러 (커플 데이터 공유)"""
     if page < 1:
         page = 1
     if limit < 1 or limit > 100:
@@ -108,13 +114,46 @@ def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, bo
     
     offset = (page - 1) * limit
     
-    # Total count
-    total = db.query(func.count(Post.id)).filter(Post.board_type == board_type).scalar()
-    
-    # Query posts
-    posts = db.query(Post).filter(Post.board_type == board_type)\
-        .order_by(Post.created_at.desc())\
+    # "커플 전용 공간" (private)과 "문서 보관함" (vault)은 커플이 연결된 사용자만 조회 가능
+    if board_type == "private" or board_type == "vault":
+        if not user_id:
+            # 로그인하지 않은 경우 빈 결과 반환
+            return {
+                "posts": [],
+                "total": 0,
+                "page": page,
+                "limit": limit
+            }
+        
+        # 커플이 연결되어 있는지 확인
+        couple_id = get_user_couple_id(user_id, db)
+        if not couple_id:
+            # 커플이 연결되어 있지 않은 경우 빈 결과 반환
+            return {
+                "posts": [],
+                "total": 0,
+                "page": page,
+                "limit": limit
+            }
+        
+        # 커플 전용 공간/문서 보관함은 해당 couple_id의 게시글만 조회
+        total = db.query(func.count(Post.id)).filter(
+            Post.board_type == board_type,
+            Post.couple_id == couple_id
+        ).scalar()
+        
+        posts = db.query(Post).filter(
+            Post.board_type == board_type,
+            Post.couple_id == couple_id
+        ).order_by(Post.created_at.desc())\
         .offset(offset).limit(limit).all()
+    else:
+        # 공개 게시판 타입 (couple, planner, venue_review) - 모든 사용자가 볼 수 있음
+        # 로그인 여부와 관계없이 전체 게시글 조회
+        total = db.query(func.count(Post.id)).filter(Post.board_type == board_type).scalar()
+        posts = db.query(Post).filter(Post.board_type == board_type)\
+            .order_by(Post.created_at.desc())\
+            .offset(offset).limit(limit).all()
     
     posts_data = []
     for post in posts:
@@ -162,6 +201,22 @@ def get_post_controller(post_id: int, user_id: int = None, db: Session = None):
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
         raise not_found("post_not_found", ErrorCode.POST_NOT_FOUND)
+    
+    # "커플 전용 공간" (private)과 "문서 보관함" (vault)은 커플이 연결된 사용자만 조회 가능
+    if post.board_type == "private" or post.board_type == "vault":
+        if not user_id:
+            raise forbidden("forbidden", ErrorCode.FORBIDDEN)
+        
+        # 커플이 연결되어 있는지 확인
+        couple_id = get_user_couple_id(user_id, db)
+        if not couple_id or post.couple_id != couple_id:
+            # 커플이 연결되어 있지 않거나 다른 커플의 게시글인 경우 접근 불가
+            raise forbidden("forbidden", ErrorCode.FORBIDDEN)
+    
+    # 공개 게시판(couple, planner, venue_review)은 로그인한 사용자만 상세 조회 가능
+    if post.board_type in ["couple", "planner", "venue_review"]:
+        if not user_id:
+            raise forbidden("forbidden", ErrorCode.FORBIDDEN, {"error": "로그인이 필요한 기능입니다."})
     
     liked = False
     if user_id:

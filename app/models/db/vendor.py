@@ -24,6 +24,7 @@ class WeddingProfile(Base):
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     user_id = Column(BigInteger, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    couple_id = Column(BigInteger, ForeignKey("couples.id", ondelete="SET NULL"), nullable=True)  # 커플 공유
     wedding_date = Column(DateTime, nullable=False)
     guest_count_category = Column(Enum(GuestCountCategory), nullable=False)
     total_budget = Column(Numeric(15, 2), nullable=False)  # KRW
@@ -59,6 +60,7 @@ class Vendor(Base):
     contact_link = Column(String(500), nullable=True)  # 카톡/인스타/홈페이지 URL
     contact_phone = Column(String(20), nullable=True)
     tags = Column(JSON, nullable=True)  # ["자연스러운", "감성", "풀데이"] 형태
+    user_id = Column(BigInteger, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)  # 벤더 계정 연결
     
     # 타입별 상세 정보 (JSON으로 저장)
     # IPHONE_SNAP
@@ -81,6 +83,7 @@ class Vendor(Base):
 
     # Relationships
     favorites = relationship("FavoriteVendor", backref="vendor", cascade="all, delete-orphan")
+    user = relationship("User", backref="vendor_account")
 
 
 class FavoriteVendor(Base):
@@ -94,4 +97,6 @@ class FavoriteVendor(Base):
 
     # Relationships
     user = relationship("User", backref="favorite_vendors")
+
+
 
