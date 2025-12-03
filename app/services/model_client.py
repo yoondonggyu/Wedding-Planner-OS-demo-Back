@@ -241,3 +241,47 @@ async def auto_tag_text(text: str) -> Optional[List[str]]:
     except Exception as e:
         print(f"⚠️ 자동 태깅 API 호출 실패: {e}")
         return []
+
+
+async def summarize_reviews(
+    reviews: List[str],
+    vendor_name: str = None,
+    vendor_type: str = None
+) -> Optional[Dict[str, Any]]:
+    """
+    리뷰 요약 API 호출 (감성 분석 + Gemini 요약)
+    
+    Args:
+        reviews: 리뷰 텍스트 리스트
+        vendor_name: 업체명 (선택적)
+        vendor_type: 업체 타입 (선택적)
+    
+    Returns:
+        {
+            "summary": "요약 텍스트",
+            "sentiment_analysis": {...},
+            "detailed_sentiments": [...]
+        }
+    """
+    base_url = get_model_api_base_url()
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(
+                f"{base_url}/review-summary",
+                json={
+                    "reviews": reviews,
+                    "vendor_name": vendor_name,
+                    "vendor_type": vendor_type
+                }
+            )
+            response.raise_for_status()
+            return response.json()
+    except httpx.TimeoutException:
+        print("⚠️ 리뷰 요약 API 호출 타임아웃 (30초 초과)")
+        return None
+    except httpx.HTTPStatusError as e:
+        print(f"⚠️ 리뷰 요약 API HTTP 에러: {e.response.status_code} - {e.response.text}")
+        return None
+    except Exception as e:
+        print(f"⚠️ 리뷰 요약 API 호출 실패: {e}")
+        return None
