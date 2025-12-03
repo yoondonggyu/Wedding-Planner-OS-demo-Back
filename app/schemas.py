@@ -63,6 +63,7 @@ class ChatRequest(BaseModel):
     message: str
     user_id: int | None = None
     include_context: bool = True  # 개인 데이터 포함 여부
+    model: str | None = None  # 선택한 모델 ID (None이면 기본 모델 사용)
 
 # Calendar
 class CalendarEventCreateReq(BaseModel):
@@ -206,16 +207,23 @@ class FavoriteVendorCreateReq(BaseModel):
 class VendorThreadCreateReq(BaseModel):
     vendor_id: int
     title: str | None = None  # None이면 벤더 이름으로 자동 생성
-    is_shared_with_partner: bool = False  # 파트너와 공유 여부
+    thread_type: str = "one_on_one"  # "one_on_one" 또는 "group" (단체톡방)
+    is_shared_with_partner: bool = False  # 파트너와 공유 여부 (1대1 채팅용)
+    participant_user_ids: list[int] | None = None  # 단체톡방 참여자 user_id 리스트 (단체톡방용)
 
 class VendorThreadUpdateReq(BaseModel):
     title: str | None = None
     is_active: bool | None = None
+    is_shared_with_partner: bool | None = None  # 파트너와 공유 여부 변경
+
+class VendorThreadInviteReq(BaseModel):
+    user_ids: list[int]  # 초대할 사용자 ID 리스트 (파트너 자동 포함)
 
 class VendorMessageCreateReq(BaseModel):
     thread_id: int
     content: str
     attachments: list[str] | None = None  # 파일 URL 리스트
+    is_visible_to_partner: bool = True  # 1대1 채팅에서 파트너에게 공개 여부
 
 class VendorContractCreateReq(BaseModel):
     thread_id: int
@@ -376,6 +384,21 @@ class GuestMessageCreateReq(BaseModel):
     image_url: str | None = None
 
 # Base Response
+# Chat Memory
+class ChatMemoryCreateReq(BaseModel):
+    content: str  # 저장할 메시지 내용
+    title: str | None = None  # 제목 (선택적)
+    tags: list[str] | None = None  # 태그 리스트
+    original_message: str | None = None  # 원본 사용자 메시지
+    ai_response: str | None = None  # AI 응답 전체
+    context_summary: str | None = None  # 컨텍스트 요약
+    is_shared_with_partner: bool = False  # 파트너와 공유 여부
+
+class ChatMemoryUpdateReq(BaseModel):
+    title: str | None = None
+    tags: list[str] | None = None
+    is_shared_with_partner: bool | None = None
+
 class BaseResponse(BaseModel):
     message: str
     data: Any | None = None

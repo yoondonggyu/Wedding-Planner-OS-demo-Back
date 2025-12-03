@@ -18,6 +18,7 @@ from app.models.db.digital_invitation import (
     DigitalInvitation, Payment, RSVP, GuestMessage,
     InvitationTheme, RSVPStatus, PaymentStatus, PaymentMethod
 )
+from app.models.db.chat_memory import ChatMemory
 
 __all__ = [
     "User", "Gender", "VendorApprovalStatus", "Post", "PostLike", "Tag", "Comment", "post_tags",
@@ -31,7 +32,8 @@ __all__ = [
     "InvitationTemplate", "InvitationDesign", "InvitationOrder",
     "InvitationTemplateStyle", "InvitationDesignStatus",
     "DigitalInvitation", "Payment", "RSVP", "GuestMessage",
-    "InvitationTheme", "RSVPStatus", "PaymentStatus", "PaymentMethod"
+    "InvitationTheme", "RSVPStatus", "PaymentStatus", "PaymentMethod",
+    "ChatMemory"
 ]
 
 

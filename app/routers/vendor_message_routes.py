@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query, Depends
 from sqlalchemy.orm import Session
 from app.schemas import (
-    VendorThreadCreateReq, VendorThreadUpdateReq,
+    VendorThreadCreateReq, VendorThreadUpdateReq, VendorThreadInviteReq,
     VendorMessageCreateReq,
     VendorContractCreateReq, VendorContractUpdateReq,
     VendorDocumentCreateReq, VendorDocumentUpdateReq,
@@ -63,6 +63,25 @@ async def update_thread(
 ):
     """제휴 업체 메시지 쓰레드 수정"""
     return vendor_message_controller.update_thread(thread_id, user_id, request, db)
+
+@router.delete("/vendor-threads/{thread_id}")
+async def delete_thread(
+    thread_id: int,
+    user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """제휴 업체 메시지 쓰레드 삭제"""
+    return vendor_message_controller.delete_thread(thread_id, user_id, db)
+
+@router.post("/vendor-threads/{thread_id}/invite")
+async def invite_participant(
+    thread_id: int,
+    request: VendorThreadInviteReq,
+    user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """쓰레드에 참여자 초대 (1대1 → 단체톡방 전환 또는 단체톡방에 참여자 추가)"""
+    return vendor_message_controller.invite_participant(thread_id, user_id, request, db)
 
 # 메시지
 @router.post("/vendor-messages")

@@ -38,15 +38,22 @@ class PaymentStatus(str, enum.Enum):
     CANCELLED = "cancelled"  # 취소됨
 
 
+class ThreadType(str, enum.Enum):
+    ONE_ON_ONE = "one_on_one"  # 1대1 채팅
+    GROUP = "group"  # 단체톡방 (업체 + 신랑 + 신부)
+
+
 class VendorThread(Base):
     """벤더별 메시지 쓰레드"""
     __tablename__ = "vendor_threads"
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    user_id = Column(BigInteger, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(BigInteger, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)  # 쓰레드 생성자
     couple_id = Column(BigInteger, ForeignKey("couples.id", ondelete="SET NULL"), nullable=True)  # 커플 공유
-    is_shared_with_partner = Column(Boolean, default=False, nullable=False)  # 파트너와 공유 여부
+    is_shared_with_partner = Column(Boolean, default=False, nullable=False)  # 파트너와 공유 여부 (1대1 채팅용)
     vendor_id = Column(BigInteger, ForeignKey("vendors.id", ondelete="CASCADE"), nullable=False)
+    thread_type = Column(String(20), default='one_on_one', nullable=False)  # 1대1 또는 단체톡 (one_on_one, group)
+    participant_user_ids = Column(JSON, nullable=True)  # 단체톡 참여자 user_id 리스트 [user1_id, user2_id]
     title = Column(String(255), nullable=False)  # "카메라맨 A와의 대화" 등
     is_active = Column(Boolean, default=True, nullable=False)  # 활성 상태
     last_message_at = Column(DateTime, nullable=True)  # 마지막 메시지 시간
@@ -70,6 +77,7 @@ class VendorMessage(Base):
     sender_id = Column(BigInteger, nullable=False)  # user_id 또는 vendor_id
     content = Column(Text, nullable=False)
     is_read = Column(Boolean, default=False, nullable=False)
+    is_visible_to_partner = Column(Boolean, default=True, nullable=False)  # 1대1 채팅에서 파트너에게 공개 여부
     attachments = Column(JSON, nullable=True)  # 파일 첨부 URL 리스트
     created_at = Column(DateTime, default=func.now(), nullable=False)
 

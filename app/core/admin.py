@@ -5,7 +5,7 @@ from app.models.db import (
     Vendor, FavoriteVendor, BudgetItem, UserTotalBudget, ChatHistory,
     Couple, VendorThread, VendorMessage, VendorContract, VendorDocument, VendorPaymentSchedule,
     InvitationTemplate, InvitationDesign, InvitationOrder,
-    DigitalInvitation, Payment, RSVP, GuestMessage
+    DigitalInvitation, Payment, RSVP, GuestMessage, ChatMemory
 )
 from app.core.sql_terminal import SQLTerminalView
 
@@ -132,6 +132,11 @@ class GuestMessageAdmin(ModelView, model=GuestMessage):
     column_searchable_list = [GuestMessage.guest_name, GuestMessage.message]
     form_columns = ["invitation", "guest_name", "guest_phone", "message", "image_url", "is_approved"]
 
+class ChatMemoryAdmin(ModelView, model=ChatMemory):
+    column_list = [ChatMemory.id, ChatMemory.user_id, ChatMemory.title, ChatMemory.created_at, ChatMemory.is_shared_with_partner]
+    column_searchable_list = [ChatMemory.content, ChatMemory.title]
+    form_columns = ["user", "content", "title", "tags", "is_shared_with_partner"]
+
 def setup_admin(app):
     admin = Admin(app, engine, base_url="/secret_admin")
     admin.add_view(UserAdmin)
@@ -161,4 +166,5 @@ def setup_admin(app):
     admin.add_view(PaymentAdmin)
     admin.add_view(RSVPAdmin)
     admin.add_view(GuestMessageAdmin)
+    admin.add_view(ChatMemoryAdmin)
     # admin.add_view(SQLTerminalView)  # SQL 터미널 - BaseView 구현 문제로 임시 비활성화

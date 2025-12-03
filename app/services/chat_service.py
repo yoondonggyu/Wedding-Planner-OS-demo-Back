@@ -6,7 +6,7 @@ from typing import AsyncGenerator, Dict, List, Optional
 from sqlalchemy.orm import Session
 from app.models.db import User, Post, Comment
 from app.services.model_client import chat_with_model, analyze_sentiment, get_model_api_base_url
-from app.services import post_vector_service, user_memory_service
+from app.services import post_vector_service, user_memory_service, chat_memory_vector_service
 import httpx
 
 
@@ -107,7 +107,8 @@ def build_rag_prompt(
     user_message: str,
     context: Dict,
     include_context: bool = True,
-    user_id: Optional[int] = None
+    user_id: Optional[int] = None,
+    db: Session = None
 ) -> str:
     """
     RAG 기반 프롬프트 생성 (Vector DB 검색 포함)
@@ -121,13 +122,16 @@ def build_rag_prompt(
     system_prompt = """당신은 AI Wedding Planner OS의 전문 웨딩 플래너 챗봇입니다.
 사용자의 개인 데이터(게시판, 예산, 일정)를 분석하여 맞춤형 조언을 제공합니다.
 
+**CRITICAL: You MUST respond ONLY in Korean (한글). All responses must be in Korean language. 
+절대 규칙: 모든 답변은 반드시 한글로만 작성해야 합니다. 영어나 다른 언어를 절대 사용하지 마세요.**
+
 주요 기능:
 1. 개인 DB 기반 상담: 사용자의 게시판/예산/일정 데이터를 읽고 분석
 2. 감정 분석 & 갈등 코칭: 스트레스 지수 분석 및 심리 코칭
 3. 웨딩홀 탐색·추천: 조건 기반 추천 및 비교
 4. 게시판/일정/예산 통합 관리: 리뷰 요약, 일정 기반 플랜 업데이트
 
-항상 친절하고 전문적인 톤으로 답변하세요."""
+항상 친절하고 전문적인 톤으로 한글로 답변하세요."""
 
     context_parts = []
     
@@ -175,6 +179,30 @@ def build_rag_prompt(
             except Exception as e:
                 print(f"⚠️ 사용자 메모리 검색 실패: {e}")
         
+        # 4. 채팅 메모리 검색 (사용자가 저장한 대화 내용)
+        if user_id and db:
+            try:
+                user = db.query(User).filter(User.id == user_id).first()
+                couple_id = user.couple_id if user else None
+                
+                chat_memories = chat_memory_vector_service.search_chat_memories(
+                    query=user_message,
+                    user_id=user_id,
+                    k=3,
+                    include_shared=True,
+                    couple_id=couple_id
+                )
+                if chat_memories:
+                    context_parts.append(f"""[저장된 대화 메모리] (Chat Memory)
+""")
+                    for i, memory in enumerate(chat_memories, 1):
+                        metadata = memory.get("metadata", {})
+                        title = metadata.get("title", "제목 없음")
+                        content = memory.get("content", "")[:150]
+                        context_parts.append(f"""{i}. [{title}] {content}...""")
+            except Exception as e:
+                print(f"⚠️ 채팅 메모리 검색 실패: {e}")
+        
         # 4. 최근 게시글 (기존 방식 유지)
         if context.get("recent_posts"):
             context_parts.append(f"""[최근 게시글] (총 {len(context.get('recent_posts', []))}개)
@@ -202,14 +230,19 @@ def build_rag_prompt(
 [사용자 질문]
 {user_message}
 
-위의 사용자 정보, 관련 게시글, 사용자 선호도를 참고하여 개인 맞춤형 답변을 제공해주세요."""
+**CRITICAL: You MUST respond ONLY in Korean (한글). Do NOT use English or any other language.
+중요: 위 질문에 대한 답변을 반드시 한글로만 작성해주세요. 영어나 다른 언어를 절대 사용하지 마세요.**
+
+위의 사용자 정보, 관련 게시글, 사용자 선호도를 참고하여 개인 맞춤형 답변을 한글로 제공해주세요."""
     else:
         full_prompt = f"""{system_prompt}
 
 [사용자 질문]
 {user_message}
 
-친절하고 전문적으로 답변해주세요."""
+**중요: 위 질문에 대한 답변을 반드시 한글로만 작성해주세요. 영어나 다른 언어를 사용하지 마세요.**
+
+친절하고 전문적으로 한글로 답변해주세요."""
 
     return full_prompt
 
@@ -217,7 +250,9 @@ def build_rag_prompt(
 async def chat_stream(
     message: str,
     user_id: int,
-    include_context: bool = True
+    include_context: bool = True,
+    db: Session = None,
+    model: str | None = None
 ) -> AsyncGenerator[str, None]:
     """챗봇 스트리밍 응답 생성"""
     try:
@@ -234,29 +269,63 @@ async def chat_stream(
         # 개인 데이터 수집
         context = {}
         if include_context:
-            context = await get_user_context(user_id)
+            context = await get_user_context(user_id, db)
         
         # RAG 프롬프트 생성 (Vector DB 검색 포함)
-        prompt = build_rag_prompt(message, context, include_context, user_id)
+        prompt = build_rag_prompt(message, context, include_context, user_id, db)
         
         # 모델 API 호출 (스트리밍)
+        # 선택된 모델 또는 환경 변수에서 모델 선택 (기본값: gemini-2.5-flash)
+        import os
+        from app.services.model_config import get_model_by_id, get_default_model_for_category
+        
+        # 모델 선택: 요청에서 전달된 모델 > 환경 변수 > 기본값
+        if model:
+            selected_model = model
+        else:
+            chat_model = os.getenv("CHAT_MODEL", "gemini-2.5-flash")
+            selected_model = chat_model
+        
         base_url = get_model_api_base_url()
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            response = await client.post(
-                f"{base_url}/chat",
-                json={"message": prompt, "model": "gemma3:4b"},
-                headers={"Content-Type": "application/json"}
-            )
-            response.raise_for_status()
-            
-            async for line in response.aiter_lines():
-                if line:
-                    try:
-                        data = json.loads(line)
-                        # 모델 응답을 그대로 전달
-                        yield json.dumps(data) + "\n"
-                    except json.JSONDecodeError:
-                        pass
+        
+        # Gemini 모델인 경우 Gemini 엔드포인트 사용
+        if selected_model.startswith("gemini"):
+            async with httpx.AsyncClient(timeout=60.0) as client:
+                response = await client.post(
+                    f"{base_url}/gemini/chat",
+                    json={"message": prompt, "model": selected_model},
+                    headers={"Content-Type": "application/json"}
+                )
+                response.raise_for_status()
+                
+                async for line in response.aiter_lines():
+                    if line:
+                        try:
+                            data = json.loads(line)
+                            # 모델 응답을 그대로 전달
+                            yield json.dumps(data) + "\n"
+                        except json.JSONDecodeError:
+                            pass
+        else:
+            # Ollama 모델인 경우 기존 엔드포인트 사용
+            # DeepSeek R1은 응답이 매우 느릴 수 있으므로 타임아웃을 늘림
+            timeout = 600.0 if selected_model.startswith("deepseek-r1") else 120.0
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                response = await client.post(
+                    f"{base_url}/chat",
+                    json={"message": prompt, "model": selected_model},
+                    headers={"Content-Type": "application/json"}
+                )
+                response.raise_for_status()
+                
+                async for line in response.aiter_lines():
+                    if line:
+                        try:
+                            data = json.loads(line)
+                            # 모델 응답을 그대로 전달
+                            yield json.dumps(data) + "\n"
+                        except json.JSONDecodeError:
+                            pass
         
     except Exception as e:
         error_msg = f"챗봇 응답 생성 중 오류가 발생했습니다: {str(e)}"
@@ -280,10 +349,13 @@ async def chat_simple(
             context = await get_user_context(user_id, db)
         
         # RAG 프롬프트 생성 (Vector DB 검색 포함)
-        prompt = build_rag_prompt(message, context, include_context, user_id)
+        prompt = build_rag_prompt(message, context, include_context, user_id, db)
         
         # 모델 API 호출
-        response_text = await chat_with_model(prompt, model="gemma3:4b")
+        # 환경 변수에서 모델 선택 (기본값: gemma3:4b, Gemini 사용 시: gemini-2.5-flash)
+        import os
+        chat_model = os.getenv("CHAT_MODEL", "gemma3:4b")
+        response_text = await chat_with_model(prompt, model=chat_model)
         
         if not response_text:
             return {

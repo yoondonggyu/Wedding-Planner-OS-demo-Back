@@ -10,10 +10,11 @@ async def chat_stream(
     message: str,
     user_id: int,
     include_context: bool = True,
-    db: Session = None
+    db: Session = None,
+    model: str | None = None
 ) -> AsyncGenerator[str, None]:
     """챗봇 스트리밍 응답"""
-    async for chunk in chat_service.chat_stream(message, user_id, include_context, db):
+    async for chunk in chat_service.chat_stream(message, user_id, include_context, db, model):
         yield chunk
 
 

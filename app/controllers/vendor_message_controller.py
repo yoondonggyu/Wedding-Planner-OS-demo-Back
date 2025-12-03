@@ -6,12 +6,12 @@ from decimal import Decimal
 
 from app.models.db.vendor_message import (
     VendorThread, VendorMessage, VendorContract, VendorDocument, VendorPaymentSchedule,
-    MessageSenderType, DocumentType, DocumentStatus, PaymentType, PaymentStatus
+    MessageSenderType, DocumentType, DocumentStatus, PaymentType, PaymentStatus, ThreadType
 )
 from app.models.db.vendor import Vendor
 from app.models.db.calendar import CalendarEvent
 from app.schemas import (
-    VendorThreadCreateReq, VendorThreadUpdateReq,
+    VendorThreadCreateReq, VendorThreadUpdateReq, VendorThreadInviteReq,
     VendorMessageCreateReq,
     VendorContractCreateReq, VendorContractUpdateReq,
     VendorDocumentCreateReq, VendorDocumentUpdateReq,
@@ -53,11 +53,39 @@ def create_thread(user_id: int, request: VendorThreadCreateReq, db: Session) -> 
     # 커플 ID 가져오기
     couple_id = get_user_couple_id(user_id, db)
     
+    # thread_type 확인 (문자열로 처리)
+    thread_type_str = getattr(request, 'thread_type', None) or 'one_on_one'
+    if thread_type_str not in ['one_on_one', 'group']:
+        thread_type_str = 'one_on_one'
+    thread_type = ThreadType(thread_type_str)
+    
+    # 단체톡방인 경우 참여자 확인
+    participant_user_ids = None
+    is_shared_with_partner = False
+    
+    if thread_type_str == 'group':
+        if not couple_id:
+            return {"message": "error", "data": {"error": "단체톡방은 커플이 연결되어 있어야 합니다."}}
+        
+        # 커플의 두 사용자 ID 가져오기
+        couple_user_ids = get_couple_user_ids(couple_id, db)
+        if len(couple_user_ids) < 2:
+            return {"message": "error", "data": {"error": "커플이 완전히 연결되지 않았습니다."}}
+        
+        participant_user_ids = couple_user_ids
+        title = request.title or f"{vendor.name} 단체톡방"
+        is_shared_with_partner = False  # 단체톡방은 항상 공유됨
+    else:
+        # 1대1 채팅인 경우
+        is_shared_with_partner = getattr(request, 'is_shared_with_partner', False)
+    
     thread = VendorThread(
         user_id=user_id,
         couple_id=couple_id,  # 커플 공유
-        is_shared_with_partner=getattr(request, 'is_shared_with_partner', False),  # 선택적 공유
+        is_shared_with_partner=is_shared_with_partner if thread_type_str == 'one_on_one' else False,
         vendor_id=request.vendor_id,
+        thread_type=thread_type_str,  # 문자열로 저장
+        participant_user_ids=participant_user_ids,
         title=title,
         is_active=True
     )
@@ -96,7 +124,10 @@ def get_threads(user_id: int, db: Session, is_vendor: bool = False) -> Dict:
             return {"message": "threads_retrieved", "data": {"threads": []}}
         
         threads = db.query(VendorThread).filter(
-            VendorThread.vendor_id == vendor.id
+            and_(
+                VendorThread.vendor_id == vendor.id,
+                VendorThread.is_active == True
+            )
         ).order_by(desc(VendorThread.last_message_at), desc(VendorThread.created_at)).all()
     else:
         # 일반 사용자 계정인 경우: 자신의 user_id와 연결된 쓰레드 조회 (커플 공유 포함)
@@ -104,20 +135,43 @@ def get_threads(user_id: int, db: Session, is_vendor: bool = False) -> Dict:
         couple_id = get_user_couple_id(user_id, db)
         
         if couple_id:
-            # 커플이 연결되어 있으면 couple_id로 필터링 (공유된 쓰레드 포함)
-            threads = db.query(VendorThread).filter(
-                or_(
-                    VendorThread.user_id == user_id,  # 자신의 쓰레드
-                    and_(
-                        VendorThread.couple_id == couple_id,
-                        VendorThread.is_shared_with_partner == True  # 공유된 쓰레드
-                    )
+            # 커플이 연결되어 있으면 couple_id로 필터링 (공유된 쓰레드 및 단체톡방 포함)
+            couple_user_ids = get_couple_user_ids(couple_id, db)
+            
+            # 모든 가능한 쓰레드 조회 (is_active == True인 것만)
+            all_threads = db.query(VendorThread).filter(
+                and_(
+                    or_(
+                        VendorThread.user_id == user_id,  # 자신의 쓰레드
+                        VendorThread.couple_id == couple_id  # 같은 couple_id를 가진 쓰레드
+                    ),
+                    VendorThread.is_active == True
                 )
             ).order_by(desc(VendorThread.last_message_at), desc(VendorThread.created_at)).all()
+            
+            # 필터링: 접근 가능한 쓰레드만
+            filtered_threads = []
+            for thread in all_threads:
+                # 1. 자신이 생성한 쓰레드는 항상 표시
+                if thread.user_id == user_id:
+                    filtered_threads.append(thread)
+                # 2. 단체톡방: 참여자 목록에 포함되어 있으면 표시
+                elif thread.thread_type == 'group':
+                    if thread.participant_user_ids and user_id in thread.participant_user_ids:
+                        filtered_threads.append(thread)
+                # 3. 1대1 채팅: 파트너와 공유가 활성화되어 있으면 표시
+                elif thread.thread_type == 'one_on_one' and thread.is_shared_with_partner:
+                    if thread.couple_id == couple_id:
+                        filtered_threads.append(thread)
+            
+            threads = filtered_threads
         else:
-            # 커플이 연결되어 있지 않으면 자신의 쓰레드만
+            # 커플이 연결되어 있지 않으면 자신의 쓰레드만 (is_active == True인 것만)
             threads = db.query(VendorThread).filter(
-                VendorThread.user_id == user_id
+                and_(
+                    VendorThread.user_id == user_id,
+                    VendorThread.is_active == True
+                )
             ).order_by(desc(VendorThread.last_message_at), desc(VendorThread.created_at)).all()
     
     result = []
@@ -153,6 +207,9 @@ def get_threads(user_id: int, db: Session, is_vendor: bool = False) -> Dict:
             "vendor_id": thread.vendor_id,
             "vendor_name": vendor.name if vendor else None,
             "vendor_type": vendor.vendor_type.value if vendor else None,
+            "thread_type": thread.thread_type or "one_on_one",
+            "participant_user_ids": thread.participant_user_ids or [],
+            "is_shared_with_partner": thread.is_shared_with_partner,
             "is_active": thread.is_active,
             "unread_count": unread_count,
             "last_message": {
@@ -188,8 +245,23 @@ def get_thread(thread_id: int, user_id: int, db: Session, is_vendor: bool = Fals
         if not vendor or vendor.id != thread.vendor_id:
             return {"message": "error", "data": {"error": "이 쓰레드에 접근할 권한이 없습니다."}}
     else:
-        # 일반 사용자 계정인 경우: 쓰레드의 user_id와 일치해야 함
-        if thread.user_id != user_id:
+        # 일반 사용자 계정인 경우: 권한 확인
+        has_access = False
+        
+        # 1. 쓰레드 생성자인 경우
+        if thread.user_id == user_id:
+            has_access = True
+        # 2. 단체톡방인 경우: 참여자 목록에 포함되어 있는지 확인
+        elif thread.thread_type == ThreadType.GROUP and thread.participant_user_ids:
+            if user_id in thread.participant_user_ids:
+                has_access = True
+        # 3. 1대1 채팅이고 커플 공유가 활성화된 경우: 파트너인지 확인
+        elif thread.thread_type == 'one_on_one' and thread.is_shared_with_partner and thread.couple_id:
+            couple_user_ids = get_couple_user_ids(thread.couple_id, db)
+            if user_id in couple_user_ids:
+                has_access = True
+        
+        if not has_access:
             return {"message": "error", "data": {"error": "이 쓰레드에 접근할 권한이 없습니다."}}
     
     vendor = db.query(Vendor).filter(Vendor.id == thread.vendor_id).first()
@@ -284,6 +356,9 @@ def get_thread(thread_id: int, user_id: int, db: Session, is_vendor: bool = Fals
             "id": thread.id,
             "title": thread.title,
             "vendor_id": thread.vendor_id,
+            "thread_type": thread.thread_type or "one_on_one",
+            "participant_user_ids": thread.participant_user_ids or [],
+            "is_shared_with_partner": thread.is_shared_with_partner,
             "vendor": {
                 "id": vendor.id if vendor else None,
                 "name": vendor.name if vendor else None,
@@ -300,9 +375,20 @@ def get_thread(thread_id: int, user_id: int, db: Session, is_vendor: bool = Fals
                     "content": msg.content,
                     "attachments": msg.attachments or [],
                     "is_read": msg.is_read,
+                    "is_visible_to_partner": msg.is_visible_to_partner,
                     "created_at": msg.created_at.isoformat() if msg.created_at else None
                 }
                 for msg in messages
+                # 1대1 채팅이고 파트너인 경우: is_visible_to_partner가 True인 메시지만 표시
+                # (쓰레드 생성자가 보낸 메시지 중 비공개 메시지는 파트너에게 숨김)
+                if not (
+                    thread.thread_type == 'one_on_one' 
+                    and thread.is_shared_with_partner 
+                    and thread.user_id != user_id  # 파트너인 경우
+                    and msg.sender_type == MessageSenderType.USER  # 사용자가 보낸 메시지
+                    and msg.sender_id == thread.user_id  # 쓰레드 생성자가 보낸 메시지
+                    and not msg.is_visible_to_partner  # 비공개 메시지
+                )
             ],
             "contract": contract_data,
             "created_at": thread.created_at.isoformat() if thread.created_at else None
@@ -326,6 +412,8 @@ def update_thread(thread_id: int, user_id: int, request: VendorThreadUpdateReq, 
         thread.title = request.title
     if request.is_active is not None:
         thread.is_active = request.is_active
+    if request.is_shared_with_partner is not None:
+        thread.is_shared_with_partner = request.is_shared_with_partner
     
     try:
         db.commit()
@@ -343,6 +431,105 @@ def update_thread(thread_id: int, user_id: int, request: VendorThreadUpdateReq, 
         db.rollback()
         print(f"쓰레드 수정 실패: {e}")
         return {"message": "error", "data": {"error": "쓰레드 수정에 실패했습니다."}}
+
+
+def delete_thread(thread_id: int, user_id: int, db: Session) -> Dict:
+    """제휴 업체 쓰레드 삭제 (소프트 삭제: is_active = False)"""
+    thread = db.query(VendorThread).filter(
+        and_(
+            VendorThread.id == thread_id,
+            VendorThread.user_id == user_id
+        )
+    ).first()
+    
+    if not thread:
+        return {"message": "error", "data": {"error": "쓰레드를 찾을 수 없습니다."}}
+    
+    try:
+        # 소프트 삭제: is_active를 False로 설정
+        thread.is_active = False
+        db.commit()
+        
+        return {
+            "message": "thread_deleted",
+            "data": {
+                "id": thread.id,
+                "title": thread.title
+            }
+        }
+    except Exception as e:
+        db.rollback()
+        print(f"쓰레드 삭제 실패: {e}")
+        return {"message": "error", "data": {"error": "쓰레드 삭제에 실패했습니다."}}
+
+
+def invite_participant(thread_id: int, user_id: int, request: VendorThreadInviteReq, db: Session) -> Dict:
+    """쓰레드에 참여자 초대 (1대1 → 단체톡방 전환 또는 단체톡방에 참여자 추가)"""
+    from app.models.db.user import User
+    
+    thread = db.query(VendorThread).filter(
+        VendorThread.id == thread_id
+    ).first()
+    
+    if not thread:
+        return {"message": "error", "data": {"error": "쓰레드를 찾을 수 없습니다."}}
+    
+    # 권한 확인: 쓰레드 생성자만 초대 가능
+    if thread.user_id != user_id:
+        return {"message": "error", "data": {"error": "쓰레드 생성자만 참여자를 초대할 수 있습니다."}}
+    
+    # 커플 파트너 자동 포함
+    couple_id = get_user_couple_id(user_id, db)
+    participant_ids = set(request.user_ids)
+    
+    if couple_id:
+        couple_user_ids = get_couple_user_ids(couple_id, db)
+        participant_ids.update(couple_user_ids)
+    
+    # 현재 참여자 목록 가져오기
+    current_participants = set(thread.participant_user_ids or [])
+    current_participants.add(thread.user_id)  # 생성자 포함
+    
+    # 새로운 참여자 목록 (중복 제거)
+    new_participants = list(participant_ids | current_participants)
+    
+    try:
+        # 1대1 채팅이면 단체톡방으로 전환
+        if thread.thread_type == 'one_on_one':
+            thread.thread_type = 'group'
+            thread.is_shared_with_partner = False  # 단체톡방에서는 불필요
+        
+        # 참여자 목록 업데이트
+        thread.participant_user_ids = new_participants
+        
+        db.commit()
+        db.refresh(thread)
+        
+        # 초대된 사용자 정보 조회
+        invited_users = db.query(User).filter(User.id.in_(request.user_ids)).all()
+        
+        return {
+            "message": "participants_invited",
+            "data": {
+                "thread_id": thread.id,
+                "thread_type": thread.thread_type,
+                "participant_user_ids": new_participants,
+                "invited_users": [
+                    {
+                        "id": user.id,
+                        "nickname": user.nickname,
+                        "email": user.email
+                    }
+                    for user in invited_users
+                ]
+            }
+        }
+    except Exception as e:
+        db.rollback()
+        print(f"참여자 초대 실패: {e}")
+        import traceback
+        traceback.print_exc()
+        return {"message": "error", "data": {"error": "참여자 초대에 실패했습니다."}}
 
 
 def send_message(user_id: int, request: VendorMessageCreateReq, db: Session, is_vendor: bool = False) -> Dict:
@@ -371,12 +558,32 @@ def send_message(user_id: int, request: VendorMessageCreateReq, db: Session, is_
         sender_type = MessageSenderType.VENDOR
         sender_id = vendor.id
     else:
-        # 일반 사용자 계정인 경우: 쓰레드의 user_id와 일치해야 함
-        if thread.user_id != user_id:
+        # 일반 사용자 계정인 경우: 권한 확인
+        has_permission = False
+        
+        # 1. 쓰레드 생성자인 경우
+        if thread.user_id == user_id:
+            has_permission = True
+        # 2. 단체톡방인 경우: 참여자 목록에 포함되어 있는지 확인
+        elif thread.thread_type == ThreadType.GROUP and thread.participant_user_ids:
+            if user_id in thread.participant_user_ids:
+                has_permission = True
+        # 3. 1대1 채팅이고 커플 공유가 활성화된 경우: 파트너인지 확인
+        elif thread.thread_type == 'one_on_one' and thread.is_shared_with_partner and thread.couple_id:
+            couple_user_ids = get_couple_user_ids(thread.couple_id, db)
+            if user_id in couple_user_ids:
+                has_permission = True
+        
+        if not has_permission:
             return {"message": "error", "data": {"error": "이 쓰레드에 메시지를 보낼 권한이 없습니다."}}
         
         sender_type = MessageSenderType.USER
         sender_id = user_id
+    
+    # is_visible_to_partner 설정 (1대1 채팅에서만 적용)
+    is_visible_to_partner = True
+    if thread.thread_type == 'one_on_one':
+        is_visible_to_partner = getattr(request, 'is_visible_to_partner', True)
     
     message = VendorMessage(
         thread_id=request.thread_id,
@@ -384,7 +591,8 @@ def send_message(user_id: int, request: VendorMessageCreateReq, db: Session, is_
         sender_id=sender_id,
         content=request.content,
         attachments=request.attachments or [],
-        is_read=True  # 본인이 보낸 메시지는 자동으로 읽음
+        is_read=True,  # 본인이 보낸 메시지는 자동으로 읽음
+        is_visible_to_partner=is_visible_to_partner
     )
     
     try:

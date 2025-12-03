@@ -147,8 +147,33 @@ async def analyze_sentiment(text: str, explain: bool = False) -> Optional[Dict[s
 async def chat_with_model(message: str, model: str = "gemma3:4b") -> Optional[str]:
     """
     채팅 API 호출 (스트리밍 응답 처리)
+    Gemini 또는 Ollama 모델 지원
     """
     base_url = get_model_api_base_url()
+    
+    # Gemini 모델인 경우 Gemini 엔드포인트 사용
+    if model.startswith("gemini"):
+        try:
+            async with httpx.AsyncClient(timeout=60.0) as client:
+                response = await client.post(
+                    f"{base_url}/gemini/chat/simple",
+                    json={"message": message, "model": model},
+                    headers={"Content-Type": "application/json"}
+                )
+                response.raise_for_status()
+                result = response.json()
+                return result.get("message", None)
+        except httpx.TimeoutException:
+            print("⚠️ Gemini 채팅 API 호출 타임아웃 (60초 초과)")
+            return None
+        except httpx.HTTPStatusError as e:
+            print(f"⚠️ Gemini 채팅 API HTTP 에러: {e.response.status_code} - {e.response.text}")
+            return None
+        except Exception as e:
+            print(f"⚠️ Gemini 채팅 API 호출 실패: {e}")
+            return None
+    
+    # Ollama 모델인 경우 기존 엔드포인트 사용
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             response = await client.post(
