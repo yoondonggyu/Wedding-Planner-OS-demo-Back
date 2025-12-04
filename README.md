@@ -274,3 +274,47 @@ Route (routers/) → Controller (controllers/) → Service (services/) → Model
 ## 📄 라이선스
 
 이 프로젝트는 교육 목적으로 개발되었습니다.
+
+## Docker 사용법
+
+### 개발 환경 실행
+
+```bash
+# 개발 모드로 빌드 및 실행
+docker build --target dev -t wedding-backend:dev .
+docker run -p 8101:8101 -v $(pwd):/app --env-file .env wedding-backend:dev
+```
+
+또는 docker-compose 사용:
+```bash
+# 프로젝트 루트에서
+docker-compose up backend
+```
+
+### 프로덕션 빌드 및 실행
+
+```bash
+# 프로덕션 모드로 빌드
+docker build --target prod -t wedding-backend:prod .
+
+# 실행
+docker run -p 8101:8101 --env-file .env wedding-backend:prod
+```
+
+### 환경 변수 설정
+
+`.env.example` 파일을 참고하여 환경 변수를 설정하세요.
+
+**중요**: Docker 환경에서는 `DATABASE_URL`의 호스트를 `localhost`가 아닌 `mysql` (서비스 이름)로 변경해야 합니다.
+
+```bash
+# Docker 환경용 DATABASE_URL 예시
+DATABASE_URL=mysql+pymysql://wedding_user:wedding_password@mysql:3306/WEDDING_PLANNER_OS_DB
+```
+
+### 데이터베이스 마이그레이션
+
+Docker 컨테이너 내에서 마이그레이션 실행:
+```bash
+docker exec -it wedding-backend python -m alembic upgrade head
+```

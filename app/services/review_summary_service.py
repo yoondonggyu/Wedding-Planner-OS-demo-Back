@@ -11,6 +11,7 @@ from app.services.model_client import summarize_reviews
 async def summarize_board_reviews(
     board_type: str,
     limit: int = 50,
+    vendor_type: Optional[str] = None,
     db: Session = None
 ) -> Optional[Dict[str, Any]]:
     """
@@ -27,10 +28,26 @@ async def summarize_board_reviews(
     if not db:
         return None
     
+    from sqlalchemy.orm import joinedload
+    from app.models.db.vendor import VendorType
+    
     # 해당 게시판 타입의 리뷰 게시글 조회
-    posts = db.query(Post).filter(
+    query = db.query(Post).options(joinedload(Post.vendor)).filter(
         Post.board_type == board_type
-    ).order_by(Post.created_at.desc()).limit(limit).all()
+    )
+    
+    # vendor_type 필터 적용
+    if vendor_type:
+        try:
+            vendor_type_enum = VendorType(vendor_type)
+            query = query.join(Vendor).filter(
+                Vendor.vendor_type == vendor_type_enum
+            )
+        except ValueError:
+            # 잘못된 vendor_type인 경우 필터링하지 않음
+            pass
+    
+    posts = query.order_by(Post.created_at.desc()).limit(limit).all()
     
     if not posts:
         return {
@@ -48,11 +65,11 @@ async def summarize_board_reviews(
     # 게시글 내용을 리뷰 리스트로 변환
     reviews = [post.content for post in posts if post.content]
     
-    # 모델 API 호출
+    # 모델 API 호출 - vendor_type이 있으면 그것을 사용, 없으면 board_type 사용
     result = await summarize_reviews(
         reviews=reviews,
         vendor_name=None,
-        vendor_type=board_type
+        vendor_type=vendor_type if vendor_type else board_type
     )
     
     if result:

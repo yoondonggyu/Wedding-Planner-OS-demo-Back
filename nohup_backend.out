@@ -1,0 +1,52 @@
+Traceback (most recent call last):
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/uvicorn/__main__.py", line 4, in <module>
+    uvicorn.main()
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+    return self.main(*args, **kwargs)
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/click/core.py", line 1406, in main
+    rv = self.invoke(ctx)
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+    return callback(*args, **kwargs)
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/uvicorn/main.py", line 423, in main
+    run(
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/uvicorn/main.py", line 593, in run
+    server.run()
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/uvicorn/_compat.py", line 60, in asyncio_run
+    return loop.run_until_complete(main)
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/uvicorn/config.py", line 439, in load
+    self.loaded_app = import_from_string(self.app)
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "/Users/yoon-dong-gyu/miniconda3/envs/env_python310/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/Users/yoon-dong-gyu/kakao_bootcamp/1.Wedding_OS_Project/2.Wedding_OS_back/app/main.py", line 7, in <module>
+    from app.routers import auth_routes, user_routes, post_routes, comment_routes, chat_routes, calendar_routes, budget_routes, voice_routes, vendor_routes, vendor_message_routes, vector_routes, sql_terminal_routes, admin_dashboard_routes, admin_docs_routes, admin_user_auth_routes, admin_vendor_management_routes, admin_vendor_approval_routes, admin_admin_approval_routes, couple_routes, invitation_routes, digital_invitation_routes, chat_memory_routes, model_routes, review_summary_routes
+  File "/Users/yoon-dong-gyu/kakao_bootcamp/1.Wedding_OS_Project/2.Wedding_OS_back/app/routers/review_summary_routes.py", line 8, in <module>
+    from app.services.review_summary_service import summarize_board_reviews, summarize_vendor_reviews
+  File "/Users/yoon-dong-gyu/kakao_bootcamp/1.Wedding_OS_Project/2.Wedding_OS_back/app/services/review_summary_service.py", line 161
+    게시판의 리뷰 게시글들을 요약
+IndentationError: unexpected indent
+
+ERROR conda.cli.main_run:execute(127): `conda run python -m uvicorn app.main:app --host 0.0.0.0 --port 8101` failed. (See above for error)
+⚠️ pytesseract 또는 PIL이 설치되지 않았습니다. OCR 기능을 사용할 수 없습니다.
+⚠️ whisper가 설치되지 않았습니다. STT 기능을 사용할 수 없습니다.
+

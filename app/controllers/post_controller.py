@@ -1,6 +1,6 @@
 import os
 import uuid
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func, or_
 from app.core.validators import validate_title
 from app.core.exceptions import bad_request, not_found, forbidden, unprocessable, unauthorized, payload_too_large
@@ -105,7 +105,7 @@ async def create_post_controller(req: PostCreateReq, user_id: int, db: Session):
     return {"post_id": post.id}
 
 
-def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, board_type: str = "couple", db: Session = None):
+def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, board_type: str = "couple", vendor_type: str = None, db: Session = None):
     """게시글 목록 조회 컨트롤러 (커플 데이터 공유)"""
     if page < 1:
         page = 1
@@ -150,10 +150,25 @@ def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, bo
     else:
         # 공개 게시판 타입 (couple, planner, venue_review) - 모든 사용자가 볼 수 있음
         # 로그인 여부와 관계없이 전체 게시글 조회
-        total = db.query(func.count(Post.id)).filter(Post.board_type == board_type).scalar()
-        posts = db.query(Post).filter(Post.board_type == board_type)\
-            .order_by(Post.created_at.desc())\
-            .offset(offset).limit(limit).all()
+        from app.models.db.vendor import Vendor, VendorType
+        from sqlalchemy.orm import joinedload
+        
+        query = db.query(Post).options(joinedload(Post.vendor)).filter(Post.board_type == board_type)
+        count_query = db.query(func.count(Post.id)).filter(Post.board_type == board_type)
+        
+        # vendor_type 필터 적용
+        if vendor_type:
+            try:
+                vendor_type_enum = VendorType(vendor_type)
+                # Post.vendor_id를 통해 Vendor를 join
+                query = query.join(Vendor, Post.vendor_id == Vendor.id).filter(Vendor.vendor_type == vendor_type_enum)
+                count_query = count_query.join(Vendor, Post.vendor_id == Vendor.id).filter(Vendor.vendor_type == vendor_type_enum)
+            except ValueError:
+                # 잘못된 vendor_type인 경우 필터링하지 않음
+                pass
+        
+        total = count_query.scalar()
+        posts = query.order_by(Post.created_at.desc()).offset(offset).limit(limit).all()
     
     posts_data = []
     for post in posts:
@@ -171,6 +186,15 @@ def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, bo
             if like_exists:
                 liked = True
         
+        # vendor 정보 추가
+        vendor_data = None
+        if post.vendor:
+            vendor_data = {
+                "id": post.vendor.id,
+                "name": post.vendor.name,
+                "vendor_type": post.vendor.vendor_type.value if hasattr(post.vendor.vendor_type, 'value') else str(post.vendor.vendor_type)
+            }
+        
         posts_data.append({
             "post_id": post.id,
             "user_id": post.user_id,
@@ -185,7 +209,8 @@ def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, bo
             "like_count": like_count,
             "view_count": post.view_count,
             "comment_count": comment_count,
-            "liked": liked
+            "liked": liked,
+            "vendor": vendor_data
         })
     
     return {

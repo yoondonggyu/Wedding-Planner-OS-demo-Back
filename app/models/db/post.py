@@ -17,6 +17,7 @@ class Post(Base):
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     user_id = Column(BigInteger, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     couple_id = Column(BigInteger, ForeignKey("couples.id", ondelete="SET NULL"), nullable=True)  # 커플 공유
+    vendor_id = Column(BigInteger, ForeignKey("vendors.id", ondelete="SET NULL"), nullable=True)  # 업체 연결
     title = Column(String(255), nullable=False)
     content = Column(Text, nullable=False)
     image_url = Column(Text, nullable=True)
@@ -33,6 +34,7 @@ class Post(Base):
     comments = relationship("Comment", backref="post", cascade="all, delete-orphan")
     likes = relationship("PostLike", backref="post", cascade="all, delete-orphan")
     tags = relationship("Tag", secondary=post_tags, backref="posts")
+    vendor = relationship("Vendor", backref="posts")
 
 class PostLike(Base):
     __tablename__ = "post_likes"

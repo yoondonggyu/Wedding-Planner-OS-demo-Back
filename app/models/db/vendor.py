@@ -12,11 +12,59 @@ class GuestCountCategory(str, enum.Enum):
 
 
 class VendorType(str, enum.Enum):
+    # 사진/영상
     IPHONE_SNAP = "IPHONE_SNAP"  # 아이폰 스냅 촬영자
-    MC = "MC"  # 사회자
-    SINGER = "SINGER"  # 축가(싱어/밴드/연주자)
     STUDIO_PREWEDDING = "STUDIO_PREWEDDING"  # 사전 웨딩 사진 스튜디오
-    VENUE_OUTDOOR = "VENUE_OUTDOOR"  # 야외 결혼식 장소
+    WEDDING_PHOTO = "WEDDING_PHOTO"  # 웨딩 사진
+    VIDEO = "VIDEO"  # 웨딩 영상
+    
+    # 웨딩홀/장소
+    WEDDING_HALL = "WEDDING_HALL"  # 웨딩홀
+    VENUE_INDOOR = "VENUE_INDOOR"  # 실내 식장
+    VENUE_OUTDOOR = "VENUE_OUTDOOR"  # 야외 식장
+    VENUE_COMPLEX = "VENUE_COMPLEX"  # 복합 식장
+    
+    # 플래너/기획
+    PLANNER = "PLANNER"  # 웨딩 플래너
+    COORDINATOR = "COORDINATOR"  # 웨딩 코디네이터
+    
+    # 패션/뷰티
+    DRESS_SHOP = "DRESS_SHOP"  # 드레스샵
+    SUIT_SHOP = "SUIT_SHOP"  # 턱시도샵
+    MAKEUP_HAIR = "MAKEUP_HAIR"  # 메이크업/헤어
+    BEAUTY_SALON = "BEAUTY_SALON"  # 뷰티 살롱
+    
+    # 음식/케이터링
+    CATERING = "CATERING"  # 케이터링
+    BUFFET = "BUFFET"  # 뷔페/식당
+    CAKE = "CAKE"  # 케이크/디저트
+    BAR = "BAR"  # 바/음료
+    
+    # 꽃/장식
+    FLORIST = "FLORIST"  # 꽃/플로리스트
+    DECORATION = "DECORATION"  # 장식/데코
+    BOUQUET = "BOUQUET"  # 부케/꽃다발
+    
+    # 예물/주얼리
+    JEWELRY = "JEWELRY"  # 예물/주얼리
+    RING = "RING"  # 예물/반지
+    
+    # 교통/운송
+    WEDDING_CAR = "WEDDING_CAR"  # 웨딩카
+    LIMOUSINE = "LIMOUSINE"  # 리무진
+    TRANSPORTATION = "TRANSPORTATION"  # 교통/운송
+    
+    # 기타
+    MC = "MC"  # 사회자
+    SINGER = "SINGER"  # 축가
+    BAND = "BAND"  # 밴드/연주자
+    MUSIC = "MUSIC"  # 축가/연주
+    INVITATION = "INVITATION"  # 청첩장/인쇄
+    GIFT = "GIFT"  # 웨딩선물/답례품
+    HOTEL = "HOTEL"  # 호텔/숙박
+    WEDDING_FAIR = "WEDDING_FAIR"  # 웨딩박람회
+    HANBOK = "HANBOK"  # 한복
+    HONEYMOON = "HONEYMOON"  # 신혼여행
 
 
 class WeddingProfile(Base):
