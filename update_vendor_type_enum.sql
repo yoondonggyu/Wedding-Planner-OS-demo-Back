@@ -49,3 +49,4 @@ ALTER TABLE vendors MODIFY COLUMN vendor_type ENUM(
 ) NOT NULL;
 
 
+

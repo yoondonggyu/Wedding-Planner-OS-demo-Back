@@ -376,11 +376,24 @@ def get_my_vendor(user_id: int, db: Session) -> Dict:
         }
     }
 
-def get_vendors(vendor_type: str | None, db: Session) -> Dict:
-    """제휴 업체 목록 조회 (카테고리별)"""
+def get_vendors(vendor_type: str | None, category: str | None, db: Session) -> Dict:
+    """제휴 업체 목록 조회 (카테고리별 또는 vendor_type별)"""
+    from app.core.vendor_category_mapping import get_vendor_types_from_category
+    
     query = db.query(Vendor)
     
-    if vendor_type:
+    # category가 있으면 category로 필터링 (우선순위)
+    if category:
+        vendor_types = get_vendor_types_from_category(category)
+        if vendor_types:
+            query = query.filter(Vendor.vendor_type.in_(vendor_types))
+        else:
+            # 매핑되지 않은 카테고리면 빈 결과 반환
+            return {
+                "message": "vendors_retrieved",
+                "data": {"vendors": []}
+            }
+    elif vendor_type:
         try:
             vendor_type_enum = VendorType(vendor_type)
             query = query.filter(Vendor.vendor_type == vendor_type_enum)

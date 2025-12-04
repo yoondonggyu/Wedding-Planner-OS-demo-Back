@@ -14,12 +14,13 @@ async def get_posts(
     page: int = Query(1, ge=1), 
     limit: int = Query(10, ge=1, le=100), 
     board_type: str = Query("couple"), 
+    category: Optional[str] = Query(None, description="카테고리 필터 (선택적)"),
     vendor_type: Optional[str] = Query(None, description="업체 타입 필터 (선택적)"),
     user_id: Optional[int] = Depends(get_current_user_id_optional),
     db: Session = Depends(get_db)
 ):
     """게시글 목록 조회 API (로그인 선택)"""
-    data = post_controller.get_posts_controller(page, limit, user_id, board_type, vendor_type, db)
+    data = post_controller.get_posts_controller(page, limit, user_id, board_type, category, vendor_type, db)
     return {"message": "get_posts_success", "data": data}
 
 

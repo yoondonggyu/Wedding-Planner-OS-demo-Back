@@ -23,3 +23,4 @@ def create_chat_memory_table():
 if __name__ == "__main__":
     create_chat_memory_table()
 
+

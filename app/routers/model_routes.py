@@ -26,3 +26,4 @@ async def get_models_by_category_endpoint(category: str):
         "data": models
     }
 
+

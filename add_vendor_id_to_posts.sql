@@ -6,3 +6,4 @@ ADD CONSTRAINT fk_posts_vendor
   ON DELETE SET NULL;
 
 
+

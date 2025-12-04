@@ -84,10 +84,11 @@ async def recommend_vendors(
 @router.get("/vendors")
 async def get_vendors(
     vendor_type: str | None = Query(None, description="제휴 업체 타입 필터"),
+    category: str | None = Query(None, description="카테고리 필터 (vendor_type보다 우선)"),
     db: Session = Depends(get_db)
 ):
-    """제휴 업체 목록 조회 (카테고리별)"""
-    return vendor_controller.get_vendors(vendor_type, db)
+    """제휴 업체 목록 조회 (카테고리별 또는 vendor_type별)"""
+    return vendor_controller.get_vendors(vendor_type, category, db)
 
 @router.get("/vendors/my-vendor")
 async def get_my_vendor(

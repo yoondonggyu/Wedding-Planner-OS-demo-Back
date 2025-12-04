@@ -45,11 +45,14 @@ class PostCreateReq(BaseModel):
     content: str
     image_url: HttpUrl | None = None
     board_type: str = "couple"
+    category: str | None = None  # 카테고리 필드 추가
+    vendor_id: int | None = None  # 업체 ID (리뷰 작성 시)
 
 class PostUpdateReq(BaseModel):
     title: str | None = None
     content: str | None = None
     image_url: HttpUrl | None = None
+    category: str | None = None  # 카테고리 필드 추가
 
 # Comments
 class CommentCreateReq(BaseModel):

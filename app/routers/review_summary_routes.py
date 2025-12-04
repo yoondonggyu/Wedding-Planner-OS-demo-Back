@@ -16,6 +16,7 @@ async def summarize_board_reviews_endpoint(
     board_type: str = Query(..., description="게시판 타입 (예: venue_review)"),
     limit: int = Query(50, ge=1, le=100, description="요약할 최대 리뷰 개수"),
     vendor_type: Optional[str] = Query(None, description="업체 타입 필터 (선택적)"),
+    category: Optional[str] = Query(None, description="카테고리 필터 (선택적)"),
     user_id: Optional[int] = Depends(get_current_user_id_optional),
     db: Session = Depends(get_db)
 ):
@@ -34,6 +35,7 @@ async def summarize_board_reviews_endpoint(
             board_type=board_type,
             limit=limit,
             vendor_type=vendor_type,
+            category=category,
             db=db
         )
         

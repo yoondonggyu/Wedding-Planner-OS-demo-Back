@@ -3,3 +3,4 @@ ALTER TABLE chat_memories
 ADD COLUMN vector_db_id VARCHAR(255) NULL,
 ADD COLUMN vector_db_collection VARCHAR(100) NULL;
 
+

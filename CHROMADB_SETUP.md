@@ -120,3 +120,4 @@ conda run -n env_python310 pip list | grep chroma
 conda run -n env_python310 pip list | grep langchain
 ```
 
+

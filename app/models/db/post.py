@@ -22,6 +22,7 @@ class Post(Base):
     content = Column(Text, nullable=False)
     image_url = Column(Text, nullable=True)
     board_type = Column(String(50), default="couple")
+    category = Column(String(50), nullable=True)  # 카테고리 필드 추가
     summary = Column(Text, nullable=True)
     sentiment_score = Column(Float, nullable=True)
     sentiment_label = Column(String(50), nullable=True)

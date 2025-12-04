@@ -77,13 +77,27 @@ async def create_post_controller(req: PostCreateReq, user_id: int, db: Session):
     # 커플 ID 가져오기
     couple_id = get_user_couple_id(user_id, db)
     
+    # 카테고리 검증
+    from app.core.categories import is_valid_category
+    category = req.category if req.category and is_valid_category(req.category) else None
+    
+    # vendor_id 검증 (제공된 경우)
+    vendor_id = None
+    if req.vendor_id:
+        from app.models.db.vendor import Vendor
+        vendor = db.query(Vendor).filter(Vendor.id == req.vendor_id).first()
+        if vendor:
+            vendor_id = req.vendor_id
+    
     post = Post(
         user_id=user_id,
         couple_id=couple_id,  # 커플 공유
+        vendor_id=vendor_id,  # 업체 연결 (리뷰 작성 시)
         title=req.title,
         content=req.content,
         image_url=str(req.image_url) if req.image_url else None,
         board_type=req.board_type,
+        category=category,  # 카테고리 추가
         tags=db_tags,
         summary=summary,
         sentiment_score=sentiment_score,
@@ -105,7 +119,7 @@ async def create_post_controller(req: PostCreateReq, user_id: int, db: Session):
     return {"post_id": post.id}
 
 
-def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, board_type: str = "couple", vendor_type: str = None, db: Session = None):
+def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, board_type: str = "couple", category: str = None, vendor_type: str = None, db: Session = None):
     """게시글 목록 조회 컨트롤러 (커플 데이터 공유)"""
     if page < 1:
         page = 1
@@ -152,9 +166,15 @@ def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, bo
         # 로그인 여부와 관계없이 전체 게시글 조회
         from app.models.db.vendor import Vendor, VendorType
         from sqlalchemy.orm import joinedload
+        from app.core.categories import is_valid_category
         
         query = db.query(Post).options(joinedload(Post.vendor)).filter(Post.board_type == board_type)
         count_query = db.query(func.count(Post.id)).filter(Post.board_type == board_type)
+        
+        # category 필터 적용
+        if category and is_valid_category(category):
+            query = query.filter(Post.category == category)
+            count_query = count_query.filter(Post.category == category)
         
         # vendor_type 필터 적용
         if vendor_type:
@@ -203,6 +223,7 @@ def get_posts_controller(page: int = 1, limit: int = 10, user_id: int = None, bo
             "content": post.content,
             "image_url": post.image_url,
             "board_type": post.board_type,
+            "category": post.category,  # 카테고리 추가
             "tags": [t.name for t in post.tags],
             "summary": post.summary,
             "sentiment_label": post.sentiment_label,
@@ -275,6 +296,7 @@ def get_post_controller(post_id: int, user_id: int = None, db: Session = None):
         "content": post.content,
         "image_url": post.image_url,
         "board_type": post.board_type,
+        "category": post.category,  # 카테고리 추가
         "tags": [t.name for t in post.tags],
         "summary": post.summary,
         "sentiment_label": post.sentiment_label,
@@ -288,7 +310,7 @@ def get_post_controller(post_id: int, user_id: int = None, db: Session = None):
 def update_post_controller(post_id: int, req: PostUpdateReq, user_id: int, db: Session):
     """게시글 수정 컨트롤러"""
     if not req or all(
-        field is None for field in (req.title, req.content, req.image_url)
+        field is None for field in (req.title, req.content, req.image_url, req.category)
     ):
         raise bad_request("invalid_request", ErrorCode.INVALID_REQUEST)
 
@@ -308,6 +330,14 @@ def update_post_controller(post_id: int, req: PostUpdateReq, user_id: int, db: S
     
     if req.image_url is not None:
         post.image_url = str(req.image_url)
+    
+    # 카테고리 업데이트
+    if req.category is not None:
+        from app.core.categories import is_valid_category
+        if req.category and is_valid_category(req.category):
+            post.category = req.category
+        elif req.category == "":  # 빈 문자열이면 NULL로 설정
+            post.category = None
     
     db.commit()
     db.refresh(post)

@@ -66,6 +66,11 @@ async def get_week_summary(user_id: int = Depends(get_current_user_id), db: Sess
     """이번 주 요약 (챗봇 연동용, JWT 토큰에서 user_id 추출)"""
     return calendar_controller.get_week_summary(user_id, db)
 
+@router.get("/calendar/completed-reservations")
+async def get_completed_reservations(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    """완료된 예약 중 하루 이상 지난 것 조회 (리뷰 작성용)"""
+    return calendar_controller.get_completed_reservations_for_review(user_id, db)
+
 
 
 

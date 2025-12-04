@@ -360,6 +360,51 @@ def get_upcoming_events(user_id: int, days: int = 7, db: Session = None) -> Dict
     }
 
 
+def get_completed_reservations_for_review(user_id: int, db: Session = None) -> Dict:
+    """완료된 예약 중 하루 이상 지난 것 조회 (리뷰 작성용)"""
+    from datetime import date, timedelta
+    
+    # 커플 필터 생성
+    couple_filter = get_couple_filter_with_user(user_id, db, CalendarEvent)
+    
+    # 오늘 날짜
+    today = date.today()
+    # 하루 전 날짜
+    one_day_ago = today - timedelta(days=1)
+    
+    # 완료된 예약 중 하루 이상 지난 것 조회
+    # category가 'reservation'이거나 description에 업체 정보가 있는 것
+    query = db.query(CalendarEvent).filter(
+        couple_filter,
+        CalendarEvent.is_completed == True,
+        CalendarEvent.start_date <= one_day_ago,
+        or_(
+            CalendarEvent.category == 'reservation',
+            CalendarEvent.description.like('%업체:%')
+        )
+    )
+    
+    events = query.order_by(CalendarEvent.start_date.desc()).all()
+    
+    return {
+        "message": "completed_reservations_retrieved",
+        "data": {
+            "events": [
+                {
+                    "id": e.id,
+                    "title": e.title,
+                    "description": e.description,
+                    "start_date": e.start_date.strftime("%Y-%m-%d") if e.start_date else None,
+                    "end_date": e.end_date.strftime("%Y-%m-%d") if e.end_date else None,
+                    "location": e.location,
+                    "category": e.category,
+                }
+                for e in events
+            ]
+        }
+    }
+
+
 def get_week_summary(user_id: int, db: Session) -> Dict:
     """이번 주 요약 (챗봇 연동용)"""
     today = datetime.now().date()
