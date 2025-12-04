@@ -12,6 +12,7 @@ async def summarize_board_reviews(
     board_type: str,
     limit: int = 50,
     vendor_type: Optional[str] = None,
+    category: Optional[str] = None,
     db: Session = None
 ) -> Optional[Dict[str, Any]]:
     """
@@ -20,6 +21,8 @@ async def summarize_board_reviews(
     Args:
         board_type: 게시판 타입 (예: "venue_review")
         limit: 요약할 최대 리뷰 개수
+        vendor_type: 업체 타입 필터 (선택적)
+        category: 카테고리 필터 (선택적)
         db: 데이터베이스 세션
     
     Returns:
@@ -29,12 +32,17 @@ async def summarize_board_reviews(
         return None
     
     from sqlalchemy.orm import joinedload
-    from app.models.db.vendor import VendorType
+    from app.models.db.vendor import Vendor, VendorType
+    from app.core.categories import is_valid_category
     
     # 해당 게시판 타입의 리뷰 게시글 조회
     query = db.query(Post).options(joinedload(Post.vendor)).filter(
         Post.board_type == board_type
     )
+    
+    # category 필터 적용
+    if category and is_valid_category(category):
+        query = query.filter(Post.category == category)
     
     # vendor_type 필터 적용
     if vendor_type:
@@ -72,7 +80,22 @@ async def summarize_board_reviews(
         vendor_type=vendor_type if vendor_type else board_type
     )
     
-    if result:
+    # 모델 API 호출 실패 시 기본 응답 반환
+    if not result:
+        return {
+            "summary": "리뷰 요약을 생성할 수 없습니다. 모델 서버에 연결할 수 없습니다.",
+            "sentiment_analysis": {
+                "positive_count": 0,
+                "negative_count": 0,
+                "positive_percentage": 0.0,
+                "negative_percentage": 0.0,
+                "overall_sentiment": "neutral"
+            },
+            "review_count": len(reviews)
+        }
+    
+    # review_count가 없으면 추가
+    if "review_count" not in result:
         result["review_count"] = len(reviews)
     
     return result
@@ -138,8 +161,24 @@ async def summarize_vendor_reviews(
         vendor_type=vendor.vendor_type.value if hasattr(vendor.vendor_type, 'value') else str(vendor.vendor_type)
     )
     
-    if result:
+    # 모델 API 호출 실패 시 기본 응답 반환
+    if not result:
+        return {
+            "summary": f"{vendor_name}에 대한 리뷰 요약을 생성할 수 없습니다. 모델 서버에 연결할 수 없습니다.",
+            "sentiment_analysis": {
+                "positive_count": 0,
+                "negative_count": 0,
+                "positive_percentage": 0.0,
+                "negative_percentage": 0.0,
+                "overall_sentiment": "neutral"
+            },
+            "review_count": len(reviews)
+        }
+    
+    # review_count가 없으면 추가
+    if "review_count" not in result:
         result["review_count"] = len(reviews)
     
     return result
+
 
