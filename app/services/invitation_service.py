@@ -1,5 +1,5 @@
 """
-청첩장 디자인 서비스 - QR 코드 생성, PDF 생성, AI 문구 추천
+청첩장 디자인 서비스 - QR 코드 생성, PDF 생성, AI 문구 추천, 카카오 Maps API 연동
 """
 import qrcode
 from io import BytesIO
@@ -11,6 +11,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
 from PIL import Image
 import os
+import httpx
 from app.services.model_client import chat_with_model
 
 
@@ -108,7 +109,7 @@ async def recommend_invitation_text(
     additional_info: Optional[str] = None
 ) -> Dict:
     """
-    AI 기반 청첩장 문구 추천
+    AI 기반 청첩장 문구 추천 (모델 서버의 Gemini 2.5 Flash 사용)
     
     Args:
         groom_name: 신랑 이름
@@ -120,68 +121,103 @@ async def recommend_invitation_text(
         additional_info: 추가 정보
     
     Returns:
-        추천 문구 딕셔너리
+        {"options": [option1, option2, ...]} 형식의 딕셔너리 (5개 옵션)
     """
-    style_map = {
-        "CLASSIC": "전통적이고 우아한",
-        "MODERN": "현대적이고 세련된",
-        "VINTAGE": "빈티지하고 로맨틱한",
-        "MINIMAL": "미니멀하고 깔끔한",
-        "LUXURY": "고급스럽고 화려한",
-        "NATURE": "자연스럽고 따뜻한",
-        "ROMANTIC": "로맨틱하고 감성적인"
-    }
+    from app.services.model_client import get_model_api_base_url
+    import httpx
     
-    style_desc = style_map.get(style, "따뜻하고 정중한") if style else "따뜻하고 정중한"
-    
-    prompt = f"""다음 정보를 바탕으로 {style_desc} 톤의 청첩장 문구를 작성해주세요.
-
-신랑: {groom_name}
-신부: {bride_name}
-예식일: {wedding_date}"""
-    
-    if wedding_time:
-        prompt += f"\n예식 시간: {wedding_time}"
-    if wedding_location:
-        prompt += f"\n예식 장소: {wedding_location}"
-    if additional_info:
-        prompt += f"\n추가 정보: {additional_info}"
-    
-    prompt += """
-
-다음 형식의 JSON으로 응답해주세요:
-{
-  "main_text": "주요 문구 (예: 두 사람이 하나가 되어...)",
-  "groom_parents": "신랑 부모님 성함",
-  "bride_parents": "신부 부모님 성함",
-  "wedding_info": "예식 정보 (날짜, 시간, 장소)",
-  "reception_info": "식장 정보 (있으면)",
-  "closing_text": "마무리 문구 (예: 바쁘시겠지만 참석해 주시면 감사하겠습니다)"
-}
-
-JSON만 응답해주세요."""
+    base_url = get_model_api_base_url()
+    url = f"{base_url}/invitation/text-recommend"
     
     try:
-        response = await chat_with_model(prompt, model="gemma3:4b")
-        
-        # JSON 추출
-        import json
-        import re
-        json_match = re.search(r'\{.*\}', response, re.DOTALL)
-        if json_match:
-            recommended_text = json.loads(json_match.group())
-            return recommended_text
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.post(
+                url,
+                json={
+                    "groom_name": groom_name,
+                    "bride_name": bride_name,
+                    "wedding_date": wedding_date,
+                    "wedding_time": wedding_time,
+                    "wedding_location": wedding_location,
+                    "style": style,
+                    "additional_info": additional_info
+                },
+                headers={"Content-Type": "application/json"}
+            )
+            response.raise_for_status()
+            result = response.json()
+            
+            # 모델 서버 응답 형식: {"message": "text_recommended", "data": {"options": [...]}}
+            if "data" in result and "options" in result["data"]:
+                return result["data"]
+            else:
+                # 하위 호환성: 직접 options가 있는 경우
+                if "options" in result:
+                    return {"options": result["options"]}
+                else:
+                    raise ValueError("올바른 응답 형식이 아닙니다")
+                    
+    except httpx.TimeoutException:
+        print("⚠️ 문구 추천 API 호출 타임아웃 (60초 초과)")
+    except httpx.HTTPStatusError as e:
+        print(f"⚠️ 문구 추천 API HTTP 에러: {e.response.status_code} - {e.response.text}")
     except Exception as e:
         print(f"⚠️ AI 문구 추천 실패: {e}")
     
-    # 기본 문구 반환
+    # 기본 문구 옵션 반환 (5개)
     return {
-        "main_text": f"{groom_name} · {bride_name} 두 사람이 하나가 되어\n새로운 인생을 시작합니다.",
-        "groom_parents": "신랑 부모님",
-        "bride_parents": "신부 부모님",
-        "wedding_info": f"{wedding_date} {wedding_time or ''}",
-        "reception_info": wedding_location or "",
-        "closing_text": "바쁘시겠지만 참석해 주시면 감사하겠습니다."
+        "options": [
+            {
+                "main_text": f"{groom_name} · {bride_name} 두 사람이 하나가 되어\n새로운 인생을 시작합니다.",
+                "groom_father": "",
+                "groom_mother": "",
+                "bride_father": "",
+                "bride_mother": "",
+                "wedding_info": f"{wedding_date}\n{wedding_time or ''}\n{wedding_location or ''}",
+                "reception_info": wedding_location or "",
+                "closing_text": "바쁘시겠지만 참석해 주시면 감사하겠습니다."
+            },
+            {
+                "main_text": f"{groom_name}님과 {bride_name}님이\n사랑으로 하나가 되어\n새로운 가정을 이룹니다.",
+                "groom_father": "",
+                "groom_mother": "",
+                "bride_father": "",
+                "bride_mother": "",
+                "wedding_info": f"{wedding_date}\n{wedding_time or ''}\n{wedding_location or ''}",
+                "reception_info": wedding_location or "",
+                "closing_text": "소중한 분들을 모시고 싶어\n이렇게 초대의 말씀을 드립니다."
+            },
+            {
+                "main_text": f"{groom_name} · {bride_name}\n두 사람이 만나\n하나의 가정을 이루려 합니다.",
+                "groom_father": "",
+                "groom_mother": "",
+                "bride_father": "",
+                "bride_mother": "",
+                "wedding_info": f"{wedding_date}\n{wedding_time or ''}\n{wedding_location or ''}",
+                "reception_info": wedding_location or "",
+                "closing_text": "바쁘시겠지만 참석해 주시면 감사하겠습니다."
+            },
+            {
+                "main_text": f"{groom_name}과 {bride_name}이\n인연을 맺어\n새로운 출발을 합니다.",
+                "groom_father": "",
+                "groom_mother": "",
+                "bride_father": "",
+                "bride_mother": "",
+                "wedding_info": f"{wedding_date}\n{wedding_time or ''}\n{wedding_location or ''}",
+                "reception_info": wedding_location or "",
+                "closing_text": "귀한 시간 내어 주시면\n더욱 기쁘겠습니다."
+            },
+            {
+                "main_text": f"{groom_name} · {bride_name}\n두 분이 만나\n행복한 가정을 꾸리려 합니다.",
+                "groom_father": "",
+                "groom_mother": "",
+                "bride_father": "",
+                "bride_mother": "",
+                "wedding_info": f"{wedding_date}\n{wedding_time or ''}\n{wedding_location or ''}",
+                "reception_info": wedding_location or "",
+                "closing_text": "바쁘시겠지만 참석해 주시면\n진심으로 감사하겠습니다."
+            }
+        ]
     }
 
 
@@ -277,4 +313,97 @@ def generate_invitation_pdf(
     c.save()
     buffer.seek(0)
     return buffer.read()
+
+
+async def get_map_location(address: str) -> Dict:
+    """
+    카카오 Maps REST API를 사용하여 주소를 위도/경도로 변환
+    
+    Args:
+        address: 주소 문자열
+    
+    Returns:
+        {"lat": float, "lng": float, "formatted_address": str}
+    """
+    api_key = os.getenv("KAKAO_REST_API_KEY")
+    if not api_key:
+        print("⚠️ KAKAO_REST_API_KEY가 설정되지 않았습니다.")
+        # 기본값 반환 (서울 시청)
+        return {
+            "lat": 37.5665,
+            "lng": 126.9780,
+            "formatted_address": address
+        }
+    
+    url = "https://dapi.kakao.com/v2/local/search/address.json"
+    headers = {
+        "Authorization": f"KakaoAK {api_key}"
+    }
+    params = {
+        "query": address
+    }
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, headers=headers, params=params)
+            response.raise_for_status()
+            data = response.json()
+            
+            if data.get("documents") and len(data["documents"]) > 0:
+                doc = data["documents"][0]
+                return {
+                    "lat": float(doc["y"]),
+                    "lng": float(doc["x"]),
+                    "formatted_address": doc.get("address_name") or doc.get("road_address", {}).get("address_name") or address
+                }
+            else:
+                # 주소 검색 실패 시 키워드 검색 시도
+                keyword_url = "https://dapi.kakao.com/v2/local/search/keyword.json"
+                response = await client.get(keyword_url, headers=headers, params=params)
+                response.raise_for_status()
+                data = response.json()
+                
+                if data.get("documents") and len(data["documents"]) > 0:
+                    doc = data["documents"][0]
+                    return {
+                        "lat": float(doc["y"]),
+                        "lng": float(doc["x"]),
+                        "formatted_address": doc.get("address_name") or doc.get("place_name") or address
+                    }
+                
+                print(f"⚠️ 카카오 Geocoding 실패: 검색 결과 없음")
+                return {
+                    "lat": 37.5665,
+                    "lng": 126.9780,
+                    "formatted_address": address
+                }
+    except Exception as e:
+        print(f"⚠️ 카카오 Maps API 호출 실패: {e}")
+        return {
+            "lat": 37.5665,
+            "lng": 126.9780,
+            "formatted_address": address
+        }
+
+
+def generate_kakao_map_urls(lat: float, lng: float, place_name: str = "") -> Dict:
+    """
+    카카오맵 링크 URL 생성 (지도 보기, 길찾기)
+    
+    Args:
+        lat: 위도
+        lng: 경도
+        place_name: 장소명
+    
+    Returns:
+        {"map_url": str, "direction_url": str}
+    """
+    import urllib.parse
+    
+    encoded_name = urllib.parse.quote(place_name) if place_name else ""
+    
+    return {
+        "map_url": f"https://map.kakao.com/link/map/{encoded_name},{lat},{lng}",
+        "direction_url": f"https://map.kakao.com/link/to/{encoded_name},{lat},{lng}"
+    }
 

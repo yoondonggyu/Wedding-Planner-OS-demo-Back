@@ -7,7 +7,9 @@ from sqlalchemy.orm import Session
 from app.schemas import (
     InvitationDesignCreateReq, InvitationDesignUpdateReq,
     InvitationTextRecommendReq, InvitationQRCodeGenerateReq,
-    InvitationPDFGenerateReq, InvitationOrderCreateReq, InvitationOrderUpdateReq
+    InvitationPDFGenerateReq, InvitationOrderCreateReq, InvitationOrderUpdateReq,
+    InvitationToneGenerateReq, InvitationMapLocationReq,
+    InvitationImageGenerateReq, InvitationImageModifyReq
 )
 from app.controllers import invitation_controller
 from app.core.database import get_db
@@ -134,3 +136,89 @@ async def get_orders(
     """주문 목록 조회"""
     return invitation_controller.get_orders(user_id, db)
 
+
+# 톤 제안
+@router.post("/invitation-tones")
+async def generate_tones(
+    request: InvitationToneGenerateReq
+):
+    """
+    5가지 톤의 청첩장 문구 생성 (Gemini 2.5 사용)
+    
+    Returns:
+        {
+            "message": "tones_recommended",
+            "data": {
+                "tones": [
+                    {"tone": "affectionate", "description": "다정한", "text": "..."},
+                    {"tone": "cheerful", "description": "밝고 명랑한", "text": "..."},
+                    {"tone": "polite", "description": "예의 있는", "text": "..."},
+                    {"tone": "formal", "description": "격식 있는", "text": "..."},
+                    {"tone": "emotional", "description": "감성적인", "text": "..."}
+                ]
+            }
+        }
+    """
+    return await invitation_controller.generate_tones(request)
+
+
+# 지도 정보
+@router.post("/invitation-map")
+async def get_map_info(
+    request: InvitationMapLocationReq
+):
+    """
+    주소를 위도/경도로 변환하고 카카오맵 링크 URL 생성
+    
+    Returns:
+        {
+            "lat": float,
+            "lng": float,
+            "formatted_address": str,
+            "map_url": str,
+            "direction_url": str
+        }
+    """
+    from app.services.invitation_service import get_map_location, generate_kakao_map_urls
+    
+    location = await get_map_location(request.address)
+    map_urls = generate_kakao_map_urls(
+        location["lat"], 
+        location["lng"], 
+        location["formatted_address"]
+    )
+    
+    return {
+        "message": "map_info_generated",
+        "data": {
+            **location,
+            **map_urls
+        }
+    }
+
+
+# 이미지 생성
+@router.post("/invitation-image-generate")
+async def generate_image(
+    request: InvitationImageGenerateReq,
+    user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """
+    청첩장 이미지 생성 (무료/유료 모델)
+    
+    무료: HuggingFace (FLUX.2-dev, stable-diffusion-xl-base)
+    유료: Gemini 3.0 Pro
+    """
+    return await invitation_controller.generate_image(request, user_id, db)
+
+
+# 이미지 수정
+@router.post("/invitation-image-modify")
+async def modify_image(
+    request: InvitationImageModifyReq,
+    user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """청첩장 이미지 수정"""
+    return await invitation_controller.modify_image(request, user_id, db)

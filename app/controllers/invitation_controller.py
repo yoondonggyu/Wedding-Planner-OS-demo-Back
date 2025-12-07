@@ -102,6 +102,20 @@ def create_design(user_id: int, request: InvitationDesignCreateReq, db: Session)
             # QR 코드 생성 실패해도 디자인 생성은 계속 진행
             qr_code_url = None
     
+    # 지도 정보 처리 (카카오 Maps API)
+    map_lat = None
+    map_lng = None
+    map_image_url = None  # 카카오는 동적 지도 사용, 프론트엔드에서 처리
+    if request.map_address:
+        from app.services.invitation_service import get_map_location
+        import asyncio
+        try:
+            location = asyncio.run(get_map_location(request.map_address))
+            map_lat = location.get("lat")
+            map_lng = location.get("lng")
+        except Exception as e:
+            print(f"⚠️ 지도 정보 처리 실패: {e}")
+    
     design = InvitationDesign(
         user_id=user_id,
         couple_id=couple_id,
@@ -109,7 +123,15 @@ def create_design(user_id: int, request: InvitationDesignCreateReq, db: Session)
         design_data=request.design_data,
         qr_code_url=qr_code_url,
         qr_code_data=qr_code_data,
-        status=InvitationDesignStatus.DRAFT
+        status=InvitationDesignStatus.DRAFT,
+        # 기본 정보 저장
+        groom_father_name=request.groom_father_name,
+        groom_mother_name=request.groom_mother_name,
+        bride_father_name=request.bride_father_name,
+        bride_mother_name=request.bride_mother_name,
+        map_lat=map_lat,
+        map_lng=map_lng,
+        map_image_url=map_image_url
     )
     
     db.add(design)
@@ -123,7 +145,8 @@ def create_design(user_id: int, request: InvitationDesignCreateReq, db: Session)
             "template_id": design.template_id,
             "design_data": design.design_data,
             "qr_code_url": design.qr_code_url,
-            "status": design.status.value
+            "status": design.status.value,
+            "map_image_url": design.map_image_url
         }
     }
 
@@ -156,6 +179,29 @@ def update_design(design_id: int, user_id: int, request: InvitationDesignUpdateR
         except ValueError:
             raise bad_request("invalid_status", ErrorCode.INVALID_STATUS)
     
+    # 기본 정보 업데이트
+    if request.groom_father_name is not None:
+        design.groom_father_name = request.groom_father_name
+    if request.groom_mother_name is not None:
+        design.groom_mother_name = request.groom_mother_name
+    if request.bride_father_name is not None:
+        design.bride_father_name = request.bride_father_name
+    if request.bride_mother_name is not None:
+        design.bride_mother_name = request.bride_mother_name
+    
+    # 지도 정보 업데이트 (카카오 Maps API)
+    if request.map_address:
+        from app.services.invitation_service import get_map_location
+        import asyncio
+        try:
+            location = asyncio.run(get_map_location(request.map_address))
+            design.map_lat = location.get("lat")
+            design.map_lng = location.get("lng")
+            # 카카오는 동적 지도 사용, 프론트엔드에서 처리
+            design.map_image_url = None
+        except Exception as e:
+            print(f"⚠️ 지도 정보 업데이트 실패: {e}")
+    
     db.commit()
     db.refresh(design)
     
@@ -165,7 +211,8 @@ def update_design(design_id: int, user_id: int, request: InvitationDesignUpdateR
             "id": design.id,
             "design_data": design.design_data,
             "qr_code_url": design.qr_code_url,
-            "status": design.status.value
+            "status": design.status.value,
+            "map_image_url": design.map_image_url
         }
     }
 
@@ -371,4 +418,201 @@ def get_orders(user_id: int, db: Session) -> Dict:
             ]
         }
     }
+
+
+async def generate_tones(request) -> Dict:
+    """5가지 톤의 청첩장 문구 생성 (Gemini 2.5 Flash 사용)"""
+    import httpx
+    from app.services.model_client import get_model_api_base_url
+    
+    # 모델 서버의 톤 제안 API 호출
+    base_url = get_model_api_base_url()
+    url = f"{base_url}/invitation/tone-recommend"
+    
+    try:
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.post(
+                url,
+                json={
+                    "groom_name": request.groom_name,
+                    "bride_name": request.bride_name,
+                    "groom_father_name": request.groom_father_name,
+                    "groom_mother_name": request.groom_mother_name,
+                    "bride_father_name": request.bride_father_name,
+                    "bride_mother_name": request.bride_mother_name,
+                    "wedding_date": request.wedding_date,
+                    "wedding_time": request.wedding_time,
+                    "wedding_location": request.wedding_location,
+                    "additional_message": request.additional_message
+                },
+                headers={"Content-Type": "application/json"}
+            )
+            response.raise_for_status()
+            return response.json()
+            
+    except Exception as e:
+        print(f"⚠️ 톤 제안 API 호출 실패: {e}")
+        # 기본 톤 반환
+        return generate_default_tones(request)
+
+
+def generate_default_tones(request) -> Dict:
+    """기본 5가지 톤 생성"""
+    base_info = f"{request.wedding_date}\n{request.wedding_time or ''}\n{request.wedding_location or ''}"
+    
+    return {
+        "message": "tones_recommended",
+        "data": {
+            "tones": [
+                {
+                    "tone": "affectionate",
+                    "description": "다정한",
+                    "main_text": f"{request.groom_name}과 {request.bride_name}이\n서로를 향한 마음을 담아\n평생의 동반자가 되려 합니다.",
+                    "parents_greeting": "두 사람의 시작을 축복해주세요.",
+                    "wedding_info": base_info,
+                    "closing": "소중한 분들을 모시고 싶어\n이렇게 초대합니다."
+                },
+                {
+                    "tone": "cheerful",
+                    "description": "밝고 명랑한",
+                    "main_text": f"{request.groom_name} ♥ {request.bride_name}\n우리 결혼해요!",
+                    "parents_greeting": "함께 축하해주세요!",
+                    "wedding_info": base_info,
+                    "closing": "행복한 출발을 함께해요!"
+                },
+                {
+                    "tone": "polite",
+                    "description": "예의 있는",
+                    "main_text": f"{request.groom_name} · {request.bride_name}\n두 사람이 혼인하오니\n귀한 걸음 하시어\n자리를 빛내주시면 감사하겠습니다.",
+                    "parents_greeting": "두 집안의 경사를 함께하시길 청합니다.",
+                    "wedding_info": base_info,
+                    "closing": "부디 참석하시어 축복해주시기 바랍니다."
+                },
+                {
+                    "tone": "formal",
+                    "description": "격식 있는",
+                    "main_text": f"{request.groom_name} · {request.bride_name}\n두 사람의 결혼을 알리오니\n부디 참석하시어\n축복해 주시기 바랍니다.",
+                    "parents_greeting": "삼가 청첩드립니다.",
+                    "wedding_info": base_info,
+                    "closing": "귀한 시간 내어 주시면\n더없는 영광이겠습니다."
+                },
+                {
+                    "tone": "emotional",
+                    "description": "감성적인",
+                    "main_text": f"서로를 향한 마음이 모여\n하나의 사랑이 되었습니다.\n{request.groom_name}과 {request.bride_name}의 시작을\n함께 지켜봐 주세요.",
+                    "parents_greeting": "두 사람이 만들어갈 아름다운 이야기에\n소중한 한 페이지가 되어주세요.",
+                    "wedding_info": base_info,
+                    "closing": "여러분의 축복이\n두 사람에게 큰 힘이 되겠습니다."
+                }
+            ]
+        }
+    }
+
+
+async def generate_image(request, user_id: int, db: Session) -> Dict:
+    """청첩장 이미지 생성"""
+    import httpx
+    from app.services.model_client import get_model_api_base_url
+    
+    # 디자인 확인
+    design = db.query(InvitationDesign).filter(
+        InvitationDesign.id == request.design_id,
+        InvitationDesign.user_id == user_id
+    ).first()
+    
+    if not design:
+        raise not_found("design_not_found", ErrorCode.DESIGN_NOT_FOUND)
+    
+    # 모델 타입에 따라 다른 모델 사용
+    if request.model_type == "free":
+        # 무료 모델: FLUX (이미지+텍스트 지원) 또는 SDXL (텍스트만)
+        model = "flux" if request.base_image_url else "sdxl"
+    else:
+        # 유료 모델: Gemini 3.0 Pro
+        model = "gemini"
+    
+    # 모델 서버의 이미지 생성 API 호출
+    base_url = get_model_api_base_url()
+    url = f"{base_url}/image/generate"
+    
+    try:
+        async with httpx.AsyncClient(timeout=120.0) as client:
+            response = await client.post(
+                url,
+                json={
+                    "prompt": request.prompt,
+                    "model": model,
+                    "base_image_b64": request.base_image_url
+                },
+                headers={"Content-Type": "application/json"}
+            )
+            response.raise_for_status()
+            result = response.json()
+            
+            # 디자인에 이미지 정보 저장
+            if "data" in result and "image_b64" in result["data"]:
+                design.generated_image_url = result["data"]["image_b64"]
+                design.generated_image_model = model
+                design.selected_tone = request.selected_tone
+                design.selected_text = request.selected_text
+                db.commit()
+            
+            return result
+            
+    except Exception as e:
+        print(f"⚠️ 이미지 생성 API 호출 실패: {e}")
+        raise bad_request("image_generation_failed", ErrorCode.EXTERNAL_API_ERROR)
+
+
+async def modify_image(request, user_id: int, db: Session) -> Dict:
+    """청첩장 이미지 수정"""
+    import httpx
+    from app.services.model_client import get_model_api_base_url
+    
+    # 디자인 확인
+    design = db.query(InvitationDesign).filter(
+        InvitationDesign.id == request.design_id,
+        InvitationDesign.user_id == user_id
+    ).first()
+    
+    if not design:
+        raise not_found("design_not_found", ErrorCode.DESIGN_NOT_FOUND)
+    
+    # 모델 타입에 따라 다른 모델 사용
+    if request.model_type == "free":
+        # 무료 모델: FLUX (이미지 수정 지원)
+        model = "flux"
+    else:
+        # 유료 모델: Gemini 3.0 Pro
+        model = "gemini"
+    
+    # 모델 서버의 이미지 수정 API 호출
+    base_url = get_model_api_base_url()
+    url = f"{base_url}/image/modify"
+    
+    try:
+        async with httpx.AsyncClient(timeout=120.0) as client:
+            response = await client.post(
+                url,
+                json={
+                    "base_image_b64": request.base_image_url,
+                    "modification_prompt": request.modification_prompt,
+                    "model": model
+                },
+                headers={"Content-Type": "application/json"}
+            )
+            response.raise_for_status()
+            result = response.json()
+            
+            # 디자인에 수정된 이미지 정보 저장
+            if "data" in result and "image_b64" in result["data"]:
+                design.generated_image_url = result["data"]["image_b64"]
+                design.generated_image_model = model
+                db.commit()
+            
+            return result
+            
+    except Exception as e:
+        print(f"⚠️ 이미지 수정 API 호출 실패: {e}")
+        raise bad_request("image_modification_failed", ErrorCode.EXTERNAL_API_ERROR)
 

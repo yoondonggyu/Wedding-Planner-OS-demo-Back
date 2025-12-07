@@ -56,6 +56,25 @@ class InvitationDesign(Base):
     design_data = Column(JSON, nullable=False)  # 디자인 설정 (문구, 이미지, 레이아웃 등)
     status = Column(SQLEnum(InvitationDesignStatus), default=InvitationDesignStatus.DRAFT, nullable=False)
     
+    # 부모님 성함
+    groom_father_name = Column(String(100), nullable=True)
+    groom_mother_name = Column(String(100), nullable=True)
+    bride_father_name = Column(String(100), nullable=True)
+    bride_mother_name = Column(String(100), nullable=True)
+    
+    # 지도 정보
+    map_lat = Column(Numeric(10, 8), nullable=True)  # 위도
+    map_lng = Column(Numeric(11, 8), nullable=True)  # 경도
+    map_image_url = Column(Text, nullable=True)  # 약도 이미지 URL
+    
+    # 선택된 톤 및 문구
+    selected_tone = Column(String(50), nullable=True)  # affectionate, cheerful, polite, formal, emotional
+    selected_text = Column(Text, nullable=True)  # 선택된 문구
+    
+    # 생성된 이미지
+    generated_image_url = Column(Text, nullable=True)  # AI 생성 이미지 URL
+    generated_image_model = Column(String(50), nullable=True)  # 사용한 모델 (flux, sdxl, gemini)
+    
     # QR 코드 관련
     qr_code_url = Column(Text, nullable=True)  # QR 코드 이미지 URL
     qr_code_data = Column(JSON, nullable=True)  # QR 코드 데이터 (디지털 초대장, 축의금, RSVP 링크)

@@ -285,20 +285,83 @@ class InvitationDesignCreateReq(BaseModel):
     template_id: int | None = None
     design_data: dict  # 디자인 설정 (문구, 이미지, 레이아웃 등)
     qr_code_data: dict | None = None  # QR 코드 데이터 (디지털 초대장, 축의금, RSVP 링크)
+    # 기본 정보
+    groom_name: str | None = None
+    bride_name: str | None = None
+    groom_father_name: str | None = None  # 신랑 부 성함
+    groom_mother_name: str | None = None  # 신랑 모 성함
+    bride_father_name: str | None = None  # 신부 부 성함
+    bride_mother_name: str | None = None  # 신부 모 성함
+    wedding_date: str | None = None  # YYYY-MM-DD
+    wedding_time: str | None = None  # HH:MM
+    wedding_location: str | None = None  # 결혼식장 주소
+    wedding_location_detail: str | None = None  # 상세 주소
+    map_address: str | None = None  # 지도 검색용 주소
+    additional_message: str | None = None  # 추가 멘트, 요구사항
 
 class InvitationDesignUpdateReq(BaseModel):
     design_data: dict | None = None
     qr_code_data: dict | None = None
     status: str | None = None  # DRAFT, COMPLETED
+    # 기본 정보 업데이트
+    groom_name: str | None = None
+    bride_name: str | None = None
+    groom_father_name: str | None = None
+    groom_mother_name: str | None = None
+    bride_father_name: str | None = None
+    bride_mother_name: str | None = None
+    wedding_date: str | None = None
+    wedding_time: str | None = None
+    wedding_location: str | None = None
+    wedding_location_detail: str | None = None
+    map_address: str | None = None
+    additional_message: str | None = None
 
 class InvitationTextRecommendReq(BaseModel):
     groom_name: str
     bride_name: str
+    groom_father_name: str | None = None  # 신랑 부 성함
+    groom_mother_name: str | None = None  # 신랑 모 성함
+    bride_father_name: str | None = None  # 신부 부 성함
+    bride_mother_name: str | None = None  # 신부 모 성함
     wedding_date: str  # YYYY-MM-DD
     wedding_time: str | None = None  # HH:MM
     wedding_location: str | None = None
     style: str | None = None  # CLASSIC, MODERN, VINTAGE 등
     additional_info: str | None = None  # 추가 정보
+
+class InvitationToneGenerateReq(BaseModel):
+    """청첩장 톤 제안 요청 (5가지 톤)"""
+    groom_name: str
+    bride_name: str
+    groom_father_name: str | None = None
+    groom_mother_name: str | None = None
+    bride_father_name: str | None = None
+    bride_mother_name: str | None = None
+    wedding_date: str  # YYYY-MM-DD
+    wedding_time: str | None = None
+    wedding_location: str | None = None
+    additional_message: str | None = None
+
+class InvitationMapLocationReq(BaseModel):
+    """지도 위치 정보 요청"""
+    address: str  # 주소
+
+class InvitationImageGenerateReq(BaseModel):
+    """청첩장 이미지 생성 요청"""
+    design_id: int  # 디자인 ID
+    selected_tone: str  # 선택한 톤 (affectionate, cheerful, polite, formal, emotional)
+    selected_text: str  # 선택한 문구
+    prompt: str  # 이미지 생성 프롬프트 (영어)
+    model_type: str = "free"  # "free" (HuggingFace) or "pro" (Gemini)
+    base_image_url: str | None = None  # 유료 모델에서 사용할 기본 이미지
+
+class InvitationImageModifyReq(BaseModel):
+    """청첩장 이미지 수정 요청"""
+    design_id: int  # 디자인 ID
+    modification_prompt: str  # 수정 요구사항 (영어)
+    base_image_url: str  # 수정할 이미지 URL
+    model_type: str = "free"  # "free" or "pro"
 
 class InvitationQRCodeGenerateReq(BaseModel):
     digital_invitation_url: str | None = None  # 디지털 초대장 URL
