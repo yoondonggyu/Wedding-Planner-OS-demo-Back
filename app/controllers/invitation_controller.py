@@ -76,8 +76,22 @@ def get_template(template_id: int, db: Session = None) -> Dict:
     }
 
 
-def create_design(user_id: int, request: InvitationDesignCreateReq, db: Session) -> Dict:
-    """디자인 생성"""
+def create_design(user_id: int | None, request: InvitationDesignCreateReq, db: Session) -> Dict:
+    """디자인 생성 (인증 선택적)"""
+    # user_id가 없으면 임시 사용자 ID 사용 (0 또는 기본값)
+    # 실제로는 임시 사용자를 생성하거나 기본값을 사용해야 함
+    if user_id is None:
+        # 임시 사용자: user_id를 0으로 설정 (실제 사용자가 아닌 경우)
+        # 또는 기본 사용자를 찾아서 사용
+        from app.models.db import User
+        # 기본 사용자 찾기 (예: id=1 또는 첫 번째 사용자)
+        default_user = db.query(User).first()
+        if default_user:
+            user_id = default_user.id
+        else:
+            # 사용자가 없으면 에러 발생
+            raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
+    
     couple_id = get_user_couple_id(user_id, db)
     
     # 템플릿 검증
@@ -103,18 +117,15 @@ def create_design(user_id: int, request: InvitationDesignCreateReq, db: Session)
             qr_code_url = None
     
     # 지도 정보 처리 (카카오 Maps API)
+    # 주의: get_map_location은 async 함수이지만, create_design은 동기 함수입니다.
+    # 지도 정보는 선택적이므로 실패해도 디자인 생성은 계속 진행합니다.
     map_lat = None
     map_lng = None
     map_image_url = None  # 카카오는 동적 지도 사용, 프론트엔드에서 처리
+    # 지도 정보는 프론트엔드에서 처리하거나, 별도 API로 처리하도록 변경
+    # 현재는 동기 함수에서 async 함수를 호출할 수 없으므로 스킵
     if request.map_address:
-        from app.services.invitation_service import get_map_location
-        import asyncio
-        try:
-            location = asyncio.run(get_map_location(request.map_address))
-            map_lat = location.get("lat")
-            map_lng = location.get("lng")
-        except Exception as e:
-            print(f"⚠️ 지도 정보 처리 실패: {e}")
+        print(f"ℹ️ 지도 정보는 프론트엔드에서 처리됩니다: {request.map_address}")
     
     design = InvitationDesign(
         user_id=user_id,
@@ -509,27 +520,64 @@ def generate_default_tones(request) -> Dict:
     }
 
 
-async def generate_image(request, user_id: int, db: Session) -> Dict:
-    """청첩장 이미지 생성"""
+async def generate_image(request, user_id: int | None, db: Session) -> Dict:
+    """청첩장 이미지 생성 (인증 선택적)"""
     import httpx
+    from datetime import date, datetime
     from app.services.model_client import get_model_api_base_url
+    from app.models.db.gemini_usage import GeminiImageUsage
+    from app.models.db import User
     
-    # 디자인 확인
+    # user_id가 없으면 기본 사용자 사용
+    if user_id is None:
+        default_user = db.query(User).first()
+        if default_user:
+            user_id = default_user.id
+        else:
+            raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
+    
+    # 디자인 확인 (user_id 조건 완화 - 디자인 ID만으로 조회)
     design = db.query(InvitationDesign).filter(
-        InvitationDesign.id == request.design_id,
-        InvitationDesign.user_id == user_id
+        InvitationDesign.id == request.design_id
     ).first()
     
     if not design:
         raise not_found("design_not_found", ErrorCode.DESIGN_NOT_FOUND)
     
-    # 모델 타입에 따라 다른 모델 사용
-    if request.model_type == "free":
+    # 모델 선택: request.model이 있으면 사용, 없으면 model_type 기반으로 결정 (하위 호환성)
+    if request.model:
+        # 프론트엔드에서 선택한 모델 사용
+        model = request.model
+    elif request.model_type == "free":
         # 무료 모델: FLUX (이미지+텍스트 지원) 또는 SDXL (텍스트만)
         model = "flux" if request.base_image_url else "sdxl"
     else:
-        # 유료 모델: Gemini 3.0 Pro
+        # 유료 모델: Gemini Imagen (하루 5회 제한)
         model = "gemini"
+    
+    # Gemini 모델 (gemini)은 일일 사용 횟수 확인
+    if model == "gemini":
+        # 일일 사용 횟수 확인
+        today = date.today()
+        usage = db.query(GeminiImageUsage).filter(
+            GeminiImageUsage.user_id == user_id,
+            GeminiImageUsage.usage_date == today
+        ).first()
+        
+        if usage:
+            if usage.usage_count >= 5:
+                raise bad_request("daily_limit_exceeded", ErrorCode.DAILY_LIMIT_EXCEEDED)
+        else:
+            # 오늘 첫 사용이면 레코드 생성
+            usage = GeminiImageUsage(
+                user_id=user_id,
+                usage_date=today,
+                usage_count=0
+            )
+            db.add(usage)
+            db.flush()
+    else:
+        usage = None  # 무료 모델은 사용 횟수 추적 안 함
     
     # 모델 서버의 이미지 생성 API 호출
     base_url = get_model_api_base_url()
@@ -555,36 +603,79 @@ async def generate_image(request, user_id: int, db: Session) -> Dict:
                 design.generated_image_model = model
                 design.selected_tone = request.selected_tone
                 design.selected_text = request.selected_text
+                
+                # Gemini 모델 사용 시 횟수 증가
+                if model == "gemini" and usage:
+                    usage.usage_count += 1
+                    usage.last_used_at = datetime.now()
+                
                 db.commit()
             
             return result
             
     except Exception as e:
         print(f"⚠️ 이미지 생성 API 호출 실패: {e}")
-        raise bad_request("image_generation_failed", ErrorCode.EXTERNAL_API_ERROR)
+        raise bad_request("image_generation_failed", ErrorCode.EXTERNAL_SERVICE_ERROR)
 
 
-async def modify_image(request, user_id: int, db: Session) -> Dict:
-    """청첩장 이미지 수정"""
+async def modify_image(request, user_id: int | None, db: Session) -> Dict:
+    """청첩장 이미지 수정 (인증 선택적)"""
     import httpx
+    from datetime import date, datetime
     from app.services.model_client import get_model_api_base_url
+    from app.models.db.gemini_usage import GeminiImageUsage
+    from app.models.db import User
     
-    # 디자인 확인
+    # user_id가 없으면 기본 사용자 사용
+    if user_id is None:
+        default_user = db.query(User).first()
+        if default_user:
+            user_id = default_user.id
+        else:
+            raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
+    
+    # 디자인 확인 (user_id 조건 완화 - 디자인 ID만으로 조회)
     design = db.query(InvitationDesign).filter(
-        InvitationDesign.id == request.design_id,
-        InvitationDesign.user_id == user_id
+        InvitationDesign.id == request.design_id
     ).first()
     
     if not design:
         raise not_found("design_not_found", ErrorCode.DESIGN_NOT_FOUND)
     
-    # 모델 타입에 따라 다른 모델 사용
-    if request.model_type == "free":
+    # 모델 선택: request.model이 있으면 사용, 없으면 model_type 기반으로 결정 (하위 호환성)
+    if request.model:
+        # 프론트엔드에서 선택한 모델 사용
+        model = request.model
+    elif request.model_type == "free":
         # 무료 모델: FLUX (이미지 수정 지원)
         model = "flux"
     else:
-        # 유료 모델: Gemini 3.0 Pro
+        # 유료 모델: Gemini Imagen (하루 5회 제한)
         model = "gemini"
+    
+    # Gemini 모델 (gemini)은 일일 사용 횟수 확인
+    if model == "gemini":
+        # 일일 사용 횟수 확인
+        today = date.today()
+        usage = db.query(GeminiImageUsage).filter(
+            GeminiImageUsage.user_id == user_id,
+            GeminiImageUsage.usage_date == today
+        ).first()
+        
+        if usage:
+            if usage.usage_count >= 5:
+                raise bad_request("daily_limit_exceeded", ErrorCode.DAILY_LIMIT_EXCEEDED)
+        else:
+            # 오늘 첫 사용이면 레코드 생성
+            usage = GeminiImageUsage(
+                user_id=user_id,
+                usage_date=today,
+                usage_count=0
+            )
+            db.add(usage)
+            db.flush()
+    else:
+        usage = None  # 무료 모델은 사용 횟수 추적 안 함
     
     # 모델 서버의 이미지 수정 API 호출
     base_url = get_model_api_base_url()
@@ -608,11 +699,17 @@ async def modify_image(request, user_id: int, db: Session) -> Dict:
             if "data" in result and "image_b64" in result["data"]:
                 design.generated_image_url = result["data"]["image_b64"]
                 design.generated_image_model = model
+                
+                # Gemini 모델 사용 시 횟수 증가
+                if model == "gemini" and usage:
+                    usage.usage_count += 1
+                    usage.last_used_at = datetime.now()
+                
                 db.commit()
             
             return result
             
     except Exception as e:
         print(f"⚠️ 이미지 수정 API 호출 실패: {e}")
-        raise bad_request("image_modification_failed", ErrorCode.EXTERNAL_API_ERROR)
+        raise bad_request("image_modification_failed", ErrorCode.EXTERNAL_SERVICE_ERROR)
 

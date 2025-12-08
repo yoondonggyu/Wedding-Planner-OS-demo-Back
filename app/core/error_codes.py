@@ -23,6 +23,7 @@ class ErrorCode(IntEnum):
     COUPLE_ALREADY_CONNECTED = 4009
     INVALID_STATUS = 40010
     DESIGN_NOT_COMPLETED = 40011
+    DAILY_LIMIT_EXCEEDED = 40012
     
     # 401 Unauthorized (4011, 4012, ..., 4019, 40110, 40111, ...)
     UNAUTHORIZED = 4011
@@ -97,6 +98,7 @@ ERROR_MESSAGES = {
     ErrorCode.COUPLE_ALREADY_CONNECTED: "couple_already_connected",
     ErrorCode.INVALID_STATUS: "invalid_status",
     ErrorCode.DESIGN_NOT_COMPLETED: "design_not_completed",
+    ErrorCode.DAILY_LIMIT_EXCEEDED: "daily_limit_exceeded",
     
     # 401 Unauthorized
     ErrorCode.UNAUTHORIZED: "unauthorized_user",

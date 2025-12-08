@@ -19,6 +19,7 @@ from app.models.db.digital_invitation import (
     InvitationTheme, RSVPStatus, PaymentStatus, PaymentMethod
 )
 from app.models.db.chat_memory import ChatMemory
+from app.models.db.gemini_usage import GeminiImageUsage
 
 __all__ = [
     "User", "Gender", "VendorApprovalStatus", "Post", "PostLike", "Tag", "Comment", "post_tags",
@@ -33,7 +34,8 @@ __all__ = [
     "InvitationTemplateStyle", "InvitationDesignStatus",
     "DigitalInvitation", "Payment", "RSVP", "GuestMessage",
     "InvitationTheme", "RSVPStatus", "PaymentStatus", "PaymentMethod",
-    "ChatMemory"
+    "ChatMemory",
+    "GeminiImageUsage"
 ]
 
 

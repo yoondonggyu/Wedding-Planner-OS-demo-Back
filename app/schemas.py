@@ -353,7 +353,8 @@ class InvitationImageGenerateReq(BaseModel):
     selected_tone: str  # 선택한 톤 (affectionate, cheerful, polite, formal, emotional)
     selected_text: str  # 선택한 문구
     prompt: str  # 이미지 생성 프롬프트 (영어)
-    model_type: str = "free"  # "free" (HuggingFace) or "pro" (Gemini)
+    model_type: str = "free"  # "free" (HuggingFace) or "pro" (Gemini) - 하위 호환성
+    model: str | None = None  # 선택한 모델 (gemini, flux, flux-schnell, sdxl, sd15 등)
     base_image_url: str | None = None  # 유료 모델에서 사용할 기본 이미지
 
 class InvitationImageModifyReq(BaseModel):
@@ -361,7 +362,8 @@ class InvitationImageModifyReq(BaseModel):
     design_id: int  # 디자인 ID
     modification_prompt: str  # 수정 요구사항 (영어)
     base_image_url: str  # 수정할 이미지 URL
-    model_type: str = "free"  # "free" or "pro"
+    model_type: str = "free"  # "free" or "pro" - 하위 호환성
+    model: str | None = None  # 선택한 모델 (gemini, flux 등)
 
 class InvitationQRCodeGenerateReq(BaseModel):
     digital_invitation_url: str | None = None  # 디지털 초대장 URL

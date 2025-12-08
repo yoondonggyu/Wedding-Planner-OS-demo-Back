@@ -13,7 +13,7 @@ from app.schemas import (
 )
 from app.controllers import invitation_controller
 from app.core.database import get_db
-from app.core.security import get_current_user_id
+from app.core.security import get_current_user_id, get_current_user_id_optional
 
 router = APIRouter(tags=["invitation"])
 
@@ -41,10 +41,10 @@ async def get_template(
 @router.post("/invitation-designs")
 async def create_design(
     request: InvitationDesignCreateReq,
-    user_id: int = Depends(get_current_user_id),
+    user_id: int | None = Depends(get_current_user_id_optional),
     db: Session = Depends(get_db)
 ):
-    """디자인 생성"""
+    """디자인 생성 (인증 선택적)"""
     return invitation_controller.create_design(user_id, request, db)
 
 
@@ -201,14 +201,14 @@ async def get_map_info(
 @router.post("/invitation-image-generate")
 async def generate_image(
     request: InvitationImageGenerateReq,
-    user_id: int = Depends(get_current_user_id),
+    user_id: int | None = Depends(get_current_user_id_optional),
     db: Session = Depends(get_db)
 ):
     """
-    청첩장 이미지 생성 (무료/유료 모델)
+    청첩장 이미지 생성 (무료/유료 모델, 인증 선택적)
     
     무료: HuggingFace (FLUX.2-dev, stable-diffusion-xl-base)
-    유료: Gemini 3.0 Pro
+    유료: Gemini 3 Pro Image Preview
     """
     return await invitation_controller.generate_image(request, user_id, db)
 
@@ -217,8 +217,8 @@ async def generate_image(
 @router.post("/invitation-image-modify")
 async def modify_image(
     request: InvitationImageModifyReq,
-    user_id: int = Depends(get_current_user_id),
+    user_id: int | None = Depends(get_current_user_id_optional),
     db: Session = Depends(get_db)
 ):
-    """청첩장 이미지 수정"""
+    """청첩장 이미지 수정 (인증 선택적)"""
     return await invitation_controller.modify_image(request, user_id, db)
