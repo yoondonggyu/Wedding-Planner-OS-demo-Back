@@ -71,10 +71,10 @@ async def get_design(
 async def update_design(
     design_id: int,
     request: InvitationDesignUpdateReq,
-    user_id: int = Depends(get_current_user_id),
+    user_id: int | None = Depends(get_current_user_id_optional),
     db: Session = Depends(get_db)
 ):
-    """디자인 수정"""
+    """디자인 수정 (인증 선택적)"""
     return invitation_controller.update_design(design_id, user_id, request, db)
 
 

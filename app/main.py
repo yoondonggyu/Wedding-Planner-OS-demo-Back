@@ -21,6 +21,8 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://localhost:5174",
         "http://127.0.0.1:5174",
+        "http://172.20.4.42:5173",  # 모바일 접속용 IP
+        "http://172.20.4.42:5174",
     ],  # 프론트엔드 포트 허용 (Vite 기본 포트 포함)
     allow_credentials=True,
     allow_methods=["*"],

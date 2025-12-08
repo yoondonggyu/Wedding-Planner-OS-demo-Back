@@ -162,12 +162,18 @@ def create_design(user_id: int | None, request: InvitationDesignCreateReq, db: S
     }
 
 
-def update_design(design_id: int, user_id: int, request: InvitationDesignUpdateReq, db: Session) -> Dict:
-    """디자인 수정"""
-    design = db.query(InvitationDesign).filter(
-        InvitationDesign.id == design_id,
-        InvitationDesign.user_id == user_id
-    ).first()
+def update_design(design_id: int, user_id: int | None, request: InvitationDesignUpdateReq, db: Session) -> Dict:
+    """디자인 수정 (인증 선택적)"""
+    # user_id가 있으면 해당 사용자의 디자인만 조회, 없으면 design_id로만 조회
+    if user_id:
+        design = db.query(InvitationDesign).filter(
+            InvitationDesign.id == design_id,
+            InvitationDesign.user_id == user_id
+        ).first()
+    else:
+        design = db.query(InvitationDesign).filter(
+            InvitationDesign.id == design_id
+        ).first()
     
     if not design:
         raise not_found("design_not_found", ErrorCode.DESIGN_NOT_FOUND)
@@ -200,18 +206,9 @@ def update_design(design_id: int, user_id: int, request: InvitationDesignUpdateR
     if request.bride_mother_name is not None:
         design.bride_mother_name = request.bride_mother_name
     
-    # 지도 정보 업데이트 (카카오 Maps API)
+    # 지도 정보는 프론트엔드에서 처리 (비동기 이슈로 백엔드에서 직접 처리하지 않음)
     if request.map_address:
-        from app.services.invitation_service import get_map_location
-        import asyncio
-        try:
-            location = asyncio.run(get_map_location(request.map_address))
-            design.map_lat = location.get("lat")
-            design.map_lng = location.get("lng")
-            # 카카오는 동적 지도 사용, 프론트엔드에서 처리
-            design.map_image_url = None
-        except Exception as e:
-            print(f"⚠️ 지도 정보 업데이트 실패: {e}")
+        print(f"ℹ️ 지도 정보는 프론트엔드에서 처리됩니다: {request.map_address}")
     
     db.commit()
     db.refresh(design)
