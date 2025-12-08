@@ -364,6 +364,13 @@ class InvitationImageModifyReq(BaseModel):
     base_image_url: str  # 수정할 이미지 URL
     model_type: str = "free"  # "free" or "pro" - 하위 호환성
     model: str | None = None  # 선택한 모델 (gemini, flux 등)
+    person_image_b64: str | None = None  # 인물 사진 (base64)
+    style_images_b64: list[str] | None = None  # 스타일 참고 사진 (base64 리스트)
+    
+    def model_post_init(self, __context):
+        """모델 초기화 후 검증: 빈 리스트를 None으로 변환"""
+        if self.style_images_b64 is not None and len(self.style_images_b64) == 0:
+            self.style_images_b64 = None
 
 class InvitationQRCodeGenerateReq(BaseModel):
     digital_invitation_url: str | None = None  # 디지털 초대장 URL

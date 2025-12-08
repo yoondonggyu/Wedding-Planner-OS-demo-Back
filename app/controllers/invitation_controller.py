@@ -525,13 +525,19 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
     from app.models.db.gemini_usage import GeminiImageUsage
     from app.models.db import User
     
-    # user_id가 없으면 기본 사용자 사용
+    # user_id가 없으면 테스트 계정 우선 사용
     if user_id is None:
-        default_user = db.query(User).first()
-        if default_user:
-            user_id = default_user.id
+        # 테스트 계정 우선 찾기
+        test_user = db.query(User).filter(User.email.in_(["boy@naver.com", "girl@naver.com"])).first()
+        if test_user:
+            user_id = test_user.id
+            print(f"✅ 테스트 계정 자동 할당: {test_user.email}")
         else:
-            raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
+            default_user = db.query(User).first()
+            if default_user:
+                user_id = default_user.id
+            else:
+                raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
     
     # 디자인 확인 (user_id 조건 완화 - 디자인 ID만으로 조회)
     design = db.query(InvitationDesign).filter(
@@ -554,25 +560,37 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
     
     # Gemini 모델 (gemini)은 일일 사용 횟수 확인
     if model == "gemini":
-        # 일일 사용 횟수 확인
-        today = date.today()
-        usage = db.query(GeminiImageUsage).filter(
-            GeminiImageUsage.user_id == user_id,
-            GeminiImageUsage.usage_date == today
-        ).first()
+        # 테스트 계정 확인 (제한 해제)
+        user = db.query(User).filter(User.id == user_id).first()
+        is_test_account = False
+        if user and user.email in ["boy@naver.com", "girl@naver.com"]:
+            is_test_account = True
+            print(f"✅ 테스트 계정 감지: {user.email} - 일일 제한 해제")
         
-        if usage:
-            if usage.usage_count >= 5:
-                raise bad_request("daily_limit_exceeded", ErrorCode.DAILY_LIMIT_EXCEEDED)
+        # 테스트 계정이 아닌 경우에만 제한 확인
+        if not is_test_account:
+            # 일일 사용 횟수 확인
+            today = date.today()
+            usage = db.query(GeminiImageUsage).filter(
+                GeminiImageUsage.user_id == user_id,
+                GeminiImageUsage.usage_date == today
+            ).first()
+            
+            if usage:
+                if usage.usage_count >= 5:
+                    raise bad_request("daily_limit_exceeded", ErrorCode.DAILY_LIMIT_EXCEEDED)
+            else:
+                # 오늘 첫 사용이면 레코드 생성
+                usage = GeminiImageUsage(
+                    user_id=user_id,
+                    usage_date=today,
+                    usage_count=0
+                )
+                db.add(usage)
+                db.flush()
         else:
-            # 오늘 첫 사용이면 레코드 생성
-            usage = GeminiImageUsage(
-                user_id=user_id,
-                usage_date=today,
-                usage_count=0
-            )
-            db.add(usage)
-            db.flush()
+            # 테스트 계정은 usage 추적 안 함
+            usage = None
     else:
         usage = None  # 무료 모델은 사용 횟수 추적 안 함
     
@@ -623,13 +641,19 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
     from app.models.db.gemini_usage import GeminiImageUsage
     from app.models.db import User
     
-    # user_id가 없으면 기본 사용자 사용
+    # user_id가 없으면 테스트 계정 우선 사용
     if user_id is None:
-        default_user = db.query(User).first()
-        if default_user:
-            user_id = default_user.id
+        # 테스트 계정 우선 찾기
+        test_user = db.query(User).filter(User.email.in_(["boy@naver.com", "girl@naver.com"])).first()
+        if test_user:
+            user_id = test_user.id
+            print(f"✅ 테스트 계정 자동 할당: {test_user.email}")
         else:
-            raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
+            default_user = db.query(User).first()
+            if default_user:
+                user_id = default_user.id
+            else:
+                raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
     
     # 디자인 확인 (user_id 조건 완화 - 디자인 ID만으로 조회)
     design = db.query(InvitationDesign).filter(
@@ -652,25 +676,37 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
     
     # Gemini 모델 (gemini)은 일일 사용 횟수 확인
     if model == "gemini":
-        # 일일 사용 횟수 확인
-        today = date.today()
-        usage = db.query(GeminiImageUsage).filter(
-            GeminiImageUsage.user_id == user_id,
-            GeminiImageUsage.usage_date == today
-        ).first()
+        # 테스트 계정 확인 (제한 해제)
+        user = db.query(User).filter(User.id == user_id).first()
+        is_test_account = False
+        if user and user.email in ["boy@naver.com", "girl@naver.com"]:
+            is_test_account = True
+            print(f"✅ 테스트 계정 감지: {user.email} - 일일 제한 해제")
         
-        if usage:
-            if usage.usage_count >= 5:
-                raise bad_request("daily_limit_exceeded", ErrorCode.DAILY_LIMIT_EXCEEDED)
+        # 테스트 계정이 아닌 경우에만 제한 확인
+        if not is_test_account:
+            # 일일 사용 횟수 확인
+            today = date.today()
+            usage = db.query(GeminiImageUsage).filter(
+                GeminiImageUsage.user_id == user_id,
+                GeminiImageUsage.usage_date == today
+            ).first()
+            
+            if usage:
+                if usage.usage_count >= 5:
+                    raise bad_request("daily_limit_exceeded", ErrorCode.DAILY_LIMIT_EXCEEDED)
+            else:
+                # 오늘 첫 사용이면 레코드 생성
+                usage = GeminiImageUsage(
+                    user_id=user_id,
+                    usage_date=today,
+                    usage_count=0
+                )
+                db.add(usage)
+                db.flush()
         else:
-            # 오늘 첫 사용이면 레코드 생성
-            usage = GeminiImageUsage(
-                user_id=user_id,
-                usage_date=today,
-                usage_count=0
-            )
-            db.add(usage)
-            db.flush()
+            # 테스트 계정은 usage 추적 안 함
+            usage = None
     else:
         usage = None  # 무료 모델은 사용 횟수 추적 안 함
     
@@ -680,13 +716,23 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
     
     try:
         async with httpx.AsyncClient(timeout=120.0) as client:
+            # 요청 데이터 구성
+            request_data = {
+                "base_image_b64": request.base_image_url,
+                "modification_prompt": request.modification_prompt,
+                "model": model
+            }
+            
+            # 새로운 필드: 인물 사진과 스타일 사진들
+            if request.person_image_b64:
+                request_data["person_image_b64"] = request.person_image_b64
+            
+            if request.style_images_b64 and len(request.style_images_b64) > 0:
+                request_data["style_images_b64"] = request.style_images_b64
+            
             response = await client.post(
                 url,
-                json={
-                    "base_image_b64": request.base_image_url,
-                    "modification_prompt": request.modification_prompt,
-                    "model": model
-                },
+                json=request_data,
                 headers={"Content-Type": "application/json"}
             )
             response.raise_for_status()
