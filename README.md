@@ -35,6 +35,8 @@ Wedding OS는 예비부부를 위한 웨딩 준비 통합 관리 플랫폼입니
 │   │   ├── chat_routes.py      # 챗봇
 │   │   ├── voice_routes.py     # 음성 비서
 │   │   ├── vendor_routes.py    # 업체 매칭
+│   │   ├── invitation_routes.py    # 청첩장 디자인 생성
+│   │   ├── digital_invitation_routes.py  # 디지털 청첩장
 │   │   ├── vector_routes.py    # Vector DB 관리
 │   │   ├── admin_dashboard_routes.py  # 관리자 대시보드
 │   │   ├── admin_docs_routes.py       # API 문서 뷰어
@@ -187,11 +189,29 @@ Authorization: Bearer <access_token>
 - 즐겨찾기 기능
 - 업체 타입별 상세 정보
 
-### 8. 관리자 기능
+### 8. 청첩장 디자인 생성
+- **5단계 디자인 생성 프로세스**:
+  1. 기본 정보 입력 (신랑/신부 이름, 예식일, 장소 등)
+  2. 요구사항 입력 및 톤 추천 (Gemini 2.5 Flash)
+  3. AI 이미지 생성 (Gemini 3 Pro Image Preview, HuggingFace 모델)
+  4. 커스텀 수정 (인물 사진, 스타일 참고 사진 업로드 지원)
+  5. 최종 저장 및 다운로드 (PNG/JPEG)
+- **AI 기능**:
+  - Gemini 2.5 Flash 기반 톤 추천 (5가지 톤 생성)
+  - Gemini 3 Pro Image Preview 이미지 생성 (일일 5회 제한, 테스트 계정 제한 해제)
+  - 멀티모달 입력 지원 (인물 사진 1장, 스타일 참고 사진 최대 3장)
+  - 이미지→이미지 변환 지원
+- **디지털 청첩장**:
+  - QR 코드 생성
+  - PDF 생성
+  - 디지털 청첩장 공유
+
+### 9. 관리자 기능
 - SQLAdmin 기반 데이터베이스 관리
 - SQL 터미널 (직접 쿼리 실행)
 - 통합 관리자 대시보드
 - API 문서 및 ERD 뷰어
+- Gemini 이미지 생성 사용량 추적
 
 ## 🗄 데이터베이스
 
@@ -207,6 +227,11 @@ Authorization: Bearer <access_token>
 - `favorite_vendors`: 즐겨찾기 업체
 - `budget_items`: 예산 항목
 - `chat_history`: 챗봇 대화 기록
+- `invitation_designs`: 청첩장 디자인 정보
+- `invitation_templates`: 청첩장 템플릿
+- `invitation_orders`: 청첩장 주문 정보
+- `digital_invitations`: 디지털 청첩장
+- `gemini_image_usage`: Gemini 이미지 생성 사용량 추적
 
 전체 ERD는 `database_erd_viewer.html`에서 확인할 수 있습니다.
 
