@@ -524,6 +524,7 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
     from app.services.model_client import get_model_api_base_url
     from app.models.db.gemini_usage import GeminiImageUsage
     from app.models.db import User
+    from app.core.user_roles import UserRole
     
     # user_id가 없으면 기본 사용자 사용
     if user_id is None:
@@ -532,6 +533,12 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
             user_id = default_user.id
         else:
             raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
+    
+    # 사용자 역할 확인 (관리자/테스트 계정은 제한 없음)
+    current_user = db.query(User).filter(User.id == user_id).first()
+    is_admin_or_test = current_user and current_user.role in [
+        UserRole.SYSTEM_ADMIN, UserRole.WEB_ADMIN, UserRole.VENDOR_ADMIN
+    ]
     
     # 디자인 확인 (user_id 조건 완화 - 디자인 ID만으로 조회)
     design = db.query(InvitationDesign).filter(
@@ -552,8 +559,8 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
         # 유료 모델: Gemini Imagen (하루 5회 제한)
         model = "gemini"
     
-    # Gemini 모델 (gemini)은 일일 사용 횟수 확인
-    if model == "gemini":
+    # Gemini 모델 (gemini)은 일일 사용 횟수 확인 (관리자/테스트 계정은 제외)
+    if model == "gemini" and not is_admin_or_test:
         # 일일 사용 횟수 확인
         today = date.today()
         usage = db.query(GeminiImageUsage).filter(
@@ -574,7 +581,7 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
             db.add(usage)
             db.flush()
     else:
-        usage = None  # 무료 모델은 사용 횟수 추적 안 함
+        usage = None  # 무료 모델 또는 관리자는 사용 횟수 추적 안 함
     
     # 모델 서버의 이미지 생성 API 호출
     base_url = get_model_api_base_url()
@@ -622,6 +629,7 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
     from app.services.model_client import get_model_api_base_url
     from app.models.db.gemini_usage import GeminiImageUsage
     from app.models.db import User
+    from app.core.user_roles import UserRole
     
     # user_id가 없으면 기본 사용자 사용
     if user_id is None:
@@ -630,6 +638,12 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
             user_id = default_user.id
         else:
             raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
+    
+    # 사용자 역할 확인 (관리자/테스트 계정은 제한 없음)
+    current_user = db.query(User).filter(User.id == user_id).first()
+    is_admin_or_test = current_user and current_user.role in [
+        UserRole.SYSTEM_ADMIN, UserRole.WEB_ADMIN, UserRole.VENDOR_ADMIN
+    ]
     
     # 디자인 확인 (user_id 조건 완화 - 디자인 ID만으로 조회)
     design = db.query(InvitationDesign).filter(
@@ -650,8 +664,8 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
         # 유료 모델: Gemini Imagen (하루 5회 제한)
         model = "gemini"
     
-    # Gemini 모델 (gemini)은 일일 사용 횟수 확인
-    if model == "gemini":
+    # Gemini 모델 (gemini)은 일일 사용 횟수 확인 (관리자/테스트 계정은 제외)
+    if model == "gemini" and not is_admin_or_test:
         # 일일 사용 횟수 확인
         today = date.today()
         usage = db.query(GeminiImageUsage).filter(
@@ -672,7 +686,7 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
             db.add(usage)
             db.flush()
     else:
-        usage = None  # 무료 모델은 사용 횟수 추적 안 함
+        usage = None  # 무료 모델 또는 관리자는 사용 횟수 추적 안 함
     
     # 모델 서버의 이미지 수정 API 호출
     base_url = get_model_api_base_url()
