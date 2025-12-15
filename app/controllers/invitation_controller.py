@@ -524,6 +524,7 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
     from app.services.model_client import get_model_api_base_url
     from app.models.db.gemini_usage import GeminiImageUsage
     from app.models.db import User
+    from app.core.user_roles import UserRole
     
     # user_id가 없으면 테스트 계정 우선 사용
     if user_id is None:
@@ -538,6 +539,14 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
                 user_id = default_user.id
             else:
                 raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
+    
+    # 사용자 역할 및 테스트 계정 확인 (관리자/테스트 계정은 제한 없음)
+    current_user = db.query(User).filter(User.id == user_id).first()
+    is_admin = current_user and current_user.role in [
+        UserRole.SYSTEM_ADMIN, UserRole.WEB_ADMIN, UserRole.VENDOR_ADMIN
+    ]
+    is_test_account = current_user and current_user.email in ["boy@naver.com", "girl@naver.com"]
+    is_unlimited_user = bool(is_admin or is_test_account)
     
     # 디자인 확인 (user_id 조건 완화 - 디자인 ID만으로 조회)
     design = db.query(InvitationDesign).filter(
@@ -558,41 +567,30 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
         # 유료 모델: Gemini Imagen (하루 5회 제한)
         model = "gemini"
     
-    # Gemini 모델 (gemini)은 일일 사용 횟수 확인
-    if model == "gemini":
-        # 테스트 계정 확인 (제한 해제)
-        user = db.query(User).filter(User.id == user_id).first()
-        is_test_account = False
-        if user and user.email in ["boy@naver.com", "girl@naver.com"]:
-            is_test_account = True
-            print(f"✅ 테스트 계정 감지: {user.email} - 일일 제한 해제")
+    # Gemini 모델 (gemini)은 일일 사용 횟수 확인 (관리자/테스트 계정은 제외)
+    if model == "gemini" and not is_unlimited_user:
+        # 일일 사용 횟수 확인
+        today = date.today()
+        usage = db.query(GeminiImageUsage).filter(
+            GeminiImageUsage.user_id == user_id,
+            GeminiImageUsage.usage_date == today
+        ).first()
         
-        # 테스트 계정이 아닌 경우에만 제한 확인
-        if not is_test_account:
-            # 일일 사용 횟수 확인
-            today = date.today()
-            usage = db.query(GeminiImageUsage).filter(
-                GeminiImageUsage.user_id == user_id,
-                GeminiImageUsage.usage_date == today
-            ).first()
-            
-            if usage:
-                if usage.usage_count >= 5:
-                    raise bad_request("daily_limit_exceeded", ErrorCode.DAILY_LIMIT_EXCEEDED)
-            else:
-                # 오늘 첫 사용이면 레코드 생성
-                usage = GeminiImageUsage(
-                    user_id=user_id,
-                    usage_date=today,
-                    usage_count=0
-                )
-                db.add(usage)
-                db.flush()
+        if usage:
+            if usage.usage_count >= 5:
+                raise bad_request("daily_limit_exceeded", ErrorCode.DAILY_LIMIT_EXCEEDED)
         else:
-            # 테스트 계정은 usage 추적 안 함
-            usage = None
+            # 오늘 첫 사용이면 레코드 생성
+            usage = GeminiImageUsage(
+                user_id=user_id,
+                usage_date=today,
+                usage_count=0
+            )
+            db.add(usage)
+            db.flush()
     else:
-        usage = None  # 무료 모델은 사용 횟수 추적 안 함
+        # 무료 모델 또는 관리자/테스트 계정은 사용 횟수 추적 안 함
+        usage = None
     
     # 모델 서버의 이미지 생성 API 호출
     base_url = get_model_api_base_url()
@@ -640,6 +638,7 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
     from app.services.model_client import get_model_api_base_url
     from app.models.db.gemini_usage import GeminiImageUsage
     from app.models.db import User
+    from app.core.user_roles import UserRole
     
     # user_id가 없으면 테스트 계정 우선 사용
     if user_id is None:
@@ -654,6 +653,14 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
                 user_id = default_user.id
             else:
                 raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
+    
+    # 사용자 역할 및 테스트 계정 확인 (관리자/테스트 계정은 제한 없음)
+    current_user = db.query(User).filter(User.id == user_id).first()
+    is_admin = current_user and current_user.role in [
+        UserRole.SYSTEM_ADMIN, UserRole.WEB_ADMIN, UserRole.VENDOR_ADMIN
+    ]
+    is_test_account = current_user and current_user.email in ["boy@naver.com", "girl@naver.com"]
+    is_unlimited_user = bool(is_admin or is_test_account)
     
     # 디자인 확인 (user_id 조건 완화 - 디자인 ID만으로 조회)
     design = db.query(InvitationDesign).filter(
@@ -674,41 +681,30 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
         # 유료 모델: Gemini Imagen (하루 5회 제한)
         model = "gemini"
     
-    # Gemini 모델 (gemini)은 일일 사용 횟수 확인
-    if model == "gemini":
-        # 테스트 계정 확인 (제한 해제)
-        user = db.query(User).filter(User.id == user_id).first()
-        is_test_account = False
-        if user and user.email in ["boy@naver.com", "girl@naver.com"]:
-            is_test_account = True
-            print(f"✅ 테스트 계정 감지: {user.email} - 일일 제한 해제")
+    # Gemini 모델 (gemini)은 일일 사용 횟수 확인 (관리자/테스트 계정은 제외)
+    if model == "gemini" and not is_unlimited_user:
+        # 일일 사용 횟수 확인
+        today = date.today()
+        usage = db.query(GeminiImageUsage).filter(
+            GeminiImageUsage.user_id == user_id,
+            GeminiImageUsage.usage_date == today
+        ).first()
         
-        # 테스트 계정이 아닌 경우에만 제한 확인
-        if not is_test_account:
-            # 일일 사용 횟수 확인
-            today = date.today()
-            usage = db.query(GeminiImageUsage).filter(
-                GeminiImageUsage.user_id == user_id,
-                GeminiImageUsage.usage_date == today
-            ).first()
-            
-            if usage:
-                if usage.usage_count >= 5:
-                    raise bad_request("daily_limit_exceeded", ErrorCode.DAILY_LIMIT_EXCEEDED)
-            else:
-                # 오늘 첫 사용이면 레코드 생성
-                usage = GeminiImageUsage(
-                    user_id=user_id,
-                    usage_date=today,
-                    usage_count=0
-                )
-                db.add(usage)
-                db.flush()
+        if usage:
+            if usage.usage_count >= 5:
+                raise bad_request("daily_limit_exceeded", ErrorCode.DAILY_LIMIT_EXCEEDED)
         else:
-            # 테스트 계정은 usage 추적 안 함
-            usage = None
+            # 오늘 첫 사용이면 레코드 생성
+            usage = GeminiImageUsage(
+                user_id=user_id,
+                usage_date=today,
+                usage_count=0
+            )
+            db.add(usage)
+            db.flush()
     else:
-        usage = None  # 무료 모델은 사용 횟수 추적 안 함
+        # 무료 모델 또는 관리자/테스트 계정은 사용 횟수 추적 안 함
+        usage = None
     
     # 모델 서버의 이미지 수정 API 호출
     base_url = get_model_api_base_url()
