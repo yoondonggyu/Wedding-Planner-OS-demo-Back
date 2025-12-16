@@ -76,22 +76,8 @@ def get_template(template_id: int, db: Session = None) -> Dict:
     }
 
 
-def create_design(user_id: int | None, request: InvitationDesignCreateReq, db: Session) -> Dict:
-    """디자인 생성 (인증 선택적)"""
-    # user_id가 없으면 임시 사용자 ID 사용 (0 또는 기본값)
-    # 실제로는 임시 사용자를 생성하거나 기본값을 사용해야 함
-    if user_id is None:
-        # 임시 사용자: user_id를 0으로 설정 (실제 사용자가 아닌 경우)
-        # 또는 기본 사용자를 찾아서 사용
-        from app.models.db import User
-        # 기본 사용자 찾기 (예: id=1 또는 첫 번째 사용자)
-        default_user = db.query(User).first()
-        if default_user:
-            user_id = default_user.id
-        else:
-            # 사용자가 없으면 에러 발생
-            raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
-    
+def create_design(user_id: int, request: InvitationDesignCreateReq, db: Session) -> Dict:
+    """디자인 생성"""
     couple_id = get_user_couple_id(user_id, db)
     
     # 템플릿 검증
@@ -117,15 +103,18 @@ def create_design(user_id: int | None, request: InvitationDesignCreateReq, db: S
             qr_code_url = None
     
     # 지도 정보 처리 (카카오 Maps API)
-    # 주의: get_map_location은 async 함수이지만, create_design은 동기 함수입니다.
-    # 지도 정보는 선택적이므로 실패해도 디자인 생성은 계속 진행합니다.
     map_lat = None
     map_lng = None
     map_image_url = None  # 카카오는 동적 지도 사용, 프론트엔드에서 처리
-    # 지도 정보는 프론트엔드에서 처리하거나, 별도 API로 처리하도록 변경
-    # 현재는 동기 함수에서 async 함수를 호출할 수 없으므로 스킵
     if request.map_address:
-        print(f"ℹ️ 지도 정보는 프론트엔드에서 처리됩니다: {request.map_address}")
+        from app.services.invitation_service import get_map_location
+        import asyncio
+        try:
+            location = asyncio.run(get_map_location(request.map_address))
+            map_lat = location.get("lat")
+            map_lng = location.get("lng")
+        except Exception as e:
+            print(f"⚠️ 지도 정보 처리 실패: {e}")
     
     design = InvitationDesign(
         user_id=user_id,
@@ -162,18 +151,12 @@ def create_design(user_id: int | None, request: InvitationDesignCreateReq, db: S
     }
 
 
-def update_design(design_id: int, user_id: int | None, request: InvitationDesignUpdateReq, db: Session) -> Dict:
-    """디자인 수정 (인증 선택적)"""
-    # user_id가 있으면 해당 사용자의 디자인만 조회, 없으면 design_id로만 조회
-    if user_id:
-        design = db.query(InvitationDesign).filter(
-            InvitationDesign.id == design_id,
-            InvitationDesign.user_id == user_id
-        ).first()
-    else:
-        design = db.query(InvitationDesign).filter(
-            InvitationDesign.id == design_id
-        ).first()
+def update_design(design_id: int, user_id: int, request: InvitationDesignUpdateReq, db: Session) -> Dict:
+    """디자인 수정"""
+    design = db.query(InvitationDesign).filter(
+        InvitationDesign.id == design_id,
+        InvitationDesign.user_id == user_id
+    ).first()
     
     if not design:
         raise not_found("design_not_found", ErrorCode.DESIGN_NOT_FOUND)
@@ -206,9 +189,18 @@ def update_design(design_id: int, user_id: int | None, request: InvitationDesign
     if request.bride_mother_name is not None:
         design.bride_mother_name = request.bride_mother_name
     
-    # 지도 정보는 프론트엔드에서 처리 (비동기 이슈로 백엔드에서 직접 처리하지 않음)
+    # 지도 정보 업데이트 (카카오 Maps API)
     if request.map_address:
-        print(f"ℹ️ 지도 정보는 프론트엔드에서 처리됩니다: {request.map_address}")
+        from app.services.invitation_service import get_map_location
+        import asyncio
+        try:
+            location = asyncio.run(get_map_location(request.map_address))
+            design.map_lat = location.get("lat")
+            design.map_lng = location.get("lng")
+            # 카카오는 동적 지도 사용, 프론트엔드에서 처리
+            design.map_image_url = None
+        except Exception as e:
+            print(f"⚠️ 지도 정보 업데이트 실패: {e}")
     
     db.commit()
     db.refresh(design)
@@ -517,58 +509,30 @@ def generate_default_tones(request) -> Dict:
     }
 
 
-async def generate_image(request, user_id: int | None, db: Session) -> Dict:
-    """청첩장 이미지 생성 (인증 선택적)"""
+async def generate_image(request, user_id: int, db: Session) -> Dict:
+    """청첩장 이미지 생성"""
     import httpx
     from datetime import date, datetime
     from app.services.model_client import get_model_api_base_url
     from app.models.db.gemini_usage import GeminiImageUsage
-    from app.models.db import User
-    from app.core.user_roles import UserRole
     
-    # user_id가 없으면 테스트 계정 우선 사용
-    if user_id is None:
-        # 테스트 계정 우선 찾기
-        test_user = db.query(User).filter(User.email.in_(["boy@naver.com", "girl@naver.com"])).first()
-        if test_user:
-            user_id = test_user.id
-            print(f"✅ 테스트 계정 자동 할당: {test_user.email}")
-        else:
-            default_user = db.query(User).first()
-            if default_user:
-                user_id = default_user.id
-            else:
-                raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
-    
-    # 사용자 역할 및 테스트 계정 확인 (관리자/테스트 계정은 제한 없음)
-    current_user = db.query(User).filter(User.id == user_id).first()
-    is_admin = current_user and current_user.role in [
-        UserRole.SYSTEM_ADMIN, UserRole.WEB_ADMIN, UserRole.VENDOR_ADMIN
-    ]
-    is_test_account = current_user and current_user.email in ["boy@naver.com", "girl@naver.com"]
-    is_unlimited_user = bool(is_admin or is_test_account)
-    
-    # 디자인 확인 (user_id 조건 완화 - 디자인 ID만으로 조회)
+    # 디자인 확인
     design = db.query(InvitationDesign).filter(
-        InvitationDesign.id == request.design_id
+        InvitationDesign.id == request.design_id,
+        InvitationDesign.user_id == user_id
     ).first()
     
     if not design:
         raise not_found("design_not_found", ErrorCode.DESIGN_NOT_FOUND)
     
-    # 모델 선택: request.model이 있으면 사용, 없으면 model_type 기반으로 결정 (하위 호환성)
-    if request.model:
-        # 프론트엔드에서 선택한 모델 사용
-        model = request.model
-    elif request.model_type == "free":
+    # 모델 타입에 따라 다른 모델 사용
+    if request.model_type == "free":
         # 무료 모델: FLUX (이미지+텍스트 지원) 또는 SDXL (텍스트만)
         model = "flux" if request.base_image_url else "sdxl"
     else:
         # 유료 모델: Gemini Imagen (하루 5회 제한)
         model = "gemini"
-    
-    # Gemini 모델 (gemini)은 일일 사용 횟수 확인 (관리자/테스트 계정은 제외)
-    if model == "gemini" and not is_unlimited_user:
+        
         # 일일 사용 횟수 확인
         today = date.today()
         usage = db.query(GeminiImageUsage).filter(
@@ -588,9 +552,6 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
             )
             db.add(usage)
             db.flush()
-    else:
-        # 무료 모델 또는 관리자/테스트 계정은 사용 횟수 추적 안 함
-        usage = None
     
     # 모델 서버의 이미지 생성 API 호출
     base_url = get_model_api_base_url()
@@ -628,61 +589,33 @@ async def generate_image(request, user_id: int | None, db: Session) -> Dict:
             
     except Exception as e:
         print(f"⚠️ 이미지 생성 API 호출 실패: {e}")
-        raise bad_request("image_generation_failed", ErrorCode.EXTERNAL_SERVICE_ERROR)
+        raise bad_request("image_generation_failed", ErrorCode.EXTERNAL_API_ERROR)
 
 
-async def modify_image(request, user_id: int | None, db: Session) -> Dict:
-    """청첩장 이미지 수정 (인증 선택적)"""
+async def modify_image(request, user_id: int, db: Session) -> Dict:
+    """청첩장 이미지 수정"""
     import httpx
     from datetime import date, datetime
     from app.services.model_client import get_model_api_base_url
     from app.models.db.gemini_usage import GeminiImageUsage
-    from app.models.db import User
-    from app.core.user_roles import UserRole
     
-    # user_id가 없으면 테스트 계정 우선 사용
-    if user_id is None:
-        # 테스트 계정 우선 찾기
-        test_user = db.query(User).filter(User.email.in_(["boy@naver.com", "girl@naver.com"])).first()
-        if test_user:
-            user_id = test_user.id
-            print(f"✅ 테스트 계정 자동 할당: {test_user.email}")
-        else:
-            default_user = db.query(User).first()
-            if default_user:
-                user_id = default_user.id
-            else:
-                raise bad_request("user_not_found", ErrorCode.USER_NOT_FOUND)
-    
-    # 사용자 역할 및 테스트 계정 확인 (관리자/테스트 계정은 제한 없음)
-    current_user = db.query(User).filter(User.id == user_id).first()
-    is_admin = current_user and current_user.role in [
-        UserRole.SYSTEM_ADMIN, UserRole.WEB_ADMIN, UserRole.VENDOR_ADMIN
-    ]
-    is_test_account = current_user and current_user.email in ["boy@naver.com", "girl@naver.com"]
-    is_unlimited_user = bool(is_admin or is_test_account)
-    
-    # 디자인 확인 (user_id 조건 완화 - 디자인 ID만으로 조회)
+    # 디자인 확인
     design = db.query(InvitationDesign).filter(
-        InvitationDesign.id == request.design_id
+        InvitationDesign.id == request.design_id,
+        InvitationDesign.user_id == user_id
     ).first()
     
     if not design:
         raise not_found("design_not_found", ErrorCode.DESIGN_NOT_FOUND)
     
-    # 모델 선택: request.model이 있으면 사용, 없으면 model_type 기반으로 결정 (하위 호환성)
-    if request.model:
-        # 프론트엔드에서 선택한 모델 사용
-        model = request.model
-    elif request.model_type == "free":
+    # 모델 타입에 따라 다른 모델 사용
+    if request.model_type == "free":
         # 무료 모델: FLUX (이미지 수정 지원)
         model = "flux"
     else:
         # 유료 모델: Gemini Imagen (하루 5회 제한)
         model = "gemini"
-    
-    # Gemini 모델 (gemini)은 일일 사용 횟수 확인 (관리자/테스트 계정은 제외)
-    if model == "gemini" and not is_unlimited_user:
+        
         # 일일 사용 횟수 확인
         today = date.today()
         usage = db.query(GeminiImageUsage).filter(
@@ -702,9 +635,6 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
             )
             db.add(usage)
             db.flush()
-    else:
-        # 무료 모델 또는 관리자/테스트 계정은 사용 횟수 추적 안 함
-        usage = None
     
     # 모델 서버의 이미지 수정 API 호출
     base_url = get_model_api_base_url()
@@ -712,23 +642,13 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
     
     try:
         async with httpx.AsyncClient(timeout=120.0) as client:
-            # 요청 데이터 구성
-            request_data = {
-                "base_image_b64": request.base_image_url,
-                "modification_prompt": request.modification_prompt,
-                "model": model
-            }
-            
-            # 새로운 필드: 인물 사진과 스타일 사진들
-            if request.person_image_b64:
-                request_data["person_image_b64"] = request.person_image_b64
-            
-            if request.style_images_b64 and len(request.style_images_b64) > 0:
-                request_data["style_images_b64"] = request.style_images_b64
-            
             response = await client.post(
                 url,
-                json=request_data,
+                json={
+                    "base_image_b64": request.base_image_url,
+                    "modification_prompt": request.modification_prompt,
+                    "model": model
+                },
                 headers={"Content-Type": "application/json"}
             )
             response.raise_for_status()
@@ -750,5 +670,5 @@ async def modify_image(request, user_id: int | None, db: Session) -> Dict:
             
     except Exception as e:
         print(f"⚠️ 이미지 수정 API 호출 실패: {e}")
-        raise bad_request("image_modification_failed", ErrorCode.EXTERNAL_SERVICE_ERROR)
+        raise bad_request("image_modification_failed", ErrorCode.EXTERNAL_API_ERROR)
 

@@ -6,8 +6,8 @@ import re
 from typing import Dict, List, Optional
 from datetime import datetime
 from app.models.memory import BUDGET_ITEMS, BudgetItem, COUNTERS
-from app.services.ocr_service import extract_text_from_image, extract_text_from_image_paddle
 from app.services.model_client import chat_with_model
+from app.services import ocr_service
 import pandas as pd
 import io
 
@@ -60,19 +60,20 @@ JSON 배열만 응답해주세요."""
     return []
 
 
-async def process_image_receipt(image_data: bytes) -> List[Dict]:
+async def process_budget_document(file_data: bytes, filename: str, content_type: str | None = None) -> List[Dict]:
     """
-    이미지 영수증/견적서 처리: OCR → LLM 구조화
+    예산 문서 처리 (이미지/엑셀/텍스트): OCR → LLM 구조화
     """
-    # OCR로 텍스트 추출
-    text = await extract_text_from_image(image_data)
+    text, _ = await ocr_service.extract_text_from_document(
+        file_data=file_data,
+        filename=filename,
+        content_type=content_type
+    )
     
     if not text:
         return []
     
-    # LLM으로 구조화
     structured_items = await structure_text_with_llm(text)
-    
     return structured_items
 
 
@@ -246,7 +247,6 @@ def import_from_csv(user_id: int, csv_data: str) -> List[BudgetItem]:
     except Exception as e:
         print(f"⚠️ CSV Import 실패: {e}")
         return []
-
 
 
 

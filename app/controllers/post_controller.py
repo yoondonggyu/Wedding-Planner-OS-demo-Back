@@ -1,5 +1,6 @@
 import os
 import uuid
+from pathlib import Path
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func, or_
 from app.core.validators import validate_title
@@ -8,12 +9,25 @@ from app.core.error_codes import ErrorCode
 from app.models.db import Post, PostLike, Tag, User, Comment
 from app.schemas import PostCreateReq, PostUpdateReq
 from app.services.model_client import predict_image, summarize_text, auto_tag_text, analyze_sentiment
-from app.services import post_vector_service
-from app.services.ocr_service import extract_text_from_image, extract_text_from_image_paddle
+from app.services import post_vector_service, ocr_service
 from app.core.couple_helpers import get_user_couple_id, get_couple_filter_with_user
 
 UPLOAD_DIR = os.path.abspath("./uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+UPLOAD_BASE_URL = os.getenv("UPLOAD_BASE_URL", "http://localhost:8000").rstrip("/")
+MAX_VAULT_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".gif", ".tif", ".tiff", ".heic"}
+
+
+def _is_image_file(filename: str, content_type: str | None) -> bool:
+    if content_type and content_type.lower().startswith("image/"):
+        return True
+    suffix = Path(filename or "").suffix.lower()
+    return suffix in IMAGE_EXTENSIONS
+
+
+def _build_upload_url(filename: str) -> str:
+    return f"{UPLOAD_BASE_URL}/uploads/{filename}"
 
 
 async def create_post_controller(req: PostCreateReq, user_id: int, db: Session):
@@ -455,3 +469,122 @@ async def upload_post_image_controller(file_content_type: str, file_data: bytes,
         result["prediction_error"] = prediction_error  # 에러 정보 포함 (디버깅용)
     
     return result
+
+
+async def upload_document_with_ocr_controller(
+    file_content_type: str,
+    file_data: bytes,
+    filename: str,
+    document_title: str,
+    user_id: int,
+    db: Session
+):
+    """문서 업로드 + OCR 처리 컨트롤러 (문서 보관함)"""
+    if not file_data:
+        raise bad_request("file_required", ErrorCode.FILE_REQUIRED)
+    
+    if len(file_data) > MAX_VAULT_FILE_SIZE:
+        raise payload_too_large(
+            "file_too_large",
+            ErrorCode.FILE_TOO_LARGE,
+            {"max_size": "10MB"}
+        )
+    
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise unauthorized("unauthorized_user", ErrorCode.UNAUTHORIZED)
+    
+    couple_id = get_user_couple_id(user_id, db)
+    if not couple_id:
+        raise forbidden("couple_required", ErrorCode.FORBIDDEN)
+    
+    safe_filename = Path(filename or "document").name
+    normalized_title = (document_title or "").strip()
+    if not normalized_title:
+        normalized_title = Path(safe_filename).stem or "문서"
+    validate_title(normalized_title)
+    
+    stored_name = f"{uuid.uuid4().hex}_{safe_filename}"
+    file_path = os.path.join(UPLOAD_DIR, stored_name)
+    with open(file_path, "wb") as dest:
+        dest.write(file_data)
+    file_url = _build_upload_url(stored_name)
+    
+    text, error = await ocr_service.extract_text_from_document(
+        file_data=file_data,
+        filename=safe_filename,
+        content_type=file_content_type
+    )
+    
+    if not text:
+        return {
+            "post_id": None,
+            "ocr_text": None,
+            "ocr_error": error or "문서에서 텍스트를 추출하지 못했습니다.",
+            "file_url": file_url
+        }
+    
+    content = text.strip()
+    # 원본 파일 경로를 내용 상단에 추가하여 첨부파일 접근 경로를 제공
+    content_with_source = f"[원본 파일] {file_url}\n\n{content}" if file_url else content
+    
+    summary = None
+    try:
+        summary_res = await summarize_text(content)
+        summary = summary_res.get("summary") if summary_res else None
+    except Exception as exc:
+        print(f"⚠️ 문서 요약 실패: {exc}")
+    
+    tags_list = []
+    try:
+        tags_list = await auto_tag_text(content)
+    except Exception as exc:
+        print(f"⚠️ 문서 자동 태그 생성 실패: {exc}")
+        tags_list = []
+    
+    db_tags = []
+    if tags_list:
+        for tag_name in tags_list:
+            cleaned = (tag_name or "").strip()
+            if not cleaned:
+                continue
+            tag = db.query(Tag).filter(Tag.name == cleaned).first()
+            if not tag:
+                tag = Tag(name=cleaned)
+                db.add(tag)
+                db.flush()
+            db_tags.append(tag)
+    
+    post = Post(
+        user_id=user_id,
+        couple_id=couple_id,
+        title=normalized_title,
+        content=content_with_source,
+        image_url=file_url if _is_image_file(safe_filename, file_content_type) else None,
+        board_type="vault",
+        category="document",
+        summary=summary,
+        tags=db_tags,
+        sentiment_score=None,
+        sentiment_label=None,
+        view_count=0
+    )
+    
+    db.add(post)
+    db.commit()
+    db.refresh(post)
+    
+    try:
+        post_vector_service.vectorize_post(post)
+    except Exception as exc:
+        print(f"⚠️ 문서 벡터화 실패 (post_id={post.id}): {exc}")
+    
+    return {
+        "post_id": post.id,
+        "title": post.title,
+        "ocr_text": content,
+        "summary": summary,
+        "file_url": file_url,
+        "ocr_error": None,
+        "tags": [tag.name for tag in db_tags]
+    }

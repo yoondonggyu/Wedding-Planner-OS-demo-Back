@@ -67,7 +67,9 @@ def validate_nickname(nickname: str, raise_validation_failed=False):
         raise unprocessable("nickname_too_long", ErrorCode.NICKNAME_TOO_LONG, {"max_length": 10})
     return True
 
-def validate_title(title: str):
-    if len(title) > 26:
-        raise unprocessable("title_too_long", {"max_length": 26})
+TITLE_MAX_LENGTH = 120
 
+
+def validate_title(title: str):
+    if len(title) > TITLE_MAX_LENGTH:
+        raise unprocessable("title_too_long", ErrorCode.VALIDATION_ERROR, {"max_length": TITLE_MAX_LENGTH})

@@ -120,10 +120,15 @@ async def process_receipt_image(
     file: UploadFile = File(...),
     user_id: int = Query(...)
 ):
-    """영수증/견적서 이미지 처리 (OCR + LLM 구조화)"""
-    image_data = await file.read()
-    return await budget_controller.process_receipt_image(user_id, image_data)
-
+    """영수증/견적서 문서 처리 (OCR + LLM 구조화)"""
+    file_data = await file.read()
+    filename = file.filename or "budget_document"
+    return await budget_controller.process_receipt_document(
+        user_id=user_id,
+        file_data=file_data,
+        filename=filename,
+        content_type=file.content_type
+    )
 
 
 

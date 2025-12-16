@@ -5,7 +5,7 @@ from typing import Dict, List
 from datetime import datetime
 from app.models.memory import BUDGET_ITEMS, BudgetItem, COUNTERS, USER_TOTAL_BUDGETS
 from app.schemas import BudgetItemCreateReq, BudgetItemUpdateReq, TotalBudgetSetReq
-from app.services import budget_service, ocr_service
+from app.services import budget_service
 
 
 def create_budget_item(user_id: int, request: BudgetItemCreateReq) -> Dict:
@@ -140,9 +140,18 @@ def set_total_budget(user_id: int, request: TotalBudgetSetReq) -> Dict:
     }
 
 
-async def process_receipt_image(user_id: int, image_data: bytes) -> Dict:
-    """영수증/견적서 이미지 처리 (OCR + LLM 구조화)"""
-    structured_items = await budget_service.process_image_receipt(image_data)
+async def process_receipt_document(
+    user_id: int,
+    file_data: bytes,
+    filename: str,
+    content_type: str | None = None
+) -> Dict:
+    """영수증/견적서 문서 처리 (이미지/엑셀/텍스트)"""
+    structured_items = await budget_service.process_budget_document(
+        file_data=file_data,
+        filename=filename,
+        content_type=content_type
+    )
     
     created_items = []
     for item_data in structured_items:
@@ -184,8 +193,6 @@ async def process_receipt_image(user_id: int, image_data: bytes) -> Dict:
             ]
         }
     }
-
-
 
 
 
