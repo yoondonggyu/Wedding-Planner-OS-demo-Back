@@ -105,6 +105,11 @@ orjson==3.11.4
 overrides==7.7.0
 packaging==25.0
 pandas==2.3.3
+openpyxl==3.1.5
+xlrd==2.0.1
+pdfminer.six==20231228
+paddleocr==2.9.1
+paddlepaddle==2.6.2
 parso==0.8.5
 pexpect==4.9.0
 pickleshare==0.7.5
